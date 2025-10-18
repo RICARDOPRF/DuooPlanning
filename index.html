@@ -71,8 +71,7 @@
     .q{font-size:17px;margin:0 0 10px}
     .opts{display:grid;gap:10px}
     .opt{padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:#0d1420;cursor:pointer}
-    .opt.correct{border-color:#1f9d6b;background:#0b1712}
-    .opt.wrong{border-color:#8b1d30;background:#190f12}
+    .opt.correct,.opt.wrong{border-color:var(--border);background:#0d1420}
     .exp{border-left:3px solid var(--accent);padding:8px 12px;margin-top:10px;background:#0f1622}
     .foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
 
@@ -153,9 +152,52 @@
     ];
 
     // ==== 40 módulos gerados (12/10/10/6/2)
-    const MODULES=[]; let id=1;
-    function add(level, qty){ for(let i=0;i<qty;i++){ MODULES.push({ id, level:level.id, icon:level.icon, color:level.color, xp:level.xp, title:`Módulo ${id}`, desc:level.label }); id++; } }
-    add(LEVELS[0],12); add(LEVELS[1],10); add(LEVELS[2],10); add(LEVELS[3],6); add(LEVELS[4],2);
+    const MODULES = [
+  { id: 1,  title: 'LPS — Last Planner System',                level: 'Tecnico',     icon: '📋', color: 'var(--lv-tec)', xp: 30 },
+  { id: 2,  title: 'Cronograma — MS Project e EAP',            level: 'Tecnico',     icon: '📆', color: 'var(--lv-tec)', xp: 30 },
+  { id: 3,  title: 'EAP / AWP — Pacotes de Trabalho',          level: 'Tecnico',     icon: '🧩', color: 'var(--lv-tec)', xp: 30 },
+  { id: 4,  title: 'Curva S e Rundown — Acompanhamento',       level: 'Tecnico',     icon: '📈', color: 'var(--lv-tec)', xp: 30 },
+  { id: 5,  title: 'Folha Tarefa — Gestão Diária',             level: 'Tecnico',     icon: '🗒️', color: 'var(--lv-tec)', xp: 30 },
+  { id: 6,  title: 'Índices de Produtividade (IPP/ICP)',       level: 'Tecnico',     icon: '⚙️', color: 'var(--lv-tec)', xp: 30 },
+  { id: 7,  title: 'Painel de Bordo — KPIs Lean',              level: 'Tecnico',     icon: '📊', color: 'var(--lv-tec)', xp: 30 },
+  { id: 8,  title: 'Waste Time — Gestão de Esperas',           level: 'Tecnico',     icon: '⏳', color: 'var(--lv-tec)', xp: 30 },
+  { id: 9,  title: 'Programação Semanal — WWP',                level: 'Tecnico',     icon: '🗓️', color: 'var(--lv-tec)', xp: 30 },
+  { id:10,  title: 'Lookahead — Gestão de Restrições',         level: 'Tecnico',     icon: '🔍', color: 'var(--lv-tec)', xp: 30 },
+  { id:11,  title: 'Gestão Visual — Quadros e Andons',         level: 'Tecnico',     icon: '🖼️', color: 'var(--lv-tec)', xp: 30 },
+  { id:12,  title: 'Linha de Produção — Lean na Obra',         level: 'Tecnico',     icon: '🏗️', color: 'var(--lv-tec)', xp: 30 },
+
+  { id:13,  title: 'Integração Engenharia & Planejamento',     level: 'Analista',    icon: '📐', color: 'var(--lv-ana)', xp: 40 },
+  { id:14,  title: 'Cronograma Integrado — AWP + MSP',         level: 'Analista',    icon: '🔗', color: 'var(--lv-ana)', xp: 40 },
+  { id:15,  title: 'Painel Rundown — Curva S Avançada',        level: 'Analista',    icon: '📉', color: 'var(--lv-ana)', xp: 40 },
+  { id:16,  title: 'PPC / IPP / ICP — Confiabilidade',         level: 'Analista',    icon: '✅', color: 'var(--lv-ana)', xp: 40 },
+  { id:17,  title: 'Pull Planning — Colaboração',              level: 'Analista',    icon: '🤝', color: 'var(--lv-ana)', xp: 40 },
+  { id:18,  title: 'Comissionamento — Controle Integrado',     level: 'Analista',    icon: '🔧', color: 'var(--lv-ana)', xp: 40 },
+  { id:19,  title: 'Mobilização e Desmobilização',             level: 'Analista',    icon: '🚚', color: 'var(--lv-ana)', xp: 40 },
+  { id:20,  title: 'Pleito Técnico — Evidências de Campo',     level: 'Analista',    icon: '📁', color: 'var(--lv-ana)', xp: 40 },
+  { id:21,  title: 'Melhoria Contínua — PDCA',                 level: 'Analista',    icon: '♻️', color: 'var(--lv-ana)', xp: 40 },
+  { id:22,  title: 'Análise de Efetivo — Balanceamento',       level: 'Analista',    icon: '👥', color: 'var(--lv-ana)', xp: 40 },
+
+  { id:23,  title: 'Lean como Filosofia — Cultura',            level: 'Especialista',icon: '🧠', color: 'var(--lv-esp)', xp: 50 },
+  { id:24,  title: 'AWP + BIM 4D — Planejamento Visual',       level: 'Especialista',icon: '🏗️', color: 'var(--lv-esp)', xp: 50 },
+  { id:25,  title: 'Integração com Power BI — KPIs',           level: 'Especialista',icon: '📊', color: 'var(--lv-esp)', xp: 50 },
+  { id:26,  title: 'Planejamento em Tempo Real — Apps',        level: 'Especialista',icon: '📱', color: 'var(--lv-esp)', xp: 50 },
+  { id:27,  title: 'Lean Digital — Automação e IA',            level: 'Especialista',icon: '🤖', color: 'var(--lv-esp)', xp: 50 },
+  { id:28,  title: 'Gargalos — Teoria das Restrições',         level: 'Especialista',icon: '🚧', color: 'var(--lv-esp)', xp: 50 },
+  { id:29,  title: 'Planejamento Integrado — EAP + Custos',    level: 'Especialista',icon: '📘', color: 'var(--lv-esp)', xp: 50 },
+  { id:30,  title: 'Simulações 5D — Custo e Produção',         level: 'Especialista',icon: '🎮', color: 'var(--lv-esp)', xp: 50 },
+  { id:31,  title: 'Análise de Riscos — Monte Carlo',          level: 'Especialista',icon: '🎲', color: 'var(--lv-esp)', xp: 50 },
+  { id:32,  title: 'Lean Office — Eficiência Administrativa',  level: 'Especialista',icon: '🏢', color: 'var(--lv-esp)', xp: 50 },
+
+  { id:33,  title: 'Liderança Lean — Gestão de Pessoas',       level: 'Gerente',     icon: '👔', color: 'var(--lv-ger)', xp: 60 },
+  { id:34,  title: 'Curva S e Rundown — Gerencial',            level: 'Gerente',     icon: '📈', color: 'var(--lv-ger)', xp: 60 },
+  { id:35,  title: 'AWP com Cronograma Integrado',             level: 'Gerente',     icon: '🔗', color: 'var(--lv-ger)', xp: 60 },
+  { id:36,  title: 'Gestão de Indicadores — Alta Direção',     level: 'Gerente',     icon: '🏆', color: 'var(--lv-ger)', xp: 60 },
+  { id:37,  title: 'Benchmarking — Melhores Práticas',         level: 'Gerente',     icon: '🌍', color: 'var(--lv-ger)', xp: 60 },
+  { id:38,  title: 'Planejamento de Obras Complexas',          level: 'Gerente',     icon: '🏗️', color: 'var(--lv-ger)', xp: 60 },
+
+  { id:39,  title: 'Futuro do Planejamento — IA e BIM 5D',     level: 'Visionario',  icon: '🔮', color: 'var(--lv-vis)', xp: 80 },
+  { id:40,  title: 'Duoplanning — Encerramento da Jornada',    level: 'Visionario',  icon: '🎓', color: 'var(--lv-vis)', xp: 80 }
+];
 
     // ==== Quizzes base (10 perguntas cada) + suporte a quizzes.js externo via window.QUIZZES
     const QUIZ_LPS=[
@@ -330,9 +372,7 @@
         return `<div class='card lv ${cls} ${locked?"locked":""}'>
           <span class='ribbon' style='background:${m.color}'></span>${lockIcon}
           <div class='icon'>${m.icon}</div>
-          <h4>${m.title}</h4>
-          <div class='badge'>${m.desc}</div>
-          <div class='mod-footer'>${status} ${action}</div>
+          <h4>${m.title}</h4><div class='mod-footer'>${status} ${action}</div>
         </div>`;
       }).join('');
       modsEl.querySelectorAll('button[data-mod]').forEach(b=>b.addEventListener('click',()=>startQuiz(Number(b.dataset.mod))));
@@ -394,7 +434,7 @@
       const raw = quizForModule(currentModule);
       quizSet = Array.isArray(raw) ? raw.slice(0,10) : [];
       qi=0; score=0; resultMode=false;
-      quizTitle.textContent = `${currentModule.title} — ${currentModule.level}`;
+      quizTitle.textContent = `${currentModule.icon} ${currentModule.title} — ${currentModule.level}`;
       btnNext.style.background = currentModule.color;
       quizOverlay.style.display='flex';
       renderQ();
