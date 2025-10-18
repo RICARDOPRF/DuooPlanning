@@ -119,7 +119,10 @@
             <span class="ribbon"></span>
             <h4>Missão da Semana</h4>
             <div class="meta">Complete 3 módulos (+100 XP)</div>
-            <button class="ghost" disabled>Em breve</button>
+            <div class="row" style="gap:8px">
+              <button class="primary" id="btnWeekly">Resgatar</button>
+              <span id="wkStatus" class="meta"></span>
+            </div>
           </div>
         </div>
       </div>
@@ -205,6 +208,9 @@
     const btnLocal=document.getElementById('btnLocal');
     const btnGoogle=document.getElementById('btnGoogle');
     const btnLogout=document.getElementById('btnLogout');
+    const btnDaily=document.getElementById('btnDaily');
+    const btnWeekly=document.getElementById('btnWeekly');
+    const wkStatus=document.getElementById('wkStatus');
     const btnConfig=document.getElementById('btnConfig');
     const modsEl=document.getElementById('mods');
     const legend=document.getElementById('legend');
@@ -342,11 +348,13 @@
 
     // ===== Estado local + sync
     const STATE_KEY='duoplanning.v4.firebase.mobile';
-    function baseState(){ return {name:'', xp:0, completed:[], confetti:true, sound:true, require70:true, theme:'dark', lang:'pt', updatedAt: Date.now()}; }
+    function baseState(){ return {name:'', xp:0, completed:[], completedLog:[], weeklyClaimAt:0, confetti:true, sound:true, require70:true, theme:'dark', lang:'pt', updatedAt: Date.now()}; }
     function loadLocal(){
       try{ const raw = JSON.parse(localStorage.getItem(STATE_KEY)||'null'); if(!raw||typeof raw!=='object') return baseState(); 
         raw.xp = Number.isFinite(+raw.xp)? +raw.xp : 0; 
         if(!Array.isArray(raw.completed)) raw.completed=[];
+        if(!Array.isArray(raw.completedLog)) raw.completedLog=[];
+        raw.weeklyClaimAt = Number.isFinite(+raw.weeklyClaimAt)? +raw.weeklyClaimAt : 0;
         raw.confetti = !!raw.confetti; raw.sound=!!raw.sound;
         raw.require70 = raw.require70===undefined ? true : !!raw.require70;
         raw.theme = ['light','dark','system'].includes(raw.theme)? raw.theme : 'dark';
@@ -356,6 +364,66 @@
       }catch(e){ return baseState(); }
     }
     let S = loadLocal();
+    // ===== Missões (Diária e Semanal)
+    let missionMode = null; // null | 'daily'
+
+    function sample(arr, k){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+      return a.slice(0, k);
+    }
+    function allQuizPool(){
+      // Junta perguntas de todos os níveis básicos declarados (pode ser expandido futuramente).
+      const pools = [QUIZ_LPS, QUIZ_CRON, QUIZ_EAP, QUIZ_RUNDOWN].filter(Array.isArray);
+      return pools.flat();
+    }
+    function startDailyMission(){
+      const pool = allQuizPool();
+      const pick = sample(pool, Math.min(3, pool.length));
+      currentModule = { id:0, title:'Missão do Dia', level:'Geral', icon:'⭐', color:'var(--accent)'};
+      quizSet = pick;
+      qi=0; score=0; resultMode=false; missionMode='daily';
+      quizTitle.textContent = `⭐ Missão do Dia — 3 perguntas`;
+      btnNext.style.background = getComputedStyle(document.documentElement).getPropertyValue('--accent');
+      quizOverlay.style.display='flex';
+      renderQ();
+    }
+    function startOfSevenDaysAgo(){
+      const now = Date.now();
+      return now - 7*24*60*60*1000;
+    }
+    function weeklyProgress(){
+      const cutoff = startOfSevenDaysAgo();
+      const logs = (S.completedLog||[]).filter(x=> (x && +x.ts>=cutoff));
+      return logs.length;
+    }
+    function canClaimWeekly(){
+      const cutoff = startOfSevenDaysAgo();
+      return weeklyProgress() >= 3 && (S.weeklyClaimAt||0) < cutoff;
+    }
+    function updateMissionsUI(){
+      // Diário: sempre disponível
+      if(btnDaily){ btnDaily.disabled = false; }
+      // Semanal: estado
+      const can = canClaimWeekly();
+      if(btnWeekly){
+        btnWeekly.disabled = !can;
+        if(wkStatus){
+          if(can){
+            wkStatus.textContent = `Pronto para resgate! (${weeklyProgress()}/3 módulos na última semana)`;
+          } else {
+            const prog = weeklyProgress();
+            const claimed = (S.weeklyClaimAt||0) >= startOfSevenDaysAgo();
+            if(claimed){
+              wkStatus.textContent = `Missão já resgatada nesta janela de 7 dias.`;
+            } else {
+              wkStatus.textContent = `Progresso: ${prog}/3 módulos nos últimos 7 dias`;
+            }
+          }
+        }
+      }
+    }
+
     function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; setTimeout(()=>t.style.display='none',1600); }
 
     let syncGuard = { writing:false, lastWrite:0, unsub:null };
@@ -435,8 +503,10 @@
       topBar.classList.remove('hidden'); viewLogin.classList.add('hidden'); viewDash.classList.remove('hidden');
       document.getElementById('hello').textContent=`Olá, ${S.name}!`;
       userBadge.textContent = auth.currentUser ? (auth.currentUser.email || S.name) : 'Modo Local';
-      renderLegend(); renderModules(); renderXP(); applyTheme();
+      renderLegend(); renderModules(); renderXP(); applyTheme(); updateMissionsUI();
     }
+
+    btnDaily && btnDaily.addEventListener('click', startDailyMission);
 
     // ====== Login Local (sem nuvem)
     btnLocal.addEventListener('click',()=>{ const v=(inpName.value||'').trim(); if(!v) return; S.name=v; save(); render(); });
@@ -456,12 +526,29 @@
       }
     });
 
-    btnLogout.addEventListener('click', async()=>{
-      await signOut(auth);
-      // Mantém local, mas limpa nome se estava usando nuvem
-      if(!S.name) { S = baseState(); saveLocal(); }
-      render();
+    
+    // Weekly Claim
+    btnWeekly && btnWeekly.addEventListener('click', ()=>{
+      if(!canClaimWeekly()){ toast('Requisito não atingido ainda.'); return; }
+      S.xp += 100;
+      S.weeklyClaimAt = Date.now();
+      save(); render();
+      if(S.confetti) confettiBurst();
+      if(S.sound) victorySound();
+      toast('+100 XP — Missão da Semana');
     });
+
+    btnLogout.addEventListener('click', async()=>{
+  try { if (typeof signOut === 'function' && auth) { await signOut(auth); } } catch(e){}
+  try { localStorage.removeItem('duoplanning_user'); } catch(e){}
+  try { sessionStorage.clear(); } catch(e){}
+  // Limpa o estado em memória para que render() volte ao login
+  try {
+    if(typeof S === 'object'){ S.name=''; S.updatedAt=Date.now(); }
+    if(typeof save === 'function') save();
+  } catch(e){}
+  try { render(); } catch(e){ window.location.reload(); }
+});
 
     // ===== Sincronização em tempo real
     function union(arrA=[], arrB=[]){ return Array.from(new Set([...(arrA||[]), ...(arrB||[])])); }
@@ -585,26 +672,38 @@
       return `Precisa revisar: ${score}/${total} (${pct}%).`;
     }
     btnNext.addEventListener('click',()=>{
-      if(resultMode){ quizOverlay.style.display='none'; render(); return; }
+      if(resultMode){ missionMode=null; quizOverlay.style.display='none'; render(); return; }
       qi++;
       if(qi>=quizSet.length){
         const total = quizSet.length; const pct = Math.round((score/total)*100);
         const require = S.require70 ? 70 : 0;
         const passed = pct >= require;
-        if(passed){
-          if(!completedArr().includes(currentModule.id)) S.completed.push(currentModule.id);
-          const lvl = LEVELS.find(l=>l.id===currentModule.level) || {xp:30};
-          S.xp += lvl.xp;
-          save();
-          if(S.confetti) confettiBurst();
-          if(S.sound) victorySound();
+        if(missionMode==='daily'){
+          // Requer 100% de acerto para ganhar +20 XP
+          const passedDaily = (score===total);
+          if(passedDaily){ S.xp += 20; save(); if(S.confetti) confettiBurst(); if(S.sound) victorySound(); }
+          resultMode=true; qProg.textContent='Resultado'; opts.innerHTML=''; exp.classList.add('hidden');
+          qText.textContent = (passedDaily? `Excelente! ${score}/${total} (100%). ✅ Recompensa: +20 XP.` : `Missão não concluída: ${score}/${total}. ❌ Tente novamente para ganhar XP.`);
+          btnNext.textContent='Concluir';
+        } else {
+          if(passed){
+            if(!completedArr().includes(currentModule.id)) S.completed.push(currentModule.id);
+            // Log de conclusão com timestamp para a missão semanal
+            if(!Array.isArray(S.completedLog)) S.completedLog=[];
+            S.completedLog.push({id: currentModule.id, ts: Date.now()});
+            const lvl = LEVELS.find(l=>l.id===currentModule.level) || {xp:30};
+            S.xp += lvl.xp;
+            save();
+            if(S.confetti) confettiBurst();
+            if(S.sound) victorySound();
+          }
+          resultMode=true; qProg.textContent='Resultado'; opts.innerHTML=''; exp.classList.add('hidden');
+          qText.textContent = feedbackText(score, total) + (passed? ` ✅ Aprovado.` : ` ❌ Refaça para concluir.`);
+          btnNext.textContent='Concluir';
         }
-        resultMode=true; qProg.textContent='Resultado'; opts.innerHTML=''; exp.classList.add('hidden');
-        qText.textContent = feedbackText(score, total) + (passed? ` ✅ Aprovado.` : ` ❌ Refaça para concluir.`);
-        btnNext.textContent='Concluir';
       } else { renderQ(); }
     });
-    btnCloseQuiz.addEventListener('click',()=>{ quizOverlay.style.display='none'; });
+    btnCloseQuiz.addEventListener('click',()=>{ missionMode=null; quizOverlay.style.display='none'; });
 
     // ===== Confete
     function confettiMini(){
