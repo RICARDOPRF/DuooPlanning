@@ -70,6 +70,7 @@
       <h1>Duoplanning</h1>
       <div class="actions">
         <span id="userBadge" class="meta"></span>
+        <button id="btnRank" class="ghost">🏆</button>
         <button id="btnConfig" class="ghost">⚙️</button>
         <button id="btnLogout" class="ghost">Sair</button>
       </div>
@@ -168,6 +169,16 @@
     </div>
   </div>
 
+  <!-- Ranking Modal -->
+  <div id="ranking" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong>🏆 Ranking de XP</strong><button id="btnCloseRank" class="ghost">Fechar</button></div>
+      <div class="body" id="rankBody">
+        <p class="meta">Carregando ranking...</p>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="toast">Salvo</div>
 
   <!-- Firebase + App (module) -->
@@ -179,7 +190,7 @@
       getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile 
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
     import { 
-      getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp 
+      getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp, collection, query, orderBy, limit, getDocs 
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     // ===== Configuração do Firebase (fornecida pelo usuário)
@@ -222,6 +233,10 @@
     const cfgRequire70=document.getElementById('cfgRequire70');
     const btnCloseConfig=document.getElementById('btnCloseConfig');
     const btnReset=document.getElementById('btnReset');
+    const btnRank=document.getElementById('btnRank');
+    const rankOverlay=document.getElementById('ranking');
+    const btnCloseRank=document.getElementById('btnCloseRank');
+    const rankBody=document.getElementById('rankBody');
 
     // Modal Quiz
     const quizOverlay=document.getElementById('quiz');
@@ -763,6 +778,48 @@ function choose(idx){
       if('serviceWorker' in navigator){ navigator.serviceWorker.register('./service-worker.js').catch(()=>{}); }
       render();
     }
+
+    // ===== Ranking (XP Leaderboard)
+    function levelFromXP(xp){
+      if(xp >= 10000) return 'Visionário 🔮';
+      if(xp >= 6000) return 'Gerente 👔';
+      if(xp >= 3000) return 'Especialista 👨‍🔧';
+      if(xp >= 1000) return 'Analista 👨‍💻';
+      return 'Técnico 👷‍♂️';
+    }
+    async function loadRanking(){
+      try{
+        rankBody.innerHTML = '<p class="meta">Carregando ranking...</p>';
+        const ref = collection(db, "users");
+        const qy = query(ref, orderBy("xp", "desc"), limit(10));
+        const snap = await getDocs(qy);
+        let html = "";
+        let pos = 1;
+        snap.forEach(docSnap => {
+          const d = docSnap.data() || {};
+          const name = (d.name || 'Usuário').toString().slice(0, 40);
+          const xp = Number(d.xp || 0);
+          const level = levelFromXP(xp);
+          const medal = pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':pos+'.';
+          html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span>${medal} ${name}</span>
+            <span>${xp} XP — ${level}</span>
+          </div>`;
+          pos++;
+        });
+        rankBody.innerHTML = html || '<p class="meta">Nenhum usuário encontrado.</p>';
+      }catch(e){
+        console.error(e);
+        rankBody.innerHTML = '<p class="meta">Erro ao carregar ranking.</p>';
+      }
+    }
+    if(btnRank){
+      btnRank.addEventListener('click', ()=>{ rankOverlay.style.display='flex'; loadRanking(); });
+    }
+    if(btnCloseRank){
+      btnCloseRank.addEventListener('click', ()=>{ rankOverlay.style.display='none'; });
+    }
+
     init();
   </script>
 </body>
