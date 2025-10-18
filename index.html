@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Duoplanning — Mobile</title>
+  <title>Duoplanning — Mobile (Firebase)</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#58cc02">
   <style>
@@ -22,12 +22,13 @@
     h1,h2,h3{margin:0 0 10px;line-height:1.2}
     .hidden{display:none !important}
     .panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:16px}
-    .row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
-    input,select,button{font-size:16px;padding:12px;border-radius:10px;border:1px solid var(--border);background:#1b2230;color:var(--text);width:100%;box-sizing:border-box}
+    .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    input,select,button{font-size:16px;padding:12px;border-radius:10px;border:1px solid var(--border);background:#1b2230;color:var(--text);box-sizing:border-box}
+    input,select{width:100%}
     button.primary{background:var(--accent);color:#fff;border:none;cursor:pointer;transition:.25s}
-    button.ghost{background:transparent;border:1px solid var(--border)}
+    button.ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
     button.primary:hover{opacity:.9}
-    .meta{color:var(--muted);font-size:14px;text-align:center}
+    .meta{color:var(--muted);font-size:14px}
     #topBar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
     #topBar h1{font-size:20px}
     #topBar .actions{display:flex;gap:8px}
@@ -39,45 +40,27 @@
     .card h4{margin:0;font-size:15px}
     .badge{font-size:12px;color:#cbd5e1}
     .icon{font-size:22px}
-    /* fita colorida por nível */
     .ribbon{position:absolute;inset:0 auto 0 0;width:4px;border-radius:14px 0 0 14px;background:var(--accent)}
     .chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:4px 8px;border-radius:999px;background:#0f1722;border:1px solid var(--border)}
-
-    .lv-tec{--lv:var(--lv-tec)}
-    .lv-ana{--lv:var(--lv-ana)}
-    .lv-esp{--lv:var(--lv-esp)}
-    .lv-ger{--lv:var(--lv-ger)}
-    .lv-vis{--lv:var(--lv-vis)}
-    .lv .ribbon{background:var(--lv)}
-    .lv .chip{border-color:color-mix(in oklab, var(--lv) 60%, #000 40%)}
-    .lv .icon{filter: saturate(1.1)}
-    .lv .primary{background:var(--lv)}
-
-    /* Estados do módulo */
+    .lv-tec{--lv:var(--lv-tec)} .lv-ana{--lv:var(--lv-ana)} .lv-esp{--lv:var(--lv-esp)} .lv-ger{--lv:var(--lv-ger)} .lv-vis{--lv:var(--lv-vis)}
+    .lv .ribbon{background:var(--lv)} .lv .chip{border-color:color-mix(in oklab, var(--lv) 60%, #000 40%)}
+    .lv .icon{filter: saturate(1.1)} .lv .primary{background:var(--lv)}
     .mod-footer{display:flex;align-items:center;justify-content:space-between}
     .status{font-size:12px;opacity:.9}
-    .status.done{color:var(--success)}
-    .status.lock{color:#94a3b8}
+    .status.done{color:var(--success)} .status.lock{color:#94a3b8}
     .lock{position:absolute;right:10px;top:10px;font-size:16px;opacity:.8}
     .card.locked{opacity:.7}
-
-    /* Modal genérico */
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:100}
     .sheet{max-width:480px;width:100%;background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow:hidden}
     .sheet .head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border)}
     .sheet .body{padding:14px}
-
-    /* Quiz */
     .q{font-size:17px;margin:0 0 10px}
     .opts{display:grid;gap:10px}
     .opt{padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:#0d1420;cursor:pointer}
     .opt.correct,.opt.wrong{border-color:var(--border);background:#0d1420}
     .exp{border-left:3px solid var(--accent);padding:8px 12px;margin-top:10px;background:#0f1622}
     .foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
-
-    /* Toast */
     .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#0f1722;border:1px solid var(--border);border-radius:999px;padding:10px 14px;color:#fff;display:none;z-index:120}
-
     @media (max-width:600px){.row{flex-direction:column;align-items:stretch}.grid{grid-template-columns:1fr}.panel{padding:14px}}
   </style>
 </head>
@@ -85,18 +68,61 @@
   <div class="wrap">
     <div id="topBar" class="hidden">
       <h1>Duoplanning</h1>
-      <div class="actions"><button id="btnConfig" class="ghost">⚙️</button><button id="btnLogout" class="ghost">Sair</button></div>
+      <div class="actions">
+        <span id="userBadge" class="meta"></span>
+        <button id="btnConfig" class="ghost">⚙️</button>
+        <button id="btnLogout" class="ghost">Sair</button>
+      </div>
     </div>
-    <section id="viewLogin" class="panel"><h2>Entrar</h2><p class="meta">Digite seu nome para começar sua trilha.</p><div class="row"><input id="inpName" type="text" placeholder="Seu nome" /><button id="btnLogin" class="primary">Começar</button></div><p class="meta">Você começará no nível Técnico e desbloqueia os demais por XP.</p></section>
+
+    <section id="viewLogin" class="panel">
+      <h2>Entrar</h2>
+      <p class="meta">Entre com Google para salvar seu progresso em nuvem ou use o modo local para testar.</p>
+      <div class="row">
+        <button id="btnGoogle" class="primary" style="width:100%">Entrar com Google</button>
+        <div style="display:flex;align-items:center;gap:8px;width:100%">
+          <div style="height:1px;background:var(--border);flex:1"></div>
+          <span class="meta">ou</span>
+          <div style="height:1px;background:var(--border);flex:1"></div>
+        </div>
+        <input id="inpName" type="text" placeholder="Seu nome (modo local)" />
+        <button id="btnLocal" class="ghost" style="width:100%">Começar (Local)</button>
+      </div>
+      <p class="meta">Você começará no nível Técnico e desbloqueia os demais por XP.</p>
+    </section>
 
     <section id="viewDash" class="hidden">
-      <div class="panel"><h2 id="hello">Bem-vindo(a)!</h2><div class="xp"><span id="xpText">0 / 1000 XP</span><div class="xpbar"><i id="xpFill"></i></div></div></div>
+      <div class="panel">
+        <h2 id="hello">Bem-vindo(a)!</h2>
+        <div class="xp">
+          <span id="xpText">0 / 1000 XP</span>
+          <div class="xpbar"><i id="xpFill"></i></div>
+        </div>
+      </div>
+
       <div class="panel">
         <h3>Módulos</h3>
         <div id="legend" class="meta" style="margin:8px 0 12px"></div>
         <div id="mods" class="grid"></div>
       </div>
-      <div class="panel"><h3>Missões</h3><div class="grid"><div class="card lv lv-tec"><span class="ribbon"></span><h4>Missão do Dia</h4><div class="meta">Refaça um quiz com 100% (+20 XP)</div><button class="primary" id="btnDaily">Fazer agora</button></div><div class="card lv lv-ana"><span class="ribbon"></span><h4>Missão da Semana</h4><div class="meta">Complete 3 módulos (+100 XP)</div><button class="ghost" disabled>Em breve</button></div></div></div>
+
+      <div class="panel">
+        <h3>Missões</h3>
+        <div class="grid">
+          <div class="card lv lv-tec">
+            <span class="ribbon"></span>
+            <h4>Missão do Dia</h4>
+            <div class="meta">Refaça um quiz com 100% (+20 XP)</div>
+            <button class="primary" id="btnDaily">Fazer agora</button>
+          </div>
+          <div class="card lv lv-ana">
+            <span class="ribbon"></span>
+            <h4>Missão da Semana</h4>
+            <div class="meta">Complete 3 módulos (+100 XP)</div>
+            <button class="ghost" disabled>Em breve</button>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 
@@ -141,8 +167,67 @@
 
   <div id="toast" class="toast">Salvo</div>
 
-  <script>
-    // ==== Níveis (ícone, cor, XP por módulo)
+  <!-- Firebase + App (module) -->
+  <script type="module">
+    // ===== Firebase SDKs (v10)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
+    import { 
+      getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile 
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { 
+      getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+    // ===== Configuração do Firebase (fornecida pelo usuário)
+    const firebaseConfig = {
+      apiKey: "AIzaSyDAVT6M_mEll69i2S5Btbe2Xpu0gcvB4L4",
+      authDomain: "duoplanning-90738.firebaseapp.com",
+      projectId: "duoplanning-90738",
+      storageBucket: "duoplanning-90738.firebasestorage.app",
+      messagingSenderId: "166228868261",
+      appId: "1:166228868261:web:441565bc95d238e8d6614c",
+      measurementId: "G-24JXV1HEJW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    // ====== Elementos
+    const topBar=document.getElementById('topBar');
+    const userBadge=document.getElementById('userBadge');
+    const viewLogin=document.getElementById('viewLogin');
+    const viewDash=document.getElementById('viewDash');
+    const inpName=document.getElementById('inpName');
+    const btnLocal=document.getElementById('btnLocal');
+    const btnGoogle=document.getElementById('btnGoogle');
+    const btnLogout=document.getElementById('btnLogout');
+    const btnConfig=document.getElementById('btnConfig');
+    const modsEl=document.getElementById('mods');
+    const legend=document.getElementById('legend');
+    const xpText=document.getElementById('xpText');
+    const xpFill=document.getElementById('xpFill');
+    const cfgOverlay=document.getElementById('config');
+    const cfgConfetti=document.getElementById('cfgConfetti');
+    const cfgSound=document.getElementById('cfgSound');
+    const cfgRequire70=document.getElementById('cfgRequire70');
+    const btnCloseConfig=document.getElementById('btnCloseConfig');
+    const btnReset=document.getElementById('btnReset');
+
+    // Modal Quiz
+    const quizOverlay=document.getElementById('quiz');
+    const quizTitle=document.getElementById('quizTitle');
+    const qText=document.getElementById('qText');
+    const opts=document.getElementById('opts');
+    const exp=document.getElementById('exp');
+    const qProg=document.getElementById('qProg');
+    const btnNext=document.getElementById('btnNext');
+    const btnCloseQuiz=document.getElementById('btnCloseQuiz');
+
+    // ===== Dados de Níveis/Módulos
     const LEVELS=[
       {id:'Tecnico',label:'Técnico',icon:'👷‍♂️',color:'var(--lv-tec)',xp:30},
       {id:'Analista',label:'Analista',icon:'👨‍💻',color:'var(--lv-ana)',xp:40},
@@ -151,55 +236,50 @@
       {id:'Visionario',label:'Visionário',icon:'🔮',color:'var(--lv-vis)',xp:80}
     ];
 
-    // ==== 40 módulos gerados (12/10/10/6/2)
     const MODULES = [
-  { id: 1,  title: 'LPS — Last Planner System',                level: 'Tecnico',     icon: '📋', color: 'var(--lv-tec)', xp: 30 },
-  { id: 2,  title: 'Cronograma — MS Project e EAP',            level: 'Tecnico',     icon: '📆', color: 'var(--lv-tec)', xp: 30 },
-  { id: 3,  title: 'EAP / AWP — Pacotes de Trabalho',          level: 'Tecnico',     icon: '🧩', color: 'var(--lv-tec)', xp: 30 },
-  { id: 4,  title: 'Curva S e Rundown — Acompanhamento',       level: 'Tecnico',     icon: '📈', color: 'var(--lv-tec)', xp: 30 },
-  { id: 5,  title: 'Folha Tarefa — Gestão Diária',             level: 'Tecnico',     icon: '🗒️', color: 'var(--lv-tec)', xp: 30 },
-  { id: 6,  title: 'Índices de Produtividade (IPP/ICP)',       level: 'Tecnico',     icon: '⚙️', color: 'var(--lv-tec)', xp: 30 },
-  { id: 7,  title: 'Painel de Bordo — KPIs Lean',              level: 'Tecnico',     icon: '📊', color: 'var(--lv-tec)', xp: 30 },
-  { id: 8,  title: 'Waste Time — Gestão de Esperas',           level: 'Tecnico',     icon: '⏳', color: 'var(--lv-tec)', xp: 30 },
-  { id: 9,  title: 'Programação Semanal — WWP',                level: 'Tecnico',     icon: '🗓️', color: 'var(--lv-tec)', xp: 30 },
-  { id:10,  title: 'Lookahead — Gestão de Restrições',         level: 'Tecnico',     icon: '🔍', color: 'var(--lv-tec)', xp: 30 },
-  { id:11,  title: 'Gestão Visual — Quadros e Andons',         level: 'Tecnico',     icon: '🖼️', color: 'var(--lv-tec)', xp: 30 },
-  { id:12,  title: 'Linha de Produção — Lean na Obra',         level: 'Tecnico',     icon: '🏗️', color: 'var(--lv-tec)', xp: 30 },
+      { id: 1,  title: 'LPS — Last Planner System',                level: 'Tecnico',     icon: '📋', color: 'var(--lv-tec)', xp: 30 },
+      { id: 2,  title: 'Cronograma — MS Project e EAP',            level: 'Tecnico',     icon: '📆', color: 'var(--lv-tec)', xp: 30 },
+      { id: 3,  title: 'EAP / AWP — Pacotes de Trabalho',          level: 'Tecnico',     icon: '🧩', color: 'var(--lv-tec)', xp: 30 },
+      { id: 4,  title: 'Curva S e Rundown — Acompanhamento',       level: 'Tecnico',     icon: '📈', color: 'var(--lv-tec)', xp: 30 },
+      { id: 5,  title: 'Folha Tarefa — Gestão Diária',             level: 'Tecnico',     icon: '🗒️', color: 'var(--lv-tec)', xp: 30 },
+      { id: 6,  title: 'Índices de Produtividade (IPP/ICP)',       level: 'Tecnico',     icon: '⚙️', color: 'var(--lv-tec)', xp: 30 },
+      { id: 7,  title: 'Painel de Bordo — KPIs Lean',              level: 'Tecnico',     icon: '📊', color: 'var(--lv-tec)', xp: 30 },
+      { id: 8,  title: 'Waste Time — Gestão de Esperas',           level: 'Tecnico',     icon: '⏳', color: 'var(--lv-tec)', xp: 30 },
+      { id: 9,  title: 'Programação Semanal — WWP',                level: 'Tecnico',     icon: '🗓️', color: 'var(--lv-tec)', xp: 30 },
+      { id:10,  title: 'Lookahead — Gestão de Restrições',         level: 'Tecnico',     icon: '🔍', color: 'var(--lv-tec)', xp: 30 },
+      { id:11,  title: 'Gestão Visual — Quadros e Andons',         level: 'Tecnico',     icon: '🖼️', color: 'var(--lv-tec)', xp: 30 },
+      { id:12,  title: 'Linha de Produção — Lean na Obra',         level: 'Tecnico',     icon: '🏗️', color: 'var(--lv-tec)', xp: 30 },
+      { id:13,  title: 'Integração Engenharia & Planejamento',     level: 'Analista',    icon: '📐', color: 'var(--lv-ana)', xp: 40 },
+      { id:14,  title: 'Cronograma Integrado — AWP + MSP',         level: 'Analista',    icon: '🔗', color: 'var(--lv-ana)', xp: 40 },
+      { id:15,  title: 'Painel Rundown — Curva S Avançada',        level: 'Analista',    icon: '📉', color: 'var(--lv-ana)', xp: 40 },
+      { id:16,  title: 'PPC / IPP / ICP — Confiabilidade',         level: 'Analista',    icon: '✅', color: 'var(--lv-ana)', xp: 40 },
+      { id:17,  title: 'Pull Planning — Colaboração',              level: 'Analista',    icon: '🤝', color: 'var(--lv-ana)', xp: 40 },
+      { id:18,  title: 'Comissionamento — Controle Integrado',     level: 'Analista',    icon: '🔧', color: 'var(--lv-ana)', xp: 40 },
+      { id:19,  title: 'Mobilização e Desmobilização',             level: 'Analista',    icon: '🚚', color: 'var(--lv-ana)', xp: 40 },
+      { id:20,  title: 'Pleito Técnico — Evidências de Campo',     level: 'Analista',    icon: '📁', color: 'var(--lv-ana)', xp: 40 },
+      { id:21,  title: 'Melhoria Contínua — PDCA',                 level: 'Analista',    icon: '♻️', color: 'var(--lv-ana)', xp: 40 },
+      { id:22,  title: 'Análise de Efetivo — Balanceamento',       level: 'Analista',    icon: '👥', color: 'var(--lv-ana)', xp: 40 },
+      { id:23,  title: 'Lean como Filosofia — Cultura',            level: 'Especialista',icon: '🧠', color: 'var(--lv-esp)', xp: 50 },
+      { id:24,  title: 'AWP + BIM 4D — Planejamento Visual',       level: 'Especialista',icon: '🏗️', color: 'var(--lv-esp)', xp: 50 },
+      { id:25,  title: 'Integração com Power BI — KPIs',           level: 'Especialista',icon: '📊', color: 'var(--lv-esp)', xp: 50 },
+      { id:26,  title: 'Planejamento em Tempo Real — Apps',        level: 'Especialista',icon: '📱', color: 'var(--lv-esp)', xp: 50 },
+      { id:27,  title: 'Lean Digital — Automação e IA',            level: 'Especialista',icon: '🤖', color: 'var(--lv-esp)', xp: 50 },
+      { id:28,  title: 'Gargalos — Teoria das Restrições',         level: 'Especialista',icon: '🚧', color: 'var(--lv-esp)', xp: 50 },
+      { id:29,  title: 'Planejamento Integrado — EAP + Custos',    level: 'Especialista',icon: '📘', color: 'var(--lv-esp)', xp: 50 },
+      { id:30,  title: 'Simulações 5D — Custo e Produção',         level: 'Especialista',icon: '🎮', color: 'var(--lv-esp)', xp: 50 },
+      { id:31,  title: 'Análise de Riscos — Monte Carlo',          level: 'Especialista',icon: '🎲', color: 'var(--lv-esp)', xp: 50 },
+      { id:32,  title: 'Lean Office — Eficiência Administrativa',  level: 'Especialista',icon: '🏢', color: 'var(--lv-esp)', xp: 50 },
+      { id:33,  title: 'Liderança Lean — Gestão de Pessoas',       level: 'Gerente',     icon: '👔', color: 'var(--lv-ger)', xp: 60 },
+      { id:34,  title: 'Curva S e Rundown — Gerencial',            level: 'Gerente',     icon: '📈', color: 'var(--lv-ger)', xp: 60 },
+      { id:35,  title: 'AWP com Cronograma Integrado',             level: 'Gerente',     icon: '🔗', color: 'var(--lv-ger)', xp: 60 },
+      { id:36,  title: 'Gestão de Indicadores — Alta Direção',     level: 'Gerente',     icon: '🏆', color: 'var(--lv-ger)', xp: 60 },
+      { id:37,  title: 'Benchmarking — Melhores Práticas',         level: 'Gerente',     icon: '🌍', color: 'var(--lv-ger)', xp: 60 },
+      { id:38,  title: 'Planejamento de Obras Complexas',          level: 'Gerente',     icon: '🏗️', color: 'var(--lv-ger)', xp: 60 },
+      { id:39,  title: 'Futuro do Planejamento — IA e BIM 5D',     level: 'Visionario',  icon: '🔮', color: 'var(--lv-vis)', xp: 80 },
+      { id:40,  title: 'Duoplanning — Encerramento da Jornada',    level: 'Visionario',  icon: '🎓', color: 'var(--lv-vis)', xp: 80 }
+    ];
 
-  { id:13,  title: 'Integração Engenharia & Planejamento',     level: 'Analista',    icon: '📐', color: 'var(--lv-ana)', xp: 40 },
-  { id:14,  title: 'Cronograma Integrado — AWP + MSP',         level: 'Analista',    icon: '🔗', color: 'var(--lv-ana)', xp: 40 },
-  { id:15,  title: 'Painel Rundown — Curva S Avançada',        level: 'Analista',    icon: '📉', color: 'var(--lv-ana)', xp: 40 },
-  { id:16,  title: 'PPC / IPP / ICP — Confiabilidade',         level: 'Analista',    icon: '✅', color: 'var(--lv-ana)', xp: 40 },
-  { id:17,  title: 'Pull Planning — Colaboração',              level: 'Analista',    icon: '🤝', color: 'var(--lv-ana)', xp: 40 },
-  { id:18,  title: 'Comissionamento — Controle Integrado',     level: 'Analista',    icon: '🔧', color: 'var(--lv-ana)', xp: 40 },
-  { id:19,  title: 'Mobilização e Desmobilização',             level: 'Analista',    icon: '🚚', color: 'var(--lv-ana)', xp: 40 },
-  { id:20,  title: 'Pleito Técnico — Evidências de Campo',     level: 'Analista',    icon: '📁', color: 'var(--lv-ana)', xp: 40 },
-  { id:21,  title: 'Melhoria Contínua — PDCA',                 level: 'Analista',    icon: '♻️', color: 'var(--lv-ana)', xp: 40 },
-  { id:22,  title: 'Análise de Efetivo — Balanceamento',       level: 'Analista',    icon: '👥', color: 'var(--lv-ana)', xp: 40 },
-
-  { id:23,  title: 'Lean como Filosofia — Cultura',            level: 'Especialista',icon: '🧠', color: 'var(--lv-esp)', xp: 50 },
-  { id:24,  title: 'AWP + BIM 4D — Planejamento Visual',       level: 'Especialista',icon: '🏗️', color: 'var(--lv-esp)', xp: 50 },
-  { id:25,  title: 'Integração com Power BI — KPIs',           level: 'Especialista',icon: '📊', color: 'var(--lv-esp)', xp: 50 },
-  { id:26,  title: 'Planejamento em Tempo Real — Apps',        level: 'Especialista',icon: '📱', color: 'var(--lv-esp)', xp: 50 },
-  { id:27,  title: 'Lean Digital — Automação e IA',            level: 'Especialista',icon: '🤖', color: 'var(--lv-esp)', xp: 50 },
-  { id:28,  title: 'Gargalos — Teoria das Restrições',         level: 'Especialista',icon: '🚧', color: 'var(--lv-esp)', xp: 50 },
-  { id:29,  title: 'Planejamento Integrado — EAP + Custos',    level: 'Especialista',icon: '📘', color: 'var(--lv-esp)', xp: 50 },
-  { id:30,  title: 'Simulações 5D — Custo e Produção',         level: 'Especialista',icon: '🎮', color: 'var(--lv-esp)', xp: 50 },
-  { id:31,  title: 'Análise de Riscos — Monte Carlo',          level: 'Especialista',icon: '🎲', color: 'var(--lv-esp)', xp: 50 },
-  { id:32,  title: 'Lean Office — Eficiência Administrativa',  level: 'Especialista',icon: '🏢', color: 'var(--lv-esp)', xp: 50 },
-
-  { id:33,  title: 'Liderança Lean — Gestão de Pessoas',       level: 'Gerente',     icon: '👔', color: 'var(--lv-ger)', xp: 60 },
-  { id:34,  title: 'Curva S e Rundown — Gerencial',            level: 'Gerente',     icon: '📈', color: 'var(--lv-ger)', xp: 60 },
-  { id:35,  title: 'AWP com Cronograma Integrado',             level: 'Gerente',     icon: '🔗', color: 'var(--lv-ger)', xp: 60 },
-  { id:36,  title: 'Gestão de Indicadores — Alta Direção',     level: 'Gerente',     icon: '🏆', color: 'var(--lv-ger)', xp: 60 },
-  { id:37,  title: 'Benchmarking — Melhores Práticas',         level: 'Gerente',     icon: '🌍', color: 'var(--lv-ger)', xp: 60 },
-  { id:38,  title: 'Planejamento de Obras Complexas',          level: 'Gerente',     icon: '🏗️', color: 'var(--lv-ger)', xp: 60 },
-
-  { id:39,  title: 'Futuro do Planejamento — IA e BIM 5D',     level: 'Visionario',  icon: '🔮', color: 'var(--lv-vis)', xp: 80 },
-  { id:40,  title: 'Duoplanning — Encerramento da Jornada',    level: 'Visionario',  icon: '🎓', color: 'var(--lv-vis)', xp: 80 }
-];
-
-    // ==== Quizzes base (10 perguntas cada) + suporte a quizzes.js externo via window.QUIZZES
+    // ===== Quizzes básicos
     const QUIZ_LPS=[
       {q:'O que significa PPC no LPS?',opts:['Percent Plan Complete','Plano de Produção de Custo','Processo de Controle de Projetos'],ok:0,exp:'PPC mede a confiabilidade dos compromissos semanais.'},
       {q:'Qual ferramenta visual é usada no LPS semanal?',opts:['Folha Tarefa','Curva S','Diagrama de Rede'],ok:0,exp:'Folha Tarefa registra compromissos/resultado.'},
@@ -250,16 +330,6 @@
     ];
 
     function quizForModule(m){
-      if (typeof window!== 'undefined' && window.QUIZZES){
-        if (m.id===1 && window.QUIZZES.LPS) return window.QUIZZES.LPS;
-        if (m.id===2 && window.QUIZZES.CRONOGRAMA) return window.QUIZZES.CRONOGRAMA;
-        if (m.id===3 && window.QUIZZES.EAP_AWP) return window.QUIZZES.EAP_AWP;
-        if (m.id===4 && window.QUIZZES.RUNDOWN_CURVAS) return window.QUIZZES.RUNDOWN_CURVAS;
-        if (m.level==='Tecnico' && window.QUIZZES.LPS) return window.QUIZZES.LPS;
-        if (m.level==='Analista' && window.QUIZZES.CRONOGRAMA) return window.QUIZZES.CRONOGRAMA;
-        if (m.level==='Especialista' && window.QUIZZES.EAP_AWP) return window.QUIZZES.EAP_AWP;
-        if (window.QUIZZES.RUNDOWN_CURVAS) return window.QUIZZES.RUNDOWN_CURVAS;
-      }
       if(m.id===1) return QUIZ_LPS;
       if(m.id===2) return QUIZ_CRON;
       if(m.id===3) return QUIZ_EAP;
@@ -270,74 +340,48 @@
       return QUIZ_RUNDOWN;
     }
 
-    // ==== Estado com progresso e configurações (robusto contra storage corrompido)
-    const STATE_KEY='duoplanning.v4.mobile';
-    function loadState(){
-      let raw=null; try{ raw = JSON.parse(localStorage.getItem(STATE_KEY)||'null'); }catch(e){ raw=null; }
-      const base={name:'', xp:0, completed:[], confetti:true, sound:true, require70:true, theme:'dark', lang:'pt'};
-      if(!raw || typeof raw!=='object') return base;
-      const out = Object.assign({}, base, raw);
-      out.xp = Number.isFinite(+out.xp)? +out.xp : 0;
-      if(!Array.isArray(out.completed)) out.completed = [];
-      out.confetti = !!out.confetti;
-      out.sound = !!out.sound;
-      out.require70 = out.require70===undefined ? true : !!out.require70;
-      out.theme = (out.theme==='light'||out.theme==='dark'||out.theme==='system') ? out.theme : 'dark';
-      out.lang = (out.lang==='pt'||out.lang==='en'||out.lang==='es') ? out.lang : 'pt';
-      return out;
+    // ===== Estado local + sync
+    const STATE_KEY='duoplanning.v4.firebase.mobile';
+    function baseState(){ return {name:'', xp:0, completed:[], confetti:true, sound:true, require70:true, theme:'dark', lang:'pt', updatedAt: Date.now()}; }
+    function loadLocal(){
+      try{ const raw = JSON.parse(localStorage.getItem(STATE_KEY)||'null'); if(!raw||typeof raw!=='object') return baseState(); 
+        raw.xp = Number.isFinite(+raw.xp)? +raw.xp : 0; 
+        if(!Array.isArray(raw.completed)) raw.completed=[];
+        raw.confetti = !!raw.confetti; raw.sound=!!raw.sound;
+        raw.require70 = raw.require70===undefined ? true : !!raw.require70;
+        raw.theme = ['light','dark','system'].includes(raw.theme)? raw.theme : 'dark';
+        raw.lang = ['pt','en','es'].includes(raw.lang)? raw.lang : 'pt';
+        raw.updatedAt = Number.isFinite(+raw.updatedAt)? +raw.updatedAt : Date.now();
+        return raw;
+      }catch(e){ return baseState(); }
     }
-    let S = loadState();
-    localStorage.setItem(STATE_KEY, JSON.stringify(S));
+    let S = loadLocal();
+    function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; setTimeout(()=>t.style.display='none',1600); }
 
-    // ==== i18n mínimo
-    const STR={
-      pt:{ enter:'Entrar', daily:'Fazer agora', blocked:'Bloqueado', available:'Disponível', done:'Concluído', quiz:'Quiz', result:'Resultado', conclude:'Concluir', approve:`Aprovado`, redo:`Refaça para concluir.` },
-      en:{ enter:'Sign in', daily:'Do now', blocked:'Locked', available:'Available', done:'Done', quiz:'Quiz', result:'Result', conclude:'Finish', approve:'Approved', redo:'Retake to complete.' },
-      es:{ enter:'Entrar', daily:'Hacer ahora', blocked:'Bloqueado', available:'Disponible', done:'Completado', quiz:'Cuestionario', result:'Resultado', conclude:'Finalizar', approve:'Aprobado', redo:'Rehaz para completar.' }
-    };
-    function T(k){ return (STR[S.lang]&&STR[S.lang][k])||k; }
+    let syncGuard = { writing:false, lastWrite:0, unsub:null };
 
-    const topBar=document.getElementById('topBar');
-    const viewLogin=document.getElementById('viewLogin');
-    const viewDash=document.getElementById('viewDash');
-    const inpName=document.getElementById('inpName');
-    const btnLogin=document.getElementById('btnLogin');
-    const btnLogout=document.getElementById('btnLogout');
-    const btnConfig=document.getElementById('btnConfig');
-    const modsEl=document.getElementById('mods');
-    const legend=document.getElementById('legend');
-    const xpText=document.getElementById('xpText');
-    const xpFill=document.getElementById('xpFill');
+    async function saveCloud(){
+      if(!auth.currentUser) return;
+      try{
+        syncGuard.writing = true;
+        syncGuard.lastWrite = Date.now();
+        const ref = doc(db, "users", auth.currentUser.uid);
+        const payload = Object.assign({}, S, { updatedAt: Date.now(), serverUpdatedAt: serverTimestamp() });
+        await setDoc(ref, payload, { merge:true });
+      } finally {
+        // pequena folga para evitar eco de onSnapshot
+        setTimeout(()=>{ syncGuard.writing=false; }, 250);
+      }
+    }
+    function saveLocal(){ localStorage.setItem(STATE_KEY, JSON.stringify(S)); }
+    function save(){ S.updatedAt = Date.now(); saveLocal(); saveCloud(); }
 
-    // Config elements
-    const cfgOverlay=document.getElementById('config');
-    const cfgConfetti=document.getElementById('cfgConfetti');
-    const cfgSound=document.getElementById('cfgSound');
-    const cfgRequire70=document.getElementById('cfgRequire70');
-    const btnCloseConfig=document.getElementById('btnCloseConfig');
-    const btnReset=document.getElementById('btnReset');
-
-    // Extra: tema e idioma
-    const cfgThemeWrap = document.createElement('div');
-    cfgThemeWrap.className='row'; cfgThemeWrap.style.justifyContent='space-between';
-    cfgThemeWrap.innerHTML = `<label style="flex:1">Tema</label><select id="cfgTheme" style="flex:0 0 auto;width:auto"><option value="dark">Escuro</option><option value="light">Claro</option><option value="system">Sistema</option></select>`;
-    const cfgLangWrap = document.createElement('div');
-    cfgLangWrap.className='row'; cfgLangWrap.style.justifyContent='space-between';
-    cfgLangWrap.innerHTML = `<label style=\"flex:1\">Idioma</label><select id=\"cfgLang\" style=\"flex:0 0 auto;width:auto\"><option value=\"pt\">Português</option><option value=\"en\">English</option><option value=\"es\">Español</option></select>`;
-    document.querySelector('#config .body').insertBefore(cfgThemeWrap, document.getElementById('btnReset').parentElement.querySelector('hr'));
-    document.querySelector('#config .body').insertBefore(cfgLangWrap, document.getElementById('btnReset').parentElement.querySelector('hr'));
-
-    const cfgTheme=document.getElementById('cfgTheme');
-    const cfgLang=document.getElementById('cfgLang');
-
-    function save(){ localStorage.setItem(STATE_KEY, JSON.stringify(S)); }
-    function chip(l){return `<span class=\"chip\" style=\"border-color:${l.color}\">${l.icon} ${l.label}</span>`}
+    function chip(l){return `<span class="chip" style="border-color:${l.color}">${l.icon} ${l.label}</span>`}
     function renderLegend(){ legend.innerHTML = LEVELS.map(chip).join(' '); }
-
     function cssClassFor(level){ return level==='Tecnico'?'lv-tec':level==='Analista'?'lv-ana':level==='Especialista'?'lv-esp':level==='Gerente'?'lv-ger':'lv-vis'; }
     function completedArr(){ return Array.isArray(S.completed) ? S.completed : []; }
 
-    // ==== REGRAS DE DESBLOQUEIO POR NÍVEL (não sequencial dentro do nível)
+    // Regras de desbloqueio por nível
     function allIds(from, to){ const a=[]; for(let i=from;i<=to;i++) a.push(i); return a; }
     const TEC_IDS = allIds(1,12);
     const ANA_IDS = allIds(13,22);
@@ -354,11 +398,7 @@
       if(level==='Visionario') return GER_IDS.every(id=>comp.includes(id));
       return false;
     }
-
-    function isLocked(id){
-      const m = MODULES.find(x=>x.id===id);
-      return !isLevelUnlocked(m.level);
-    }
+    function isLocked(id){ const m = MODULES.find(x=>x.id===id); return !isLevelUnlocked(m.level); }
     function isDone(id){ return completedArr().includes(id); }
 
     function renderModules(){
@@ -366,8 +406,8 @@
         const cls = cssClassFor(m.level);
         const locked = isLocked(m.id);
         const done = isDone(m.id);
-        const status = locked ? `<span class='status lock'>🔒 ${T('blocked')}</span>` : done ? `<span class='status done'>✅ ${T('done')}</span>` : `<span class='status'>▶️ ${T('available')}</span>`;
-        const action = locked ? `<button class='ghost' disabled>${T('blocked')}</button>` : `<button class='primary' data-mod='${m.id}' style='background:${m.color}'>Fazer Quiz</button>`;
+        const status = locked ? `<span class='status lock'>🔒 Bloqueado</span>` : done ? `<span class='status done'>✅ Concluído</span>` : `<span class='status'>▶️ Disponível</span>`;
+        const action = locked ? `<button class='ghost' disabled>Bloqueado</button>` : `<button class='primary' data-mod='${m.id}' style='background:${m.color}'>Fazer Quiz</button>`;
         const lockIcon = locked ? `<div class='lock'>🔒</div>` : '';
         return `<div class='card lv ${cls} ${locked?"locked":""}'>
           <span class='ribbon' style='background:${m.color}'></span>${lockIcon}
@@ -377,7 +417,6 @@
       }).join('');
       modsEl.querySelectorAll('button[data-mod]').forEach(b=>b.addEventListener('click',()=>startQuiz(Number(b.dataset.mod))));
     }
-
     function renderXP(){ const next=1000; xpText.textContent=`${S.xp} / ${next} XP`; xpFill.style.width=Math.min(100,(S.xp/next)*100)+"%"; }
 
     function applyTheme(){
@@ -391,43 +430,117 @@
       document.documentElement.style.setProperty('--border', dark?'#273046':'#dbe1ea');
       document.querySelector('meta[name="theme-color"]').setAttribute('content', dark?'#0f1115':'#ffffff');
     }
-
     function render(){
       if(!S.name){ topBar.classList.add('hidden'); viewLogin.classList.remove('hidden'); viewDash.classList.add('hidden'); return; }
       topBar.classList.remove('hidden'); viewLogin.classList.add('hidden'); viewDash.classList.remove('hidden');
       document.getElementById('hello').textContent=`Olá, ${S.name}!`;
+      userBadge.textContent = auth.currentUser ? (auth.currentUser.email || S.name) : 'Modo Local';
       renderLegend(); renderModules(); renderXP(); applyTheme();
     }
 
-    btnLogin.addEventListener('click',()=>{ const v=(inpName.value||'').trim(); if(!v) return; S.name=v; save(); render(); });
-    btnLogout.addEventListener('click',()=>{ S.name=''; save(); render(); });
+    // ====== Login Local (sem nuvem)
+    btnLocal.addEventListener('click',()=>{ const v=(inpName.value||'').trim(); if(!v) return; S.name=v; save(); render(); });
 
-    // ==== Config Menu Handlers
+    // ====== Login Google (com nuvem)
+    btnGoogle.addEventListener('click', async()=>{
+      try{
+        const res = await signInWithPopup(auth, provider);
+        const user = res.user;
+        // Se não tiver displayName e o usuário preencheu um nome local, aplica no perfil
+        if(!user.displayName && (inpName.value||'').trim()){
+          await updateProfile(user, { displayName: inpName.value.trim() });
+        }
+      }catch(err){
+        console.error(err);
+        toast('Falha no login');
+      }
+    });
+
+    btnLogout.addEventListener('click', async()=>{
+      await signOut(auth);
+      // Mantém local, mas limpa nome se estava usando nuvem
+      if(!S.name) { S = baseState(); saveLocal(); }
+      render();
+    });
+
+    // ===== Sincronização em tempo real
+    function union(arrA=[], arrB=[]){ return Array.from(new Set([...(arrA||[]), ...(arrB||[])])); }
+    async function reconcileWithCloud(cloud){
+      // Estratégia: maior XP vence; completed = união; preferir idioma/tema do cloud (se houver)
+      if(cloud){
+        const pickXP = Math.max(S.xp||0, cloud.xp||0);
+        const pickCompleted = union(S.completed, cloud.completed);
+        const prefs = { theme: cloud.theme || S.theme, lang: cloud.lang || S.lang, confetti: (cloud.confetti??S.confetti), sound:(cloud.sound??S.sound), require70:(cloud.require70??S.require70) };
+        S = Object.assign({}, S, prefs, { xp: pickXP, completed: pickCompleted, name: cloud.name || S.name });
+        saveLocal();
+      } else {
+        // Se não existe cloud, envia o estado local
+        await saveCloud();
+      }
+      render();
+    }
+
+    onAuthStateChanged(auth, async (user)=>{
+      if(user){
+        // Atribui nome se local estiver vazio
+        if(!S.name){ S.name = user.displayName || (user.email ? user.email.split('@')[0] : 'Usuário'); saveLocal(); }
+        // Carrega doc e liga snapshot
+        const ref = doc(db, "users", user.uid);
+        const snap = await getDoc(ref);
+        await reconcileWithCloud(snap.exists()? snap.data() : null);
+        if(syncGuard.unsub) syncGuard.unsub();
+        syncGuard.unsub = onSnapshot(ref, (docSnap)=>{
+          if(syncGuard.writing) return; // ignora eco de escrita local
+          if(docSnap.exists()){
+            const cloud = docSnap.data();
+            // Se o cloud é mais novo que meu local, aplica
+            if((cloud.updatedAt||0) > (S.updatedAt||0)){
+              reconcileWithCloud(cloud);
+            }
+          }
+        });
+      }else{
+        if(syncGuard.unsub){ syncGuard.unsub(); syncGuard.unsub=null; }
+        userBadge.textContent = 'Modo Local';
+        render();
+      }
+    });
+
+    // ===== Config Menu Handlers
     btnConfig.addEventListener('click',()=>{
       cfgConfetti.checked = !!S.confetti; cfgSound.checked = !!S.sound; cfgRequire70.checked = !!S.require70; 
-      cfgTheme.value = S.theme; cfgLang.value = S.lang; 
-      cfgOverlay.style.display='flex';
+      // cria selects se ainda não existirem
+      openConfig();
     });
+    function openConfig(){
+      // Adiciona tema/idioma se não montados
+      if(!document.getElementById('cfgTheme')){
+        const wrap = document.querySelector('#config .body');
+        const hr = wrap.querySelector('hr');
+        const theme = document.createElement('div');
+        theme.className='row'; theme.style.justifyContent='space-between';
+        theme.innerHTML = `<label style="flex:1">Tema</label><select id="cfgTheme" style="flex:0 0 auto;width:auto"><option value="dark">Escuro</option><option value="light">Claro</option><option value="system">Sistema</option></select>`;
+        wrap.insertBefore(theme, hr);
+        const lang = document.createElement('div');
+        lang.className='row'; lang.style.justifyContent='space-between';
+        lang.innerHTML = `<label style="flex:1">Idioma</label><select id="cfgLang" style="flex:0 0 auto;width:auto"><option value="pt">Português</option><option value="en">English</option><option value="es">Español</option></select>`;
+        wrap.insertBefore(lang, hr);
+
+        document.getElementById('cfgTheme').addEventListener('change', (e)=>{ S.theme = e.target.value; save(); applyTheme(); });
+        document.getElementById('cfgLang').addEventListener('change', (e)=>{ S.lang = e.target.value; save(); render(); });
+      }
+      document.getElementById('cfgTheme').value = S.theme;
+      document.getElementById('cfgLang').value = S.lang;
+      cfgOverlay.style.display='flex';
+    }
     btnCloseConfig.addEventListener('click',()=> cfgOverlay.style.display='none');
     cfgConfetti.addEventListener('change',()=>{ S.confetti = cfgConfetti.checked; save(); toast('Confete: ' + (S.confetti?'on':'off')); });
     cfgSound.addEventListener('change',()=>{ S.sound = cfgSound.checked; save(); toast('Som: ' + (S.sound?'on':'off')); });
     cfgRequire70.addEventListener('change',()=>{ S.require70 = cfgRequire70.checked; save(); toast('Aprovação ≥70%: ' + (S.require70?'on':'off')); });
-    cfgTheme.addEventListener('change',()=>{ S.theme = cfgTheme.value; save(); applyTheme(); });
-    cfgLang.addEventListener('change',()=>{ S.lang = cfgLang.value; save(); render(); });
     btnReset.addEventListener('click',()=>{ if(confirm('Zerar progresso?')){ S.xp=0; S.completed=[]; save(); render(); toast('Progresso zerado'); cfgOverlay.style.display='none'; }});
 
-    // ==== QUIZ MODAL (com feedback final + XP por nível + trava de aprovação)
-    const quizOverlay=document.getElementById('quiz');
-    const quizTitle=document.getElementById('quizTitle');
-    const qText=document.getElementById('qText');
-    const opts=document.getElementById('opts');
-    const exp=document.getElementById('exp');
-    const qProg=document.getElementById('qProg');
-    const btnNext=document.getElementById('btnNext');
-    const btnCloseQuiz=document.getElementById('btnCloseQuiz');
-
+    // ===== Quiz
     let currentModule=null, quizSet=[], qi=0, score=0, resultMode=false;
-
     function startQuiz(modId){
       if(isLocked(modId)) { toast('Conclua os módulos do nível anterior para desbloquear.'); return; }
       currentModule = MODULES.find(m=>m.id===modId);
@@ -435,11 +548,10 @@
       quizSet = Array.isArray(raw) ? raw.slice(0,10) : [];
       qi=0; score=0; resultMode=false;
       quizTitle.textContent = `${currentModule.icon} ${currentModule.title} — ${currentModule.level}`;
-      btnNext.style.background = currentModule.color;
+      btnNext.style.background = getComputedStyle(document.documentElement).getPropertyValue('--lv-'+cssClassFor(currentModule.level).split('-')[1]) || currentModule.color;
       quizOverlay.style.display='flex';
       renderQ();
     }
-
     function renderQ(){
       if(!quizSet.length){ qText.textContent='Sem perguntas definidas.'; opts.innerHTML=''; exp.classList.add('hidden'); btnNext.classList.add('hidden'); qProg.textContent='0/0'; return; }
       const Q = quizSet[qi];
@@ -454,19 +566,17 @@
       });
       btnNext.classList.add('hidden');
     }
-
     function choose(idx){
       const Q = quizSet[qi];
       [...opts.children].forEach((el,i)=>{ el.classList.add(i===Q.ok?'correct':'wrong'); el.style.pointerEvents='none'; });
       if(idx===Q.ok){
         score++;
-        if(S.confetti) confettiMini(); // confete ao ACERTAR
+        if(S.confetti) confettiMini();
       }
       exp.classList.remove('hidden');
       exp.textContent = Q.exp || '';
       btnNext.classList.remove('hidden');
     }
-
     function feedbackText(score,total){
       const pct=Math.round((score/total)*100);
       if(pct>=80) return `Excelente! ${score}/${total} (${pct}%).`;
@@ -474,35 +584,29 @@
       if(pct>=40) return `Ok: ${score}/${total} (${pct}%).`;
       return `Precisa revisar: ${score}/${total} (${pct}%).`;
     }
-
     btnNext.addEventListener('click',()=>{
-      if(resultMode){
-        // XP SÓ QUANDO APROVADO (aplicado no bloco de aprovação abaixo). Aqui apenas fecha.
-        quizOverlay.style.display='none'; render();
-        return;
-      }
+      if(resultMode){ quizOverlay.style.display='none'; render(); return; }
       qi++;
       if(qi>=quizSet.length){
-        // Resultado final + trava por aprovação
         const total = quizSet.length; const pct = Math.round((score/total)*100);
         const require = S.require70 ? 70 : 0;
         const passed = pct >= require;
         if(passed){
           if(!completedArr().includes(currentModule.id)) S.completed.push(currentModule.id);
-          S.xp += currentModule.xp; // XP apenas quando aprovado
+          const lvl = LEVELS.find(l=>l.id===currentModule.level) || {xp:30};
+          S.xp += lvl.xp;
           save();
-          if(S.confetti) confettiBurst(); // confete SEMPRE ao aprovar
-          if(S.sound) victorySound();     // som SEMPRE ao aprovar
+          if(S.confetti) confettiBurst();
+          if(S.sound) victorySound();
         }
-        resultMode=true; qProg.textContent=T('result'); opts.innerHTML=''; exp.classList.add('hidden');
-        qText.textContent = feedbackText(score, total) + (passed? ` ✅ ${T('approve')}.` : ` ❌ ${T('redo')}`);
-        btnNext.textContent=T('conclude');
+        resultMode=true; qProg.textContent='Resultado'; opts.innerHTML=''; exp.classList.add('hidden');
+        qText.textContent = feedbackText(score, total) + (passed? ` ✅ Aprovado.` : ` ❌ Refaça para concluir.`);
+        btnNext.textContent='Concluir';
       } else { renderQ(); }
     });
-
     btnCloseQuiz.addEventListener('click',()=>{ quizOverlay.style.display='none'; });
 
-    // ==== Confete mínimo (sem CDN)
+    // ===== Confete
     function confettiMini(){
       const canvas = document.createElement('canvas');
       canvas.style.position='fixed'; canvas.style.inset='0'; canvas.style.zIndex='130'; canvas.style.pointerEvents='none';
@@ -517,7 +621,6 @@
         frame++; if(frame<90){ requestAnimationFrame(tick);} else { document.body.removeChild(canvas);} };
       tick();
     }
-
     function confettiBurst(){
       const canvas = document.createElement('canvas');
       canvas.style.position='fixed'; canvas.style.inset='0'; canvas.style.zIndex='130'; canvas.style.pointerEvents='none';
@@ -532,56 +635,14 @@
         frame++; if(frame<220){ requestAnimationFrame(tick);} else { document.body.removeChild(canvas);} };
       tick();
     }
-
-    // ==== Som mínimo (WebAudio)
     function victorySound(){
       try{ const AC = window.AudioContext||window.webkitAudioContext; const ac = new AC(); const o=ac.createOscillator(); const g=ac.createGain(); o.type='triangle'; o.frequency.value=660; g.gain.value=0.0001; o.connect(g); g.connect(ac.destination); o.start(); const now=ac.currentTime; g.gain.exponentialRampToValueAtTime(0.2, now+0.02); o.frequency.setValueAtTime(880, now+0.15); g.gain.exponentialRampToValueAtTime(0.0001, now+0.5); o.stop(now+0.55);}catch(e){}
     }
 
-    function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; setTimeout(()=>t.style.display='none',1600); }
-
-    // ==== Auto‑testes (não alterar os existentes; adicionados novos casos)
-    function runSelfTests(){
-      const cases=[
-        // Casos originais
-        {name:'completed ausente', S:{name:'a',xp:0}},
-        {name:'completed null', S:{name:'a',xp:0,completed:null}},
-        {name:'completed string', S:{name:'a',xp:0,completed:"oops"}},
-        {name:'completed array ok', S:{name:'a',xp:0,completed:[1,2,3]}},
-        // Novos casos
-        {name:'lang inválido → default pt', S:{lang:'xx'}},
-        {name:'theme inválido → dark', S:{theme:'neon'}},
-        {name:'desbloqueio Analista sem Técnico', S:{completed:[]}},
-        {name:'desbloqueio Analista com Técnico', S:{completed:[...Array(12)].map((_,i)=>i+1)}},
-      ];
-      const results=[];
-      for(const c of cases){
-        let tmp = Object.assign({}, S, c.S);
-        // Coerção mínima igual ao loadState
-        if(!['pt','en','es'].includes(tmp.lang)) tmp.lang='pt';
-        if(!['light','dark','system'].includes(tmp.theme)) tmp.theme='dark';
-        if(!Array.isArray(tmp.completed)) tmp.completed=[];
-        let err=null; try{ tmp.completed.includes(1); }catch(e){ err=e; }
-        // Checks específicos
-        let ok=true;
-        if(c.name.includes('Analista')){
-          const TEC_IDS = Array.from({length:12}, (_,i)=>i+1);
-          const comp = tmp.completed;
-          const unlocked = TEC_IDS.every(id=>comp.includes(id));
-          if(c.name.includes('sem')) ok = !unlocked; else ok = unlocked;
-        }
-        results.push({case:c.name, passed:!err && ok});
-      }
-      console.table(results);
-    }
-
+    // ===== Inicialização
     function init(){
-      runSelfTests();
-      // Aplica tema inicial
-      applyTheme();
-      // Render
+      // PWA opcional
       if('serviceWorker' in navigator){ navigator.serviceWorker.register('./service-worker.js').catch(()=>{}); }
-      if(S.name){ topBar.classList.remove('hidden'); viewLogin.classList.add('hidden'); viewDash.classList.remove('hidden'); }
       render();
     }
     init();
