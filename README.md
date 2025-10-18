@@ -1,7 +1,7 @@
-# Duoplanning PWA (Manifesto Corrigido + Service Worker Otimizado)
+# Duoplanning PWA (Compatível com GitHub Pages)
 
 ## Como instalar no Android (PWA)
-1. Hospede os arquivos em um servidor HTTPS (GitHub Pages, Vercel, Netlify).
+1. Hospede os arquivos no GitHub Pages (HTTPS).
 2. Abra a URL no Chrome do Android.
 3. Clique no menu (⋮) > "Adicionar à tela inicial".
 

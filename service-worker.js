@@ -2,11 +2,10 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open('duoplanning-cache-v1').then(cache => {
       return cache.addAll([
-        '/',
-        '/index.html',
-        '/manifest.json',
-        '/icon-192.png',
-        '/icon-512.png'
+        './index.html',
+        './manifest.json',
+        './icon-192.png',
+        './icon-512.png'
       ]);
     })
   );
@@ -31,6 +30,6 @@ self.addEventListener('fetch', event => {
           return fetchResponse;
         });
       });
-    }).catch(() => caches.match('/index.html'))
+    }).catch(() => caches.match('./index.html'))
   );
 });
