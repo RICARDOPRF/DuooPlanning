@@ -646,24 +646,43 @@
       qProg.textContent = `${qi+1}/${quizSet.length}`;
       exp.className='exp hidden'; exp.textContent='';
       opts.innerHTML='';
-      Q.opts.forEach((txt,idx)=>{
-        const el=document.createElement('div'); el.className='opt'; el.textContent=txt;
-        el.addEventListener('click',()=>choose(idx));
+      
+      // embaralhar opções mantendo o índice original para comparação com Q.ok
+      const order = Q.opts.map((_,i)=>i);
+      for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+      order.forEach((origIdx)=>{
+        const txt = Q.opts[origIdx];
+        const el = document.createElement('div'); 
+        el.className = 'opt'; 
+        el.textContent = txt;
+        el.addEventListener('click', ()=>choose(origIdx)); // passa índice original
         opts.appendChild(el);
       });
       btnNext.classList.add('hidden');
+
     }
-    function choose(idx){
-      const Q = quizSet[qi];
-      [...opts.children].forEach((el,i)=>{ el.classList.add(i===Q.ok?'correct':'wrong'); el.style.pointerEvents='none'; });
-      if(idx===Q.ok){
-        score++;
-        if(S.confetti) confettiMini();
-      }
-      exp.classList.remove('hidden');
-      exp.textContent = Q.exp || '';
-      btnNext.classList.remove('hidden');
-    }
+    
+function choose(idx){
+  const Q = quizSet[qi];
+  [...opts.children].forEach((el,i)=>{
+    el.classList.add(i===Q.ok ? 'correct' : 'wrong');
+    el.style.pointerEvents='none';
+  });
+
+  let prefix = '';
+  if(idx === Q.ok){
+    score++;
+    if(S.confetti) confettiMini();
+    prefix = '✅ Acertou! ';
+  } else {
+    prefix = '❌ Errou! ';
+  }
+
+  exp.classList.remove('hidden');
+  exp.textContent = prefix + (Q.exp || '');
+  btnNext.classList.remove('hidden');
+}
+
     function feedbackText(score,total){
       const pct=Math.round((score/total)*100);
       if(pct>=80) return `Excelente! ${score}/${total} (${pct}%).`;
