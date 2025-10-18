@@ -1,390 +1,514 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Duoplanning — v4.2 (Login com título + Idiomas)</title>
-  <meta name="color-scheme" content="dark light">
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <audio id="audioWin" preload="auto">
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_0b6ce6218f.mp3?filename=success-fanfare-trumpets-6185.mp3" type="audio/mpeg">
-  </audio>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Duoplanning — Mobile</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#58cc02">
   <style>
-    :root{--bg:#0f1115;--text:#e9eef7;--muted:#a7b1c2;--primary:#3aa0ff;--accent:#ffb020;--success:#27c081;--danger:#ff5d5d;--panel:#161c24;--card:#141a22;--border:#273046;--locked:#6b7280}
-    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:500 15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
-    .wrap{max-width:1120px;margin:0 auto;padding:24px}
-    h1,h2,h3{margin:0 0 12px}
-    .brand{display:flex;justify-content:center;margin-bottom:16px}
-    .brand h1{font-size:34px;letter-spacing:.3px}
-    .panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
-    .grid{display:grid;gap:12px}.grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:#111720;color:var(--text);cursor:pointer;transition:transform .15s ease}
-    .btn.primary{background:var(--primary);color:#05131e;border:none}.btn.ghost{background:transparent}.btn:disabled{opacity:.6}
-    .meta{color:var(--muted);font-size:13px}.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#05131e;background:var(--accent);padding:4px 8px;border-radius:999px}
-    .xpbar{height:10px;background:#0b111a;border:1px solid var(--border);border-radius:999px;overflow:hidden}.xpbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--success),#6ee7b7)}
-    .mod{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border:1px solid var(--border);border-radius:12px;background:#101723}
-    .mod .left{display:flex;align-items:center;gap:10px}.mod .lvl{font-size:20px}.lock{opacity:.85;color:var(--locked)}
-    .hidden{display:none !important}.row{display:flex;gap:12px;flex-wrap:wrap}
-    input[type="text"],select{background:#0f1520;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px}
-    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:999px;background:#0c131d}
-    .toast{position:fixed;right:16px;bottom:16px;background:#0c1a13;border:1px solid #124c2e;color:#b9f6ca;padding:12px 14px;border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,.35);display:none}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:18px;animation:fadeIn .2s ease;z-index:20}
-    .overlay .sheet{max-width:860px;width:100%;background:var(--panel);border:1px solid var(--border);border-radius:18px;box-shadow:0 24px 64px rgba(0,0,0,.5);overflow:hidden}
-    .sheet .head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:#0f1722}
-    .sheet .body{padding:16px}.q{font-size:17px;margin-bottom:10px}.opts{display:grid;gap:10px}
-    .opt{padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:#0d1420;cursor:pointer;transition:background .2s ease,border-color .2s ease}
-    .opt.correct{border-color:#1f9d6b;background:#0b1712}.opt.wrong{border-color:#8b1d30;background:#190f12}
+    :root { 
+      --bg:#0f1115; --panel:#151923; --text:#e9eef7; --muted:#a7b1c2; --accent:#58cc02; --border:#273046; 
+      --danger:#ff4d4f; --success:#27ae60;
+      /* Cores por nível */
+      --lv-tec:#58cc02;      /* Técnico */
+      --lv-ana:#3aa0ff;      /* Analista */
+      --lv-esp:#7e57c2;      /* Especialista */
+      --lv-ger:#f2b01c;      /* Gerente/Diretor */
+      --lv-vis:#00bcd4;      /* Visionário */
+    }
+    html,body{width:100%;height:100%;margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;overflow-x:hidden}
+    .wrap{max-width:480px;margin:0 auto;padding:16px}
+    h1,h2,h3{margin:0 0 10px;line-height:1.2}
+    .hidden{display:none !important}
+    .panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:16px}
+    .row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+    input,select,button{font-size:16px;padding:12px;border-radius:10px;border:1px solid var(--border);background:#1b2230;color:var(--text);width:100%;box-sizing:border-box}
+    button.primary{background:var(--accent);color:#fff;border:none;cursor:pointer;transition:.25s}
+    button.ghost{background:transparent;border:1px solid var(--border)}
+    button.primary:hover{opacity:.9}
+    .meta{color:var(--muted);font-size:14px;text-align:center}
+    #topBar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    #topBar h1{font-size:20px}
+    #topBar .actions{display:flex;gap:8px}
+    .xp{display:flex;align-items:center;gap:8px}
+    .xpbar{flex:1;height:10px;background:#0e1522;border:1px solid var(--border);border-radius:999px;overflow:hidden}
+    .xpbar > i{display:block;height:100%;background:var(--accent);width:0}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .card{background:#0e1522;border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;position:relative}
+    .card h4{margin:0;font-size:15px}
+    .badge{font-size:12px;color:#cbd5e1}
+    .icon{font-size:22px}
+    /* fita colorida por nível */
+    .ribbon{position:absolute;inset:0 auto 0 0;width:4px;border-radius:14px 0 0 14px;background:var(--accent)}
+    .chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:4px 8px;border-radius:999px;background:#0f1722;border:1px solid var(--border)}
+
+    .lv-tec{--lv:var(--lv-tec)}
+    .lv-ana{--lv:var(--lv-ana)}
+    .lv-esp{--lv:var(--lv-esp)}
+    .lv-ger{--lv:var(--lv-ger)}
+    .lv-vis{--lv:var(--lv-vis)}
+    .lv .ribbon{background:var(--lv)}
+    .lv .chip{border-color:color-mix(in oklab, var(--lv) 60%, #000 40%)}
+    .lv .icon{filter: saturate(1.1)}
+    .lv .primary{background:var(--lv)}
+
+    /* Estados do módulo */
+    .mod-footer{display:flex;align-items:center;justify-content:space-between}
+    .status{font-size:12px;opacity:.9}
+    .status.done{color:var(--success)}
+    .status.lock{color:#94a3b8}
+    .lock{position:absolute;right:10px;top:10px;font-size:16px;opacity:.8}
+    .card.locked{opacity:.7}
+
+    /* Modal genérico */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:100}
+    .sheet{max-width:480px;width:100%;background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    .sheet .head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border)}
+    .sheet .body{padding:14px}
+
+    /* Quiz */
+    .q{font-size:17px;margin:0 0 10px}
+    .opts{display:grid;gap:10px}
+    .opt{padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:#0d1420;cursor:pointer}
+    .opt.correct{border-color:#1f9d6b;background:#0b1712}
+    .opt.wrong{border-color:#8b1d30;background:#190f12}
     .exp{border-left:3px solid var(--accent);padding:8px 12px;margin-top:10px;background:#0f1622}
-    .foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
-    .view{opacity:0;transform:translateY(8px);transition:opacity .25s ease,transform .25s ease}.view.show{opacity:1;transform:translateY(0)}
-    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+
+    /* Toast */
+    .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#0f1722;border:1px solid var(--border);border-radius:999px;padding:10px 14px;color:#fff;display:none;z-index:120}
+
+    @media (max-width:600px){.row{flex-direction:column;align-items:stretch}.grid{grid-template-columns:1fr}.panel{padding:14px}}
   </style>
 </head>
 <body>
-<div class="wrap">
-
-  <!-- Top bar (oculto no login) -->
-  <div id="topBar" class="row hidden" style="align-items:center;justify-content:space-between;margin-bottom:16px">
-    <div class="row" style="align-items:center">
+  <div class="wrap">
+    <div id="topBar" class="hidden">
       <h1>Duoplanning</h1>
+      <div class="actions"><button id="btnConfig" class="ghost">⚙️</button><button id="btnLogout" class="ghost">Sair</button></div>
     </div>
-    <div class="row">
-      <button id="btnConfig" class="btn ghost">⚙️ <span class="meta" style="font-size:14px" data-i18n="settings">Configurações</span></button>
-      <button id="btnLogout" class="btn ghost hidden" data-i18n="logout">Sair</button>
+    <section id="viewLogin" class="panel"><h2>Entrar</h2><p class="meta">Digite seu nome para começar sua trilha.</p><div class="row"><input id="inpName" type="text" placeholder="Seu nome" /><button id="btnLogin" class="primary">Começar</button></div><p class="meta">Você começará no nível Técnico e desbloqueia os demais por XP.</p></section>
+
+    <section id="viewDash" class="hidden">
+      <div class="panel"><h2 id="hello">Bem-vindo(a)!</h2><div class="xp"><span id="xpText">0 / 1000 XP</span><div class="xpbar"><i id="xpFill"></i></div></div></div>
+      <div class="panel">
+        <h3>Módulos</h3>
+        <div id="legend" class="meta" style="margin:8px 0 12px"></div>
+        <div id="mods" class="grid"></div>
+      </div>
+      <div class="panel"><h3>Missões</h3><div class="grid"><div class="card lv lv-tec"><span class="ribbon"></span><h4>Missão do Dia</h4><div class="meta">Refaça um quiz com 100% (+20 XP)</div><button class="primary" id="btnDaily">Fazer agora</button></div><div class="card lv lv-ana"><span class="ribbon"></span><h4>Missão da Semana</h4><div class="meta">Complete 3 módulos (+100 XP)</div><button class="ghost" disabled>Em breve</button></div></div></div>
+    </section>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div id="quiz" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong id="quizTitle">Quiz</strong><button id="btnCloseQuiz" class="ghost">Fechar</button></div>
+      <div class="body">
+        <div id="qText" class="q">Pergunta</div>
+        <div id="opts" class="opts"></div>
+        <div id="exp" class="exp hidden"></div>
+        <div class="foot">
+          <div id="qProg" class="meta">1/10</div>
+          <button id="btnNext" class="primary hidden">Avançar</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- BRAND no login -->
-  <div id="brandLogin" class="brand"><h1>Duoplanning</h1></div>
-
-  <!-- Login -->
-  <section id="viewLogin" class="panel view show">
-    <h2 data-i18n="login_title">Entrar</h2>
-    <p class="meta" data-i18n="login_tip">Digite seu nome para começar sua trilha.</p>
-    <div class="row">
-      <input id="inpName" type="text" placeholder="Seu nome" style="min-width:260px" />
-      <button id="btnLogin" class="btn primary" data-i18n="start">Começar</button>
-    </div>
-    <div class="meta" style="margin-top:10px" data-i18n="login_hint">Você começará no nível Técnico e desbloqueia os demais por XP.</div>
-  </section>
-
-  <!-- Dashboard -->
-  <section id="viewDash" class="hidden view">
-    <div class="grid cols-3">
-      <div class="panel">
-        <h3 id="hello">Olá, Jogador</h3>
-        <div class="meta" id="roleMini">Técnico — Domina o básico do LPS</div>
-        <div style="margin:10px 0 6px;display:flex;justify-content:space-between;align-items:center">
-          <div class="meta"><span data-i18n="xp">XP</span>: <b id="xpNow">0</b> / <span id="xpGoal">1000</span></div>
-          <div class="pill"><span id="streak">🔥 0</span><span class="meta" data-i18n="streak">streak</span></div>
+  <!-- Config Modal -->
+  <div id="config" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong>Configurações</strong><button id="btnCloseConfig" class="ghost">Fechar</button></div>
+      <div class="body">
+        <div class="row" style="justify-content:space-between">
+          <label style="flex:1">Confete de vitória (≥80%)</label>
+          <input type="checkbox" id="cfgConfetti" style="flex:0 0 auto;width:auto">
         </div>
-        <div class="xpbar"><i id="xpBar" style="width:0%"></i></div>
-        <div class="row" style="margin-top:12px">
-          <div class="pill">⚡ <b id="energy">3</b> <span class="meta" data-i18n="energy">energia</span></div>
-          <div class="pill">🏆 <span data-i18n="local_rank">Rank local</span>: <b id="rankMe">#1</b></div>
+        <div class="row" style="justify-content:space-between">
+          <label style="flex:1">Som de vitória (≥80%)</label>
+          <input type="checkbox" id="cfgSound" style="flex:0 0 auto;width:auto">
         </div>
-      </div>
-
-      <div class="panel">
-        <h3 data-i18n="missions_hdr">Missões</h3>
-        <div class="row">
-          <div class="pill" id="missionDailyPill">🎯 <b data-i18n="daily">Dia</b>: <span data-i18n="daily_desc">Refaça um quiz 100% (+20XP)</span></div>
-          <div class="pill" id="missionWeekPill">📅 <b data-i18n="week">Semana</b>: <span data-i18n="week_desc">Concluir 3 módulos (+100XP)</span> <span class="meta" id="weekProg">(0/3)</span></div>
+        <div class="row" style="justify-content:space-between">
+          <label style="flex:1">Aprovação exige ≥70%</label>
+          <input type="checkbox" id="cfgRequire70" checked style="flex:0 0 auto;width:auto">
         </div>
-        <div class="meta" style="margin-top:10px" data-i18n="week_progress">Progresso semanal:</div>
-        <div class="xpbar"><i id="weekBar" style="width:0%"></i></div>
-      </div>
-
-      <div class="panel">
-        <h3 data-i18n="rank_hdr">Ranking (local)</h3>
-        <div id="rankList" class="grid"></div>
-      </div>
-    </div>
-
-    <div class="panel" style="margin-top:14px">
-      <div class="row" style="align-items:center;justify-content:space-between">
-        <h3 data-i18n="modules_hdr">Módulos</h3>
-        <div class="pill" id="levelNowPill">👷 Técnico</div>
-      </div>
-      <div class="meta" style="margin:6px 0" data-i18n="modules_hint">Módulos de outros níveis aparecem com cadeado 🔒. Ganhe XP para desbloquear!</div>
-      <div id="mods" class="grid cols-4" style="margin-top:12px"></div>
-    </div>
-  </section>
-
-</div>
-
-<!-- Quiz Overlay -->
-<div id="quizOverlay" class="overlay">
-  <div class="sheet">
-    <div class="head">
-      <div id="quizTitle">Quiz</div>
-      <button id="btnCloseQuiz" class="btn ghost" data-i18n="close">Fechar</button>
-    </div>
-    <div class="body">
-      <div class="q" id="qText">Pergunta</div>
-      <div class="opts" id="qOpts"></div>
-      <div id="qExplain" class="exp hidden"></div>
-      <div class="foot">
-        <div class="meta"><span id="qNum">1</span>/10</div>
-        <button id="btnNext" class="btn primary" data-i18n="next">Avançar</button>
+        <hr style="border-color:var(--border);opacity:.3;margin:12px 0">
+        <button id="btnReset" class="ghost">Zerar progresso</button>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Config Overlay (agora com Idioma) -->
-<div id="cfgOverlay" class="overlay">
-  <div class="sheet">
-    <div class="head">
-      <div>⚙️ <b data-i18n="settings">Configurações</b></div>
-      <button id="btnCloseCfg" class="btn ghost" data-i18n="close">Fechar</button>
-    </div>
-    <div class="body">
-      <div class="grid cols-3">
-        <div class="panel">
-          <h3 data-i18n="appearance">Aparência</h3>
-          <div class="row" style="margin-top:8px">
-            <label class="meta" for="selTheme" data-i18n="theme">Tema</label>
-            <select id="selTheme">
-              <option value="dark" data-i18n="theme_dark">Escuro</option>
-              <option value="light" data-i18n="theme_light">Claro</option>
-              <option value="auto" data-i18n="theme_auto">Automático</option>
-            </select>
-          </div>
-        </div>
-        <div class="panel">
-          <h3 data-i18n="language">Idioma</h3>
-          <div class="row" style="margin-top:8px">
-            <select id="langSel">
-              <option value="pt">Português</option>
-              <option value="en">English</option>
-              <option value="es">Español</option>
-            </select>
-          </div>
-        </div>
-        <div class="panel">
-          <h3 data-i18n="effects">Efeitos</h3>
-          <div class="row" style="margin-top:8px">
-            <label><input type="checkbox" id="chkSound" /> <span class="meta" data-i18n="sound">Som de vitória</span></label>
-          </div>
-          <div class="row">
-            <label><input type="checkbox" id="chkConfetti" /> <span class="meta" data-i18n="confetti">Confete</span></label>
-          </div>
-        </div>
-      </div>
-      <div class="panel" style="margin-top:12px">
-        <h3 data-i18n="danger_zone">Zona de risco</h3>
-        <button id="btnReset" class="btn" style="margin-top:8px;background:#1f2937" data-i18n="reset">Resetar progresso</button>
-      </div>
-    </div>
-  </div>
-</div>
+  <div id="toast" class="toast">Salvo</div>
 
-<div id="toast" class="toast">Salvo</div>
+  <script>
+    // ==== Níveis (ícone, cor, XP por módulo)
+    const LEVELS=[
+      {id:'Tecnico',label:'Técnico',icon:'👷‍♂️',color:'var(--lv-tec)',xp:30},
+      {id:'Analista',label:'Analista',icon:'👨‍💻',color:'var(--lv-ana)',xp:40},
+      {id:'Especialista',label:'Especialista',icon:'👨‍🔧',color:'var(--lv-esp)',xp:50},
+      {id:'Gerente',label:'Gerente/Diretor',icon:'👔',color:'var(--lv-ger)',xp:60},
+      {id:'Visionario',label:'Visionário',icon:'🔮',color:'var(--lv-vis)',xp:80}
+    ];
 
-<script>
-// ====== I18N (PT/EN/ES) ======
-const I18N = {
-  pt: {login_title:"Entrar", login_tip:"Digite seu nome para começar sua trilha.", login_hint:"Você começará no nível Técnico e desbloqueia os demais por XP.", start:"Começar", xp:"XP", streak:"streak", energy:"energia", local_rank:"Rank local", missions_hdr:"Missões", daily:"Dia", daily_desc:"Refaça um quiz 100% (+20XP)", week:"Semana", week_desc:"Concluir 3 módulos (+100XP)", week_progress:"Progresso semanal:", rank_hdr:"Ranking (local)", modules_hdr:"Módulos", modules_hint:"Módulos de outros níveis aparecem com cadeado 🔒. Ganhe XP para desbloquear!", close:"Fechar", next:"Avançar", welcome:"Bem-vindo(a)!", saved:"Salvo", module_done:"Módulo #{id} concluído: {score}/10", mission_daily_done:"Missão do Dia concluída! +20XP", mission_week_done:"Missão da Semana concluída! +100XP", settings:"Configurações", appearance:"Aparência", theme:"Tema", theme_dark:"Escuro", theme_light:"Claro", theme_auto:"Automático", language:"Idioma", effects:"Efeitos", sound:"Som de vitória", confetti:"Confete", danger_zone:"Zona de risco", reset:"Resetar progresso", logout:"Sair"},
-  en: {login_title:"Sign in", login_tip:"Type your name to start your path.", login_hint:"You will start at the Technician level and unlock the others with XP.", start:"Start", xp:"XP", streak:"streak", energy:"energy", local_rank:"Local rank", missions_hdr:"Missions", daily:"Daily", daily_desc:"Retake a quiz with 100% (+20XP)", week:"Weekly", week_desc:"Complete 3 modules (+100XP)", week_progress:"Weekly progress:", rank_hdr:"Ranking (local)", modules_hdr:"Modules", modules_hint:"Modules from other levels show a 🔒. Earn XP to unlock!", close:"Close", next:"Next", welcome:"Welcome!", saved:"Saved", module_done:"Module #{id} finished: {score}/10", mission_daily_done:"Daily Mission completed! +20XP", mission_week_done:"Weekly Mission completed! +100XP", settings:"Settings", appearance:"Appearance", theme:"Theme", theme_dark:"Dark", theme_light:"Light", theme_auto:"Auto", language:"Language", effects:"Effects", sound:"Victory sound", confetti:"Confetti", danger_zone:"Danger zone", reset:"Reset progress", logout:"Logout"},
-  es: {login_title:"Iniciar sesión", login_tip:"Escribe tu nombre para comenzar tu ruta.", login_hint:"Comenzarás en el nivel Técnico y desbloquearás los demás con XP.", start:"Comenzar", xp:"XP", streak:"racha", energy:"energía", local_rank:"Ranking local", missions_hdr:"Misiones", daily:"Día", daily_desc:"Repite un quiz con 100% (+20XP)", week:"Semana", week_desc:"Completar 3 módulos (+100XP)", week_progress:"Progreso semanal:", rank_hdr:"Ranking (local)", modules_hdr:"Módulos", modules_hint:"Los módulos de otros niveles se muestran con candado 🔒. ¡Gana XP para desbloquearlos!", close:"Cerrar", next:"Siguiente", welcome:"¡Bienvenido(a)!", saved:"Guardado", module_done:"Módulo #{id} completado: {score}/10", mission_daily_done:"¡Misión diaria completada! +20XP", mission_week_done:"¡Misión semanal completada! +100XP", settings:"Configuración", appearance:"Apariencia", theme:"Tema", theme_dark:"Oscuro", theme_light:"Claro", theme_auto:"Automático", language:"Idioma", effects:"Efectos", sound:"Sonido de victoria", confetti:"Confeti", danger_zone:"Zona de riesgo", reset:"Restablecer progreso", logout:"Salir"}
-};
-let lang = localStorage.getItem("duoplanning.lang") || "pt";
-function t(key, vars={}){
-  const dict = I18N[lang] || I18N.pt; let s = dict[key] || key;
-  Object.entries(vars).forEach(([k,v])=>{ s = s.replaceAll("{"+k+"}", v); });
-  return s;
-}
-function applyI18n() {
-  const dict = I18N[lang] || I18N.pt;
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.getAttribute("data-i18n");
-    if (dict[key]) el.textContent = dict[key];
-  });
-  const ls = document.getElementById("langSel"); if (ls) ls.value = lang;
-  document.documentElement.lang = lang === "pt" ? "pt-BR" : (lang === "es" ? "es-ES" : "en-US");
-}
+    // ==== 40 módulos gerados (12/10/10/6/2)
+    const MODULES=[]; let id=1;
+    function add(level, qty){ for(let i=0;i<qty;i++){ MODULES.push({ id, level:level.id, icon:level.icon, color:level.color, xp:level.xp, title:`Módulo ${id}`, desc:level.label }); id++; } }
+    add(LEVELS[0],12); add(LEVELS[1],10); add(LEVELS[2],10); add(LEVELS[3],6); add(LEVELS[4],2);
 
-// ====== Settings (tema/som/confete) ======
-const SETTINGS_KEY = "duoplanning.v42.settings";
-let Settings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null") || { theme:"dark", sound:true, confetti:true };
-function saveSettings(){ localStorage.setItem(SETTINGS_KEY, JSON.stringify(Settings)); }
-function applyTheme(){
-  let theme = Settings.theme;
-  if (theme==="auto"){ const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches; theme = prefersLight?"light":"dark"; }
-  document.documentElement.setAttribute("data-theme", theme==="light"?"light":"dark");
-}
+    // ==== Quizzes base (10 perguntas cada) + suporte a quizzes.js externo via window.QUIZZES
+    const QUIZ_LPS=[
+      {q:'O que significa PPC no LPS?',opts:['Percent Plan Complete','Plano de Produção de Custo','Processo de Controle de Projetos'],ok:0,exp:'PPC mede a confiabilidade dos compromissos semanais.'},
+      {q:'Qual ferramenta visual é usada no LPS semanal?',opts:['Folha Tarefa','Curva S','Diagrama de Rede'],ok:0,exp:'Folha Tarefa registra compromissos/resultado.'},
+      {q:'O que o Last Planner busca evitar?',opts:['Improvisos e retrabalhos','Atrasos do cliente','Planejamento de longo prazo'],ok:0,exp:'Foco em estabilidade e fluxo.'},
+      {q:'Quem é o “último planejador” no LPS?',opts:['Quem executa o trabalho','Diretoria','Fornecedor'],ok:0,exp:'São as pessoas que executam e assumem compromissos.'},
+      {q:'Qual rotina semanal valida restrições?',opts:['Lookahead','Retroplanning','Kanban'],ok:0,exp:'Lookahead identifica e remove restrições antes do WWP.'},
+      {q:'O que é PPC de 100% por semanas seguidas?',opts:['Alta confiabilidade','Atraso acumulado','Baixa variabilidade'],ok:0,exp:'Sinal de fluxo previsível e confiável.'},
+      {q:'Registro de restrições deve conter…',opts:['Responsável e data','Somente descrição','Status financeiro'],ok:0,exp:'Quem resolve e até quando.'},
+      {q:'Reunião WWP é…',opts:['Planejamento semanal colaborativo','Balanço de custos','Análise trimestral'],ok:0,exp:'Weekly Work Planning é o compromisso da semana.'},
+      {q:'Andon/Quadro visual serve para…',opts:['Transparência do status','Controle financeiro','Backup de arquivos'],ok:0,exp:'Torna impedimentos visíveis e tratáveis.'},
+      {q:'Qual indicador apoia causa-raiz de falhas?',opts:['5 Porquês + Pareto','ROI','Lead time financeiro'],ok:0,exp:'Técnicas Lean para eliminar recorrências.'}
+    ];
+    const QUIZ_CRON=[
+      {q:'O que é Caminho Crítico?',opts:['Sequência sem folga','Tarefas menores','Soma de custos'],ok:0,exp:'Determina a duração total do projeto.'},
+      {q:'Qual relação de dependência mais comum?',opts:['Término-Início (FS)','Início-Início (SS)','Término-Término (FF)'],ok:0,exp:'FS é a mais utilizada.'},
+      {q:'Folga Total igual a 0 indica…',opts:['Atividade crítica','Atraso leve','Recurso ocioso'],ok:0,exp:'Qualquer atraso impacta o prazo final.'},
+      {q:'Linha de Base (Baseline) serve para…',opts:['Comparar planejado x atual','Exportar PDF','Calcular custos indiretos'],ok:0,exp:'Mede variações de prazo.'},
+      {q:'WBS/EAP no cronograma significa…',opts:['Estrutura de pacotes','Apenas custos','Apenas riscos'],ok:0,exp:'Organiza hierarquia de atividades.'},
+      {q:'Marcos (Milestones) têm…',opts:['Duração zero','Duração fixa','Custo fixo'],ok:0,exp:'Eventos de referência sem duração.'},
+      {q:'Caminho crítico múltiplo ocorre quando…',opts:['Há várias rotas sem folga','Há folgas negativas','Há recursos ilimitados'],ok:0,exp:'Mais de uma sequência crítica.'},
+      {q:'Leveling de recursos busca…',opts:['Suavizar alocações','Aumentar custo','Criar folgas negativas'],ok:0,exp:'Balancear carga e reduzir picos.'},
+      {q:'Calendários no Project definem…',opts:['Dias/turnos válidos','Estrutura da EAP','Integração com SAP'],ok:0,exp:'Disponibilidade de trabalho.'},
+      {q:'Caminho crítico costuma ser destacado por…',opts:['Cor/estilo específico','Nomes em maiúsculo','Negrito no texto'],ok:0,exp:'Facilita análise visual.'}
+    ];
+    const QUIZ_EAP=[
+      {q:'O que é EAP?',opts:['Estrutura Analítica do Projeto','Estrutura Avançada de Produção','Engenharia de Análise de Processo'],ok:0,exp:'Divide o escopo em pacotes gerenciáveis.'},
+      {q:'Nível de controle ideal é…',opts:['Pacote gerenciável (deliverable)','Projeto inteiro','Atividade isolada sem contexto'],ok:0,exp:'Granularidade adequada reduz riscos.'},
+      {q:'AWP usa a EAP para…',opts:['Definir CWP/IWP','Medir ROI','Criar curva de custos'],ok:0,exp:'Constrói pacotes alinhados à execução.'},
+      {q:'CWP significa…',opts:['Construction Work Package','Cost Work Plan','Control Work Phase'],ok:0,exp:'Macro pacote de construção.'},
+      {q:'IWP significa…',opts:['Installation Work Package','Index of Work Performance','Inside Work Plan'],ok:0,exp:'Pacote executável no campo.'},
+      {q:'Hand‑off eficiente requer…',opts:['Critérios de pronto','Troca informal','Aprovação ad hoc'],ok:0,exp:'Entrada clara entre engenharia, suprimentos e obra.'},
+      {q:'Pacotes devem conter…',opts:['Escopo, materiais, segurança','Somente cronograma','Somente custos'],ok:0,exp:'Conteúdo mínimo pra execução segura.'},
+      {q:'Mapeamento 3D/4D/5D apoia…',opts:['Planejamento integrado','Somente orçamento','Somente riscos'],ok:0,exp:'Integra modelagem com prazo e custo.'},
+      {q:'Rastreabilidade de revisões é feita em…',opts:['Matriz de versões','E-mail solto','Planilha avulsa'],ok:0,exp:'Controle formal de mudanças.'},
+      {q:'AWP melhora principalmente…',opts:['Confiabilidade e produtividade','Somente custo','Somente escopo'],ok:0,exp:'Integra cadeia de valor e reduz esperas.'}
+    ];
+    const QUIZ_RUNDOWN=[
+      {q:'Rundown mostra…',opts:['Plano x Real semanal','Custos diretos','Equipe'],ok:0,exp:'Compara ritmo semanal.'},
+      {q:'Base da Curva S?',opts:['Pesos físicos (HH, ton, m)','Somente custo','Horas extras'],ok:0,exp:'Pesos físicos por atividade.'},
+      {q:'Atualização do Rundown é…',opts:['Semanal','Mensal','Trimestral'],ok:0,exp:'Frequência padrão semanal.'},
+      {q:'Indicador para desvio acumulado…',opts:['Variação %/pontos','Tamanho do time','Taxa de câmbio'],ok:0,exp:'Ajuda a priorizar ações.'},
+      {q:'Lead time do pacote mede…',opts:['Tempo ponta‑a‑ponta','Custo total','Horas extras'],ok:0,exp:'Do disparo ao término.'},
+      {q:'Semaforização (verde/amarelo/vermelho) é…',opts:['Gestão visual','Controle financeiro','Layout'],ok:0,exp:'Comunicação rápida do status.'},
+      {q:'Causa‑raiz típica de desvio…',opts:['Restrição não removida','Equipe motivada','Meta atingida'],ok:0,exp:'Tratar restrições antes.'},
+      {q:'Burn‑down/Burn‑up relaciona…',opts:['Trabalho restante/feito','Custo indireto','Horas extras'],ok:0,exp:'Desempenho ao longo do tempo.'},
+      {q:'Acerto de baseline deve…',opts:['Passar por governança','Ser automático','Nunca ocorrer'],ok:0,exp:'Mudanças controladas.'},
+      {q:'Curva S real acima da planejada indica…',opts:['Adiantamento','Atraso','Sem impacto'],ok:0,exp:'Entrega mais rápida que o plano.'}
+    ];
 
-// ====== Data ======
-const LEVELS=[
-  {id:"Tecnico",name:"Técnico",icon:"👷‍♂️",minXP:0,nextXP:1000,desc:"Domina o básico do LPS"},
-  {id:"Analista",name:"Analista",icon:"👨‍💻",minXP:1000,nextXP:3000,desc:"Organiza cronogramas e indicadores"},
-  {id:"Especialista",name:"Especialista",icon:"👨‍🔧",minXP:3000,nextXP:6000,desc:"Integra Engenharia e Obra"},
-  {id:"Gerente",name:"Gerente/Diretor",icon:"👔",minXP:6000,nextXP:10000,desc:"Lidera com Lean e Performance"},
-  {id:"Visionario",name:"Visionário",icon:"🔮",minXP:10000,nextXP:Infinity,desc:"Inova com IA, BIM e 5D"}
-];
-const XP_PER_LEVEL={Tecnico:30,Analista:40,Especialista:50,Gerente:60,Visionario:80};
-const MODULES=[
-  ...Array.from({length:12},(_,i)=>({id:i+1,nivel:"Técnico",titulo:`Módulo ${i+1}`})),
-  ...Array.from({length:10},(_,i)=>({id:13+i,nivel:"Analista",titulo:`Módulo ${13+i}`})),
-  ...Array.from({length:10},(_,i)=>({id:23+i,nivel:"Especialista",titulo:`Módulo ${23+i}`})),
-  ...Array.from({length:6},(_,i)=>({id:33+i,nivel:"Gerente/Diretor",titulo:`Módulo ${33+i}`})),
-  {id:39,nivel:"Visionário",titulo:"Módulo 39"},{id:40,nivel:"Visionário",titulo:"Módulo 40"}
-];
-const QUIZZES={};
-QUIZZES[1]=[{q:"Qual é o principal objetivo da EAP?",opts:["Estruturar o escopo em partes controláveis","Listar materiais","Criar índices de produtividade"],ok:0,exp:"A EAP quebra o escopo em pacotes gerenciáveis."},
-{q:"No AWP, o que representa o CWP?",opts:["Construction Work Package","Contract Work Package","Cost Work Package"],ok:0,exp:"CWP = pacote de trabalho de construção."},
-{type:"order",q:"Qual é a sequência correta entre os pacotes AWP?",items:["EWP","CWP","IWP"],correctOrder:["EWP","CWP","IWP"],exp:"Engenharia → Construção → Instalação."},
-{q:"Quem normalmente detalha o IWP?",opts:["Planejamento + Supervisão de Campo","Financeiro","Segurança"],ok:0,exp:"Planejamento com a supervisão definem escopo executável."},
-{q:"A EAP contribui para:",opts:["Rastreabilidade e controle","Aumentar burocracia","Dificultar medições"],ok:0,exp:"Padroniza controle e integra com índices/custos."},
-{q:"Até que nível a EAP deve ir?",opts:["Até suportar controle de prazo e custo","Sempre até 7 níveis","Apenas 2 níveis"],ok:0,exp:"Profundidade suficiente para gestão eficaz."},
-{q:"Benefício de liberação progressiva no AWP:",opts:["Fluxo contínuo de frentes","Mais retrabalho","Menos visibilidade"],ok:0,exp:"Libera áreas/zonas por marcos de engenharia/suprimentos."},
-{q:"Quando o AWP deve começar a ser aplicado?",opts:["No planejamento da engenharia","Somente na obra","Após o comissionamento"],ok:0,exp:"Começa na engenharia para orquestrar o fluxo fim-a-fim."},
-{q:"O IWP deve conter:",opts:["Instruções, materiais, desenhos e requisitos de segurança","Apenas custo","Somente cronograma"],ok:0,exp:"Conteúdo completo para execução segura e rastreável."},
-{q:"Uma boa EAP facilita a integração com:",opts:["Cronograma, índices e medições","Somente planilhas financeiras","Apenas reuniões"],ok:0,exp:"Conecta planejamento, custos e físico."}];
-QUIZZES[13]=[{q:"O objetivo do Rundown é:",opts:["Comparar avanço semanal planejado x realizado","Registrar custos","Organizar equipes"],ok:0,exp:"Mostra ritmo semanal e alimenta a Curva S."},
-{q:"Base de cálculo da Curva S:",opts:["Pesos físicos (HH, ton, m)","Somente custo","Horas extras"],ok:0,exp:"Pesos físicos por atividade."},
-{type:"calc",q:"PRÁTICA — Real 35% e Plano 40%: desvio =",answer:-5,tolerance:0.5,unit:"%",exp:"Desvio = Real − Plano = −5 p.p. (atraso)."},
-{q:"Frequência típica do Rundown:",opts:["Semanal","Mensal","Anual"],ok:0,exp:"Semanal para reação rápida."},
-{q:"Vantagem da Curva S:",opts:["Visualizar tendências e desvios","Calcular HH/dia","Organizar contratos"],ok:0,exp:"Evidencia aderência ao plano."},
-{type:"calc",q:"Se na semana o Plano=8% e o Real=10%, variação semanal =",answer:2,tolerance:0.2,unit:"p.p.",exp:"10 − 8 = +2 p.p. (adiantado)."},
-{q:"Para Curva S confiável, é essencial:",opts:["Critérios de medição claros","Somente horas apontadas","Apenas quantidade de equipes"],ok:0,exp:"Defina pesos, marcos e periodicidade."},
-{type:"text",q:"PRÁTICA — Diga um motivo típico para desvio negativo:",answerText:["falta de material","restrição","atraso de projeto","acesso","gargalo"],exp:"Restrição não tratada é causa comum."},
-{type:"order",q:"Ordem lógica de leitura:",items:["Rundown semanal","Curva S acumulada","Plano de ação"],correctOrder:["Rundown semanal","Curva S acumulada","Plano de ação"],exp:"Ritmo → tendência → ação."},
-{q:"Indicador derivado útil:",opts:["Desvio acumulado p.p.","Nº de e-mails","Horas de reunião"],ok:0,exp:"Mostra magnitude do atraso/adianto."}];
-const QUIZ_FALLBACK=[
-  {q:"Pergunta genérica 1",opts:["A","B","C"],ok:0,exp:"Explicação."},
-  {q:"Pergunta genérica 2",opts:["A","B","C"],ok:1,exp:"Explicação."},
-  {q:"Pergunta genérica 3",opts:["A","B","C"],ok:2,exp:"Explicação."},
-  {q:"Pergunta genérica 4",opts:["A","B","C"],ok:0,exp:"Explicação."},
-  {q:"Pergunta genérica 5",opts:["A","B","C"],ok:1,exp:"Explicação."},
-  {q:"Pergunta genérica 6",opts:["A","B","C"],ok:0,exp:"Explicação."},
-  {q:"Pergunta genérica 7",opts:["A","B","C"],ok:2,exp:"Explicação."},
-  {q:"Pergunta genérica 8",opts:["A","B","C"],ok:1,exp:"Explicação."},
-  {q:"Pergunta genérica 9",opts:["A","B","C"],ok:2,exp:"Explicação."},
-  {q:"Pergunta genérica 10",opts:["A","B","C"],ok:0,exp:"Explicação."},
-];
+    function quizForModule(m){
+      if (typeof window!== 'undefined' && window.QUIZZES){
+        if (m.id===1 && window.QUIZZES.LPS) return window.QUIZZES.LPS;
+        if (m.id===2 && window.QUIZZES.CRONOGRAMA) return window.QUIZZES.CRONOGRAMA;
+        if (m.id===3 && window.QUIZZES.EAP_AWP) return window.QUIZZES.EAP_AWP;
+        if (m.id===4 && window.QUIZZES.RUNDOWN_CURVAS) return window.QUIZZES.RUNDOWN_CURVAS;
+        if (m.level==='Tecnico' && window.QUIZZES.LPS) return window.QUIZZES.LPS;
+        if (m.level==='Analista' && window.QUIZZES.CRONOGRAMA) return window.QUIZZES.CRONOGRAMA;
+        if (m.level==='Especialista' && window.QUIZZES.EAP_AWP) return window.QUIZZES.EAP_AWP;
+        if (window.QUIZZES.RUNDOWN_CURVAS) return window.QUIZZES.RUNDOWN_CURVAS;
+      }
+      if(m.id===1) return QUIZ_LPS;
+      if(m.id===2) return QUIZ_CRON;
+      if(m.id===3) return QUIZ_EAP;
+      if(m.id===4) return QUIZ_RUNDOWN;
+      if(m.level==='Tecnico') return QUIZ_LPS;
+      if(m.level==='Analista') return QUIZ_CRON;
+      if(m.level==='Especialista') return QUIZ_EAP;
+      return QUIZ_RUNDOWN;
+    }
 
-// ====== State ======
-const STATE_KEY="duoplanning.v42.state";
-let S=JSON.parse(localStorage.getItem(STATE_KEY) || "null")||{name:"",xp:0,energy:3,levelId:"Tecnico",streak:0,lastLoginDay:"",cleared:{},week:{startIso:"",modulesDone:0},dailyDoneOn:"",rank:[{name:"Você",xp:0},{name:"Alice",xp:560},{name:"Bruno",xp:320}]};
-function save(){ localStorage.setItem(STATE_KEY, JSON.stringify(S)); }
+    // ==== Estado com progresso e configurações (robusto contra storage corrompido)
+    const STATE_KEY='duoplanning.v4.mobile';
+    function loadState(){
+      let raw=null; try{ raw = JSON.parse(localStorage.getItem(STATE_KEY)||'null'); }catch(e){ raw=null; }
+      const base={name:'', xp:0, completed:[], confetti:true, sound:true, require70:true, theme:'dark', lang:'pt'};
+      if(!raw || typeof raw!=='object') return base;
+      const out = Object.assign({}, base, raw);
+      out.xp = Number.isFinite(+out.xp)? +out.xp : 0;
+      if(!Array.isArray(out.completed)) out.completed = [];
+      out.confetti = !!out.confetti;
+      out.sound = !!out.sound;
+      out.require70 = out.require70===undefined ? true : !!out.require70;
+      out.theme = (out.theme==='light'||out.theme==='dark'||out.theme==='system') ? out.theme : 'dark';
+      out.lang = (out.lang==='pt'||out.lang==='en') ? out.lang : 'pt';
+      return out;
+    }
+    let S = loadState();
+    localStorage.setItem(STATE_KEY, JSON.stringify(S));
 
-// ====== Helpers ======
-function todayKey(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function mondayOfThisWeekISO(){const d=new Date();const day=d.getDay();const diff=(day===0?-6:1-day);const m=new Date(d);m.setDate(d.getDate()+diff);return m.toISOString().slice(0,10)}
-function currentLevel(){let L=LEVELS[0];for(const lv of LEVELS){if(S.xp>=lv.minXP)L=lv}S.levelId=L.id;return L}
-function addXP(v){S.xp+=v;toast("+"+v+" "+t("xp"));try{ if(Settings.sound) document.getElementById("audioWin").play().catch(()=>{}) }catch(e){}; if(Settings.confetti){confetti({particleCount:120,spread:65,origin:{y:.6}})} renderDash(); save();}
-function toast(msg){const tEl=document.getElementById("toast");tEl.textContent=msg;tEl.style.display="block";setTimeout(()=>tEl.style.display="none",1800)}
+    // ==== i18n mínimo
+    const STR={
+      pt:{ enter:'Entrar', daily:'Fazer agora', blocked:'Bloqueado', available:'Disponível', done:'Concluído', quiz:'Quiz', result:'Resultado', conclude:'Concluir', approve:`Aprovado`, redo:`Refaça para concluir.` },
+      en:{ enter:'Sign in', daily:'Do now', blocked:'Locked', available:'Available', done:'Done', quiz:'Quiz', result:'Result', conclude:'Finish', approve:'Approved', redo:'Retake to complete.' }
+    };
+    function T(k){ return (STR[S.lang]&&STR[S.lang][k])||k; }
 
-// ====== Render ======
-function renderDash(){
-  const L=currentLevel();
-  document.getElementById("hello").textContent = (lang==="en"?"Hello, ":"Hola, ") && (lang==="pt" ? `Olá, ${S.name||"Jogador"}` : (lang==="en"?`Hello, ${S.name||"Player"}`:`Hola, ${S.name||"Jugador"}`));
-  document.getElementById("roleMini").textContent=`${L.name} — ${L.desc}`;
-  document.getElementById("levelNowPill").textContent=`${L.icon} ${L.name}`;
-  document.getElementById("xpNow").textContent=S.xp;
-  document.getElementById("xpGoal").textContent=isFinite(L.nextXP)?L.nextXP:"∞";
-  const pct=isFinite(L.nextXP)?Math.max(0,Math.min(100,100*(S.xp-L.minXP)/(L.nextXP-L.minXP))):100;
-  document.getElementById("xpBar").style.width=pct+"%";
-  document.getElementById("streak").textContent="🔥 "+S.streak;
-  document.getElementById("energy").textContent=S.energy;
+    const topBar=document.getElementById('topBar');
+    const viewLogin=document.getElementById('viewLogin');
+    const viewDash=document.getElementById('viewDash');
+    const inpName=document.getElementById('inpName');
+    const btnLogin=document.getElementById('btnLogin');
+    const btnLogout=document.getElementById('btnLogout');
+    const btnConfig=document.getElementById('btnConfig');
+    const modsEl=document.getElementById('mods');
+    const legend=document.getElementById('legend');
+    const xpText=document.getElementById('xpText');
+    const xpFill=document.getElementById('xpFill');
 
-  const mondayIso=mondayOfThisWeekISO();
-  if(S.week.startIso!==mondayIso){S.week.startIso=mondayIso;S.week.modulesDone=0;save()}
-  document.getElementById("weekProg").textContent=`(${S.week.modulesDone}/3)`;
-  document.getElementById("weekBar").style.width=Math.min(100,(S.week.modulesDone/3)*100)+"%";
+    // Config elements
+    const cfgOverlay=document.getElementById('config');
+    const cfgConfetti=document.getElementById('cfgConfetti');
+    const cfgSound=document.getElementById('cfgSound');
+    const cfgRequire70=document.getElementById('cfgRequire70');
+    const btnCloseConfig=document.getElementById('btnCloseConfig');
+    const btnReset=document.getElementById('btnReset');
 
-  const mods=document.getElementById("mods");mods.innerHTML="";
-  MODULES.forEach(m=>{
-    const locked=(m.nivel!==L.name);const score=S.cleared[m.id]||0;
-    const icon=(m.nivel==='Técnico'?'👷':m.nivel==='Analista'?'👨‍💻':m.nivel==='Especialista'?'👨‍🔧':m.nivel==='Gerente/Diretor'?'👔':'🔮');
-    const el=document.createElement("div");el.className="mod";
-    const lockedText = lang==='en'?'Locked':(lang==='es'?'Bloqueado':'bloqueado');
-    const notStarted = lang==='en'?'Not started':(lang==='es'?'No iniciado':'Ainda não iniciado');
-    const bestLabel = lang==='en'?'best:':(lang==='es'?'mejor:':'melhor:');
-    el.innerHTML=`<div class="left"><div class="lvl">${icon}</div><div><div><b>${m.titulo}</b> <span class="meta">#${m.id} · ${m.nivel}</span></div><div class="meta">${locked?'<span class="lock">🔒 '+lockedText+'</span>':(score?bestLabel+` ${score}/10`:notStarted)}</div></div></div><div>${score?`<span class="meta">${bestLabel} ${score}/10</span>`:""}<button class="btn" ${locked?'disabled':''} data-mod="${m.id}">${locked?'🔒':'▶️ '+(lang==='en'?'Start':(lang==='es'?'Iniciar':'Iniciar'))}</button></div>`;
-    mods.appendChild(el);
-  });
-  document.querySelectorAll('[data-mod]').forEach(b=>b.onclick=(e)=>{startQuiz(+e.currentTarget.getAttribute('data-mod'))});
+    // Extra: tema e idioma
+    const cfgThemeWrap = document.createElement('div');
+    cfgThemeWrap.className='row'; cfgThemeWrap.style.justifyContent='space-between';
+    cfgThemeWrap.innerHTML = `<label style="flex:1">Tema</label><select id="cfgTheme" style="flex:0 0 auto;width:auto"><option value="dark">Escuro</option><option value="light">Claro</option><option value="system">Sistema</option></select>`;
+    const cfgLangWrap = document.createElement('div');
+    cfgLangWrap.className='row'; cfgLangWrap.style.justifyContent='space-between';
+    cfgLangWrap.innerHTML = `<label style="flex:1">Idioma</label><select id="cfgLang" style="flex:0 0 auto;width:auto"><option value="pt">Português</option><option value="en">English</option></select>`;
+    document.querySelector('#config .body').insertBefore(cfgThemeWrap, document.getElementById('btnReset').parentElement.querySelector('hr'));
+    document.querySelector('#config .body').insertBefore(cfgLangWrap, document.getElementById('btnReset').parentElement.querySelector('hr'));
 
-  applyI18n();
-}
+    const cfgTheme=document.getElementById('cfgTheme');
+    const cfgLang=document.getElementById('cfgLang');
 
-// ====== Login ======
-function doLogin(){
-  const name=(document.getElementById("inpName").value||"").trim()||(lang==="en"?"Player":(lang==="es"?"Jugador":"Jogador"));
-  S.name=name;S.levelId="Tecnico";
-  const tk=todayKey();
-  if(S.lastLoginDay!==tk){S.streak=(S.lastLoginDay && ((new Date(tk)-new Date(S.lastLoginDay))===86400000))?(S.streak+1):1;S.lastLoginDay=tk}
-  save();
-  // hide brand + login, show top bar + dash
-  document.getElementById("brandLogin").classList.add("hidden");
-  document.getElementById("viewLogin").classList.add("hidden");
-  document.getElementById("topBar").classList.remove("hidden");
-  const dash=document.getElementById("viewDash");
-  dash.classList.remove("hidden"); setTimeout(()=>dash.classList.add("show"),0);
-  document.getElementById("btnLogout").classList.remove("hidden");
-  renderDash();
-  toast(t("welcome"));
-}
-document.getElementById("btnLogin").onclick=doLogin;
-document.getElementById("btnLogout").onclick=()=>{localStorage.removeItem(STATE_KEY);location.reload()};
+    function save(){ localStorage.setItem(STATE_KEY, JSON.stringify(S)); }
+    function chip(l){return `<span class="chip" style="border-color:${l.color}">${l.icon} ${l.label}</span>`}
+    function renderLegend(){ legend.innerHTML = LEVELS.map(chip).join(' '); }
 
-// ====== Quiz ======
-let curQuiz=null,curIdx=0,curScore=0,curModId=0;
-function pickTen(qs){if(qs.length<=10)return qs.slice();const arr=qs.slice();const out=[];while(out.length<10&&arr.length){const i=Math.floor(Math.random()*arr.length);out.push(arr.splice(i,1)[0])}return out}
-function startQuiz(modId){curModId=modId;const raw=QUIZZES[modId]||QUIZZES[13]||QUIZ_FALLBACK;curQuiz=pickTen(raw);curIdx=0;curScore=0;document.getElementById("quizTitle").textContent=`${t("modules_hdr")} #${modId}`;document.getElementById("quizOverlay").style.display="flex";document.getElementById("qExplain").classList.add("hidden");renderQuestion()}
-function closeQuiz(){document.getElementById("quizOverlay").style.display="none"}
-document.getElementById("btnCloseQuiz").onclick=closeQuiz;
-function renderQuestion(){
-  const q=curQuiz[curIdx];document.getElementById("qNum").textContent=(curIdx+1);document.getElementById("qText").textContent=q.q;
-  const box=document.getElementById("qOpts");const exp=document.getElementById("qExplain");exp.classList.add("hidden");exp.textContent="";box.innerHTML="";
-  const L=currentLevel();const XP_HIT=XP_PER_LEVEL[L.id]||30;
-  function addOpt(label,isCorrect){const div=document.createElement("div");div.className="opt";div.textContent=label;div.onclick=()=>{if(isCorrect){div.classList.add("correct");curScore++;addXP(XP_HIT)}else{div.classList.add("wrong")}exp.textContent=q.exp||"";exp.classList.remove("hidden");box.querySelectorAll(".opt").forEach(o=>o.style.pointerEvents="none")};box.appendChild(div)}
-  if(!q.type||q.type==="multi-choice"){q.opts.forEach((o,i)=>addOpt(o,i===q.ok))}
-  else if(q.type==="text"){const inp=document.createElement("input");inp.type="text";inp.placeholder=lang==="en"?"Type your answer...":(lang==="es"?"Escribe tu respuesta...":"Digite sua resposta...");box.appendChild(inp);const btn=document.createElement("button");btn.className="btn";btn.textContent="Validar";btn.onclick=()=>{const val=(inp.value||"").toLowerCase().trim();const arr=(q.answerText||[]).map(x=>x.toLowerCase());const ok=arr.some(x=>val.includes(x));if(ok){addXP(XP_HIT);exp.textContent=q.exp||"Correto."}else{exp.textContent=q.exp||"Revise o conceito."}exp.classList.remove("hidden");btn.disabled=true};box.appendChild(btn)}
-  else if(q.type==="calc"){const inp=document.createElement("input");inp.type="number";inp.step="any";inp.placeholder=lang==="en"?"Value":"Valor";box.appendChild(inp);const btn=document.createElement("button");btn.className="btn";btn.textContent="Calcular";btn.onclick=()=>{const v=parseFloat(inp.value);const tol=q.tolerance??0;const ok=Math.abs(v-q.answer)<=tol;if(ok){addXP(XP_HIT);exp.textContent=q.exp||"Certo!"}else{exp.textContent=`Esperado ≈ ${q.answer}${q.unit?(" "+q.unit):""}. ${q.exp||""}`}exp.classList.remove("hidden");btn.disabled=true};box.appendChild(btn)}
-  else if(q.type==="order"){const src=q.items.slice();const ul=document.createElement("div");ul.className="row";src.forEach((it)=>{const p=document.createElement("div");p.className="pill";p.draggable=true;p.textContent=it;p.ondragstart=(e)=>{e.dataTransfer.setData("text/plain",it)};ul.appendChild(p)});const target=document.createElement("div");target.className="row";target.style.minHeight="42px";target.ondragover=(e)=>e.preventDefault();target.ondrop=(e)=>{e.preventDefault();const t=e.dataTransfer.getData("text/plain");const el=Array.from(ul.children).find(x=>x.textContent===t);if(el){target.appendChild(el)}};box.appendChild(ul);box.appendChild(target);const btn=document.createElement("button");btn.className="btn";btn.textContent="Validar";btn.onclick=()=>{const arr=Array.from(target.children).map(x=>x.textContent);const ok=JSON.stringify(arr)===JSON.stringify(q.correctOrder);if(ok){addXP(XP_HIT);exp.textContent=q.exp||"Certo!"}else{exp.textContent=`Ordem esperada: ${q.correctOrder.join(" → ")}. ${q.exp||""}`}exp.classList.remove("hidden");btn.disabled=true};box.appendChild(btn)}
-}
-document.getElementById("btnNext").onclick=()=>{if(!curQuiz)return;if(curIdx<curQuiz.length-1){curIdx++;renderQuestion()}else{const best=S.cleared[curModId]||0;if(curScore>best)S.cleared[curModId]=curScore;const tk=todayKey();if(curScore===10&&S.dailyDoneOn!==tk){S.dailyDoneOn=tk;addXP(20);toast(t("mission_daily_done"))}const mondayIso=mondayOfThisWeekISO();if(S.week.startIso!==mondayIso){S.week.startIso=mondayIso;S.week.modulesDone=0}S.week.modulesDone=Math.min(3,S.week.modulesDone+1);if(S.week.modulesDone===3){addXP(100);toast(t("mission_week_done"))}save();toast(t("module_done",{id:String(curModId),score:String(curScore)}));closeQuiz();renderDash()}};
+    function cssClassFor(level){ return level==='Tecnico'?'lv-tec':level==='Analista'?'lv-ana':level==='Especialista'?'lv-esp':level==='Gerente'?'lv-ger':'lv-vis'; }
+    function completedArr(){ return Array.isArray(S.completed) ? S.completed : []; }
 
-// ====== Config handlers ======
-document.getElementById("btnConfig").onclick=()=>{
-  document.getElementById("cfgOverlay").style.display="flex";
-  document.getElementById("selTheme").value=Settings.theme;
-  document.getElementById("chkSound").checked=!!Settings.sound;
-  document.getElementById("chkConfetti").checked=!!Settings.confetti;
-  const ls=document.getElementById("langSel"); ls.value=lang;
-  applyI18n();
-};
-document.getElementById("btnCloseCfg").onclick=()=>{document.getElementById("cfgOverlay").style.display="none"};
-document.getElementById("selTheme").addEventListener("change",(e)=>{Settings.theme=e.target.value;saveSettings();applyTheme()});
-document.getElementById("chkSound").addEventListener("change",(e)=>{Settings.sound=!!e.target.checked;saveSettings()});
-document.getElementById("chkConfetti").addEventListener("change",(e)=>{Settings.confetti=!!e.target.checked;saveSettings()});
-document.getElementById("langSel").addEventListener("change",(e)=>{
-  lang = e.target.value;
-  localStorage.setItem("duoplanning.lang", lang);
-  applyI18n(); renderDash();
-});
-document.getElementById("btnReset").onclick=()=>{
-  localStorage.removeItem(STATE_KEY);
-  S={name:"",xp:0,energy:3,levelId:"Tecnico",streak:0,lastLoginDay:"",cleared:{},week:{startIso:"",modulesDone:0},dailyDoneOn:"",rank:[{name:"Você",xp:0},{name:"Alice",xp:560},{name:"Bruno",xp:320}]};
-  save(); toast(t("saved")); renderDash();
-};
+    // ==== REGRAS DE DESBLOQUEIO POR NÍVEL (não sequencial dentro do nível)
+    function allIds(from, to){ const a=[]; for(let i=from;i<=to;i++) a.push(i); return a; }
+    const TEC_IDS = allIds(1,12);
+    const ANA_IDS = allIds(13,22);
+    const ESP_IDS = allIds(23,32);
+    const GER_IDS = allIds(33,38);
+    const VIS_IDS = allIds(39,40);
 
-// ====== Init ======
-applyTheme();
-applyI18n();
-if(S.name){
-  document.getElementById("brandLogin").classList.add("hidden");
-  document.getElementById("viewLogin").classList.add("hidden");
-  document.getElementById("topBar").classList.remove("hidden");
-  const dash=document.getElementById("viewDash");
-  dash.classList.remove("hidden"); setTimeout(()=>dash.classList.add("show"),0);
-  document.getElementById("btnLogout").classList.remove("hidden");
-  renderDash();
-}
-</script>
+    function isLevelUnlocked(level){
+      const comp = completedArr();
+      if(level==='Tecnico') return true;
+      if(level==='Analista') return TEC_IDS.every(id=>comp.includes(id));
+      if(level==='Especialista') return ANA_IDS.every(id=>comp.includes(id));
+      if(level==='Gerente') return ESP_IDS.every(id=>comp.includes(id));
+      if(level==='Visionario') return GER_IDS.every(id=>comp.includes(id));
+      return false;
+    }
+
+    function isLocked(id){
+      const m = MODULES.find(x=>x.id===id);
+      return !isLevelUnlocked(m.level);
+    }
+    function isDone(id){ return completedArr().includes(id); }
+
+    function renderModules(){
+      modsEl.innerHTML = MODULES.map(m=>{
+        const cls = cssClassFor(m.level);
+        const locked = isLocked(m.id);
+        const done = isDone(m.id);
+        const status = locked ? `<span class='status lock'>🔒 ${T('blocked')}</span>` : done ? `<span class='status done'>✅ ${T('done')}</span>` : `<span class='status'>▶️ ${T('available')}</span>`;
+        const action = locked ? `<button class='ghost' disabled>${T('blocked')}</button>` : `<button class='primary' data-mod='${m.id}' style='background:${m.color}'>Fazer Quiz</button>`;
+        const lockIcon = locked ? `<div class='lock'>🔒</div>` : '';
+        return `<div class='card lv ${cls} ${locked?"locked":""}'>
+          <span class='ribbon' style='background:${m.color}'></span>${lockIcon}
+          <div class='icon'>${m.icon}</div>
+          <h4>${m.title}</h4>
+          <div class='badge'>${m.desc}</div>
+          <div class='mod-footer'>${status} ${action}</div>
+        </div>`;
+      }).join('');
+      modsEl.querySelectorAll('button[data-mod]').forEach(b=>b.addEventListener('click',()=>startQuiz(Number(b.dataset.mod))));
+    }
+
+    function renderXP(){ const next=1000; xpText.textContent=`${S.xp} / ${next} XP`; xpFill.style.width=Math.min(100,(S.xp/next)*100)+"%"; }
+
+    function applyTheme(){
+      const m = S.theme;
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const dark = (m==='system'? prefersDark : m==='dark');
+      document.documentElement.style.setProperty('--bg', dark?'#0f1115':'#f6f8fb');
+      document.documentElement.style.setProperty('--panel', dark?'#151923':'#ffffff');
+      document.documentElement.style.setProperty('--text', dark?'#e9eef7':'#0f1115');
+      document.documentElement.style.setProperty('--muted', dark?'#637089':'#475569');
+      document.documentElement.style.setProperty('--border', dark?'#273046':'#dbe1ea');
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', dark?'#0f1115':'#ffffff');
+    }
+
+    function render(){
+      if(!S.name){ topBar.classList.add('hidden'); viewLogin.classList.remove('hidden'); viewDash.classList.add('hidden'); return; }
+      topBar.classList.remove('hidden'); viewLogin.classList.add('hidden'); viewDash.classList.remove('hidden');
+      document.getElementById('hello').textContent=`Olá, ${S.name}!`;
+      renderLegend(); renderModules(); renderXP(); applyTheme();
+    }
+
+    btnLogin.addEventListener('click',()=>{ const v=(inpName.value||'').trim(); if(!v) return; S.name=v; save(); render(); });
+    btnLogout.addEventListener('click',()=>{ S.name=''; save(); render(); });
+
+    // ==== Config Menu Handlers
+    btnConfig.addEventListener('click',()=>{
+      cfgConfetti.checked = !!S.confetti; cfgSound.checked = !!S.sound; cfgRequire70.checked = !!S.require70; 
+      cfgTheme.value = S.theme; cfgLang.value = S.lang; 
+      cfgOverlay.style.display='flex';
+    });
+    btnCloseConfig.addEventListener('click',()=> cfgOverlay.style.display='none');
+    cfgConfetti.addEventListener('change',()=>{ S.confetti = cfgConfetti.checked; save(); toast('Confete: ' + (S.confetti?'on':'off')); });
+    cfgSound.addEventListener('change',()=>{ S.sound = cfgSound.checked; save(); toast('Som: ' + (S.sound?'on':'off')); });
+    cfgRequire70.addEventListener('change',()=>{ S.require70 = cfgRequire70.checked; save(); toast('Aprovação ≥70%: ' + (S.require70?'on':'off')); });
+    cfgTheme.addEventListener('change',()=>{ S.theme = cfgTheme.value; save(); applyTheme(); });
+    cfgLang.addEventListener('change',()=>{ S.lang = cfgLang.value; save(); render(); });
+    btnReset.addEventListener('click',()=>{ if(confirm('Zerar progresso?')){ S.xp=0; S.completed=[]; save(); render(); toast('Progresso zerado'); cfgOverlay.style.display='none'; }});
+
+    // ==== QUIZ MODAL (com feedback final + XP por nível + trava de aprovação)
+    const quizOverlay=document.getElementById('quiz');
+    const quizTitle=document.getElementById('quizTitle');
+    const qText=document.getElementById('qText');
+    const opts=document.getElementById('opts');
+    const exp=document.getElementById('exp');
+    const qProg=document.getElementById('qProg');
+    const btnNext=document.getElementById('btnNext');
+    const btnCloseQuiz=document.getElementById('btnCloseQuiz');
+
+    let currentModule=null, quizSet=[], qi=0, score=0, resultMode=false;
+
+    function startQuiz(modId){
+      if(isLocked(modId)) { toast('Conclua os módulos do nível anterior para desbloquear.'); return; }
+      currentModule = MODULES.find(m=>m.id===modId);
+      const raw = quizForModule(currentModule);
+      quizSet = Array.isArray(raw) ? raw.slice(0,10) : [];
+      qi=0; score=0; resultMode=false;
+      quizTitle.textContent = `${currentModule.title} — ${currentModule.level}`;
+      btnNext.style.background = currentModule.color;
+      quizOverlay.style.display='flex';
+      renderQ();
+    }
+
+    function renderQ(){
+      if(!quizSet.length){ qText.textContent='Sem perguntas definidas.'; opts.innerHTML=''; exp.classList.add('hidden'); btnNext.classList.add('hidden'); qProg.textContent='0/0'; return; }
+      const Q = quizSet[qi];
+      qText.textContent = Q.q;
+      qProg.textContent = `${qi+1}/${quizSet.length}`;
+      exp.className='exp hidden'; exp.textContent='';
+      opts.innerHTML='';
+      Q.opts.forEach((txt,idx)=>{
+        const el=document.createElement('div'); el.className='opt'; el.textContent=txt;
+        el.addEventListener('click',()=>choose(idx));
+        opts.appendChild(el);
+      });
+      btnNext.classList.add('hidden');
+    }
+
+    function choose(idx){
+      const Q = quizSet[qi];
+      [...opts.children].forEach((el,i)=>{ el.classList.add(i===Q.ok?'correct':'wrong'); el.style.pointerEvents='none'; });
+      if(idx===Q.ok) score++;
+      exp.classList.remove('hidden');
+      exp.textContent = Q.exp || '';
+      btnNext.classList.remove('hidden');
+    }
+
+    function feedbackText(score,total){
+      const pct=Math.round((score/total)*100);
+      if(pct>=80) return `Excelente! ${score}/${total} (${pct}%).`;
+      if(pct>=70) return `Aprovado: ${score}/${total} (${pct}%).`;
+      if(pct>=40) return `Ok: ${score}/${total} (${pct}%).`;
+      return `Precisa revisar: ${score}/${total} (${pct}%).`;
+    }
+
+    btnNext.addEventListener('click',()=>{
+      if(resultMode){
+        // XP SÓ QUANDO APROVADO (aplicado no bloco de aprovação abaixo). Aqui apenas fecha.
+        quizOverlay.style.display='none'; render();
+        return;
+      }
+      qi++;
+      if(qi>=quizSet.length){
+        // Resultado final + trava por aprovação
+        const total = quizSet.length; const pct = Math.round((score/total)*100);
+        const require = S.require70 ? 70 : 0;
+        const passed = pct >= require;
+        if(passed){
+          if(!completedArr().includes(currentModule.id)) S.completed.push(currentModule.id);
+          S.xp += currentModule.xp; // XP apenas quando aprovado
+          save();
+          if(S.confetti) confettiBurst(); // confete SEMPRE ao aprovar
+          if(S.sound) victorySound();     // som SEMPRE ao aprovar
+        }
+        resultMode=true; qProg.textContent=T('result'); opts.innerHTML=''; exp.classList.add('hidden');
+        qText.textContent = feedbackText(score, total) + (passed? ` ✅ ${T('approve')}.` : ` ❌ ${T('redo')}`);
+        btnNext.textContent=T('conclude');
+      } else { renderQ(); }
+    });
+
+    btnCloseQuiz.addEventListener('click',()=>{ quizOverlay.style.display='none'; });
+
+    // ==== Confete mínimo (sem CDN)
+    function confettiBurst(){
+      const canvas = document.createElement('canvas');
+      canvas.style.position='fixed'; canvas.style.inset='0'; canvas.style.zIndex='130'; canvas.style.pointerEvents='none';
+      document.body.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width = window.innerWidth; const H = canvas.height = window.innerHeight;
+      const N = 150; const parts=[]; const colors=['#58cc02','#3aa0ff','#7e57c2','#f2b01c','#00bcd4','#ffffff'];
+      for(let i=0;i<N;i++) parts.push({x:W/2,y:H/3+Math.random()*40,r:2+Math.random()*3,dx:(Math.random()-0.5)*7,dy:Math.random()*-7-2,col:colors[i%colors.length],life:120+Math.random()*60});
+      let frame=0; const tick=()=>{
+        ctx.clearRect(0,0,W,H);
+        for(const p of parts){ p.x+=p.dx; p.y+=p.dy; p.dy+=0.18; p.life--; ctx.fillStyle=p.col; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); }
+        frame++; if(frame<220){ requestAnimationFrame(tick);} else { document.body.removeChild(canvas);} };
+      tick();
+    }
+
+    // ==== Som mínimo (WebAudio)
+    function victorySound(){
+      try{ const AC = window.AudioContext||window.webkitAudioContext; const ac = new AC(); const o=ac.createOscillator(); const g=ac.createGain(); o.type='triangle'; o.frequency.value=660; g.gain.value=0.0001; o.connect(g); g.connect(ac.destination); o.start(); const now=ac.currentTime; g.gain.exponentialRampToValueAtTime(0.2, now+0.02); o.frequency.setValueAtTime(880, now+0.15); g.gain.exponentialRampToValueAtTime(0.0001, now+0.5); o.stop(now+0.55);}catch(e){}
+    }
+
+    function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; setTimeout(()=>t.style.display='none',1600); }
+
+    // ==== Auto‑testes
+    function runSelfTests(){
+      const cases=[
+        {name:'completed ausente', S:{name:'a',xp:0}},
+        {name:'completed null', S:{name:'a',xp:0,completed:null}},
+        {name:'completed string', S:{name:'a',xp:0,completed:"oops"}},
+        {name:'completed array ok', S:{name:'a',xp:0,completed:[1,2,3]}}
+      ];
+      const results=[];
+      for(const c of cases){
+        let tmp = Object.assign({}, S, c.S);
+        if(!Array.isArray(tmp.completed)) tmp.completed=[];
+        let err=null; try{ tmp.completed.includes(1); }catch(e){ err=e; }
+        results.push({case:c.name, passed:!err});
+      }
+      console.table(results);
+    }
+
+    function init(){
+      runSelfTests();
+      // Aplica tema inicial
+      applyTheme();
+      // Render
+      if('serviceWorker' in navigator){ navigator.serviceWorker.register('./service-worker.js').catch(()=>{}); }
+      if(S.name){ topBar.classList.remove('hidden'); viewLogin.classList.add('hidden'); viewDash.classList.remove('hidden'); }
+      render();
+    }
+    init();
+  </script>
 </body>
 </html>
