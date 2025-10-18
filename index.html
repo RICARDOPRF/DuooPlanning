@@ -123,11 +123,11 @@
       <div class="head"><strong>Configurações</strong><button id="btnCloseConfig" class="ghost">Fechar</button></div>
       <div class="body">
         <div class="row" style="justify-content:space-between">
-          <label style="flex:1">Confete de vitória (≥80%)</label>
+          <label style="flex:1">Confete (acertos e aprovação)</label>
           <input type="checkbox" id="cfgConfetti" style="flex:0 0 auto;width:auto">
         </div>
         <div class="row" style="justify-content:space-between">
-          <label style="flex:1">Som de vitória (≥80%)</label>
+          <label style="flex:1">Som (apenas na aprovação)</label>
           <input type="checkbox" id="cfgSound" style="flex:0 0 auto;width:auto">
         </div>
         <div class="row" style="justify-content:space-between">
@@ -241,7 +241,7 @@
       out.sound = !!out.sound;
       out.require70 = out.require70===undefined ? true : !!out.require70;
       out.theme = (out.theme==='light'||out.theme==='dark'||out.theme==='system') ? out.theme : 'dark';
-      out.lang = (out.lang==='pt'||out.lang==='en') ? out.lang : 'pt';
+      out.lang = (out.lang==='pt'||out.lang==='en'||out.lang==='es') ? out.lang : 'pt';
       return out;
     }
     let S = loadState();
@@ -250,7 +250,8 @@
     // ==== i18n mínimo
     const STR={
       pt:{ enter:'Entrar', daily:'Fazer agora', blocked:'Bloqueado', available:'Disponível', done:'Concluído', quiz:'Quiz', result:'Resultado', conclude:'Concluir', approve:`Aprovado`, redo:`Refaça para concluir.` },
-      en:{ enter:'Sign in', daily:'Do now', blocked:'Locked', available:'Available', done:'Done', quiz:'Quiz', result:'Result', conclude:'Finish', approve:'Approved', redo:'Retake to complete.' }
+      en:{ enter:'Sign in', daily:'Do now', blocked:'Locked', available:'Available', done:'Done', quiz:'Quiz', result:'Result', conclude:'Finish', approve:'Approved', redo:'Retake to complete.' },
+      es:{ enter:'Entrar', daily:'Hacer ahora', blocked:'Bloqueado', available:'Disponible', done:'Completado', quiz:'Cuestionario', result:'Resultado', conclude:'Finalizar', approve:'Aprobado', redo:'Rehaz para completar.' }
     };
     function T(k){ return (STR[S.lang]&&STR[S.lang][k])||k; }
 
@@ -280,7 +281,7 @@
     cfgThemeWrap.innerHTML = `<label style="flex:1">Tema</label><select id="cfgTheme" style="flex:0 0 auto;width:auto"><option value="dark">Escuro</option><option value="light">Claro</option><option value="system">Sistema</option></select>`;
     const cfgLangWrap = document.createElement('div');
     cfgLangWrap.className='row'; cfgLangWrap.style.justifyContent='space-between';
-    cfgLangWrap.innerHTML = `<label style="flex:1">Idioma</label><select id="cfgLang" style="flex:0 0 auto;width:auto"><option value="pt">Português</option><option value="en">English</option></select>`;
+    cfgLangWrap.innerHTML = `<label style=\"flex:1\">Idioma</label><select id=\"cfgLang\" style=\"flex:0 0 auto;width:auto\"><option value=\"pt\">Português</option><option value=\"en\">English</option><option value=\"es\">Español</option></select>`;
     document.querySelector('#config .body').insertBefore(cfgThemeWrap, document.getElementById('btnReset').parentElement.querySelector('hr'));
     document.querySelector('#config .body').insertBefore(cfgLangWrap, document.getElementById('btnReset').parentElement.querySelector('hr'));
 
@@ -288,7 +289,7 @@
     const cfgLang=document.getElementById('cfgLang');
 
     function save(){ localStorage.setItem(STATE_KEY, JSON.stringify(S)); }
-    function chip(l){return `<span class="chip" style="border-color:${l.color}">${l.icon} ${l.label}</span>`}
+    function chip(l){return `<span class=\"chip\" style=\"border-color:${l.color}\">${l.icon} ${l.label}</span>`}
     function renderLegend(){ legend.innerHTML = LEVELS.map(chip).join(' '); }
 
     function cssClassFor(level){ return level==='Tecnico'?'lv-tec':level==='Analista'?'lv-ana':level==='Especialista'?'lv-esp':level==='Gerente'?'lv-ger':'lv-vis'; }
@@ -417,7 +418,10 @@
     function choose(idx){
       const Q = quizSet[qi];
       [...opts.children].forEach((el,i)=>{ el.classList.add(i===Q.ok?'correct':'wrong'); el.style.pointerEvents='none'; });
-      if(idx===Q.ok) score++;
+      if(idx===Q.ok){
+        score++;
+        if(S.confetti) confettiMini(); // confete ao ACERTAR
+      }
       exp.classList.remove('hidden');
       exp.textContent = Q.exp || '';
       btnNext.classList.remove('hidden');
@@ -459,6 +463,21 @@
     btnCloseQuiz.addEventListener('click',()=>{ quizOverlay.style.display='none'; });
 
     // ==== Confete mínimo (sem CDN)
+    function confettiMini(){
+      const canvas = document.createElement('canvas');
+      canvas.style.position='fixed'; canvas.style.inset='0'; canvas.style.zIndex='130'; canvas.style.pointerEvents='none';
+      document.body.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width = window.innerWidth; const H = canvas.height = window.innerHeight;
+      const N = 28; const parts=[]; const colors=['#58cc02','#3aa0ff','#7e57c2','#f2b01c','#00bcd4','#ffffff'];
+      for(let i=0;i<N;i++) parts.push({x:W/2,y:H/2, r:2+Math.random()*2, dx:(Math.random()-0.5)*8, dy:(Math.random()-1)*8, col:colors[i%colors.length], life:60+Math.random()*40});
+      let frame=0; const tick=()=>{
+        ctx.clearRect(0,0,W,H);
+        for(const p of parts){ p.x+=p.dx; p.y+=p.dy; p.dy+=0.22; p.life--; ctx.fillStyle=p.col; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); }
+        frame++; if(frame<90){ requestAnimationFrame(tick);} else { document.body.removeChild(canvas);} };
+      tick();
+    }
+
     function confettiBurst(){
       const canvas = document.createElement('canvas');
       canvas.style.position='fixed'; canvas.style.inset='0'; canvas.style.zIndex='130'; canvas.style.pointerEvents='none';
@@ -481,20 +500,37 @@
 
     function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; setTimeout(()=>t.style.display='none',1600); }
 
-    // ==== Auto‑testes
+    // ==== Auto‑testes (não alterar os existentes; adicionados novos casos)
     function runSelfTests(){
       const cases=[
+        // Casos originais
         {name:'completed ausente', S:{name:'a',xp:0}},
         {name:'completed null', S:{name:'a',xp:0,completed:null}},
         {name:'completed string', S:{name:'a',xp:0,completed:"oops"}},
-        {name:'completed array ok', S:{name:'a',xp:0,completed:[1,2,3]}}
+        {name:'completed array ok', S:{name:'a',xp:0,completed:[1,2,3]}},
+        // Novos casos
+        {name:'lang inválido → default pt', S:{lang:'xx'}},
+        {name:'theme inválido → dark', S:{theme:'neon'}},
+        {name:'desbloqueio Analista sem Técnico', S:{completed:[]}},
+        {name:'desbloqueio Analista com Técnico', S:{completed:[...Array(12)].map((_,i)=>i+1)}},
       ];
       const results=[];
       for(const c of cases){
         let tmp = Object.assign({}, S, c.S);
+        // Coerção mínima igual ao loadState
+        if(!['pt','en','es'].includes(tmp.lang)) tmp.lang='pt';
+        if(!['light','dark','system'].includes(tmp.theme)) tmp.theme='dark';
         if(!Array.isArray(tmp.completed)) tmp.completed=[];
         let err=null; try{ tmp.completed.includes(1); }catch(e){ err=e; }
-        results.push({case:c.name, passed:!err});
+        // Checks específicos
+        let ok=true;
+        if(c.name.includes('Analista')){
+          const TEC_IDS = Array.from({length:12}, (_,i)=>i+1);
+          const comp = tmp.completed;
+          const unlocked = TEC_IDS.every(id=>comp.includes(id));
+          if(c.name.includes('sem')) ok = !unlocked; else ok = unlocked;
+        }
+        results.push({case:c.name, passed:!err && ok});
       }
       console.table(results);
     }
