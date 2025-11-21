@@ -830,7 +830,7 @@
         const docRef = doc(db, "users", user.uid);
         const snap = await getDoc(docRef);
         
-        // CORREÇÃO: Lógica de mesclagem robusta para proteger o array 'completed'
+        // CORREÇÃO (Parte 1): Lógica de mesclagem robusta para proteger o array 'completed'
         if(snap.exists()){
           const cloud = snap.data();
           if(cloud.updatedAt > S.updatedAt) {
@@ -854,10 +854,30 @@
           }
         }
         
+        // CORREÇÃO (Parte 2): Aplicando a mesma lógica de mesclagem robusta para o listener em tempo real (onSnapshot)
         onSnapshot(docRef, (s) => {
-           if(s.exists() && s.data().updatedAt > S.updatedAt) { 
-             S = {...S, ...s.data()}; 
-             render(); 
+           if(s.exists()){
+             const cloud = s.data();
+             if(cloud.updatedAt > S.updatedAt) { 
+                // Salva os dados de progresso local (que podem estar mais completos)
+                const localCompleted = S.completed || [];
+                const localCompletedLog = S.completedLog || [];
+
+                // 1. Faz o merge do restante dos campos (XP, configs, etc.)
+                S = {...S, ...cloud};
+                
+                // 2. Garante que o array 'completed' (IDs) não perca itens locais.
+                const cloudCompleted = cloud.completed || [];
+                const mergedCompleted = new Set([...cloudCompleted, ...localCompleted]);
+                S.completed = Array.from(mergedCompleted);
+
+                // 3. Mescla o log de concluídos
+                const cloudCompletedLog = cloud.completedLog || [];
+                const mergedLog = new Set([...cloudCompletedLog.map(JSON.stringify), ...localCompletedLog.map(JSON.stringify)]);
+                S.completedLog = Array.from(mergedLog).map(JSON.parse);
+
+                render(); 
+             }
            }
         });
       }
