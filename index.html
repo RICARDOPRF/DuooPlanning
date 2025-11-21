@@ -18,7 +18,7 @@
       --lv-vis:#00bcd4;      /* Visionário */
     }
     html,body{width:100%;height:100%;margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;overflow-x:hidden}
-    .wrap{max-width:480px;margin:0 auto;padding:16px; min-height: 100vh; display: flex; flex-direction: column;}
+    .wrap{max-width:480px;margin:0 auto;padding:16px; min-height: 10vh; display: flex; flex-direction: column;}
     h1,h2,h3{margin:0 0 10px;line-height:1.2}
     .hidden{display:none !important}
     .panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:16px}
@@ -212,7 +212,8 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    // CORREÇÃO: Adicionando updateDoc e arrayUnion para manipulação segura de arrays no Firestore.
+    import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp, collection, query, orderBy, limit, getDocs, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDAVT6M_mEll69i2S5Btbe2Xpu0gcvB4L4",
@@ -468,8 +469,30 @@
       if(auth.currentUser) saveCloud();
     }
     
+    // CORREÇÃO: Função saveCloud atualizada para usar arrayUnion para os arrays, 
+    // garantindo que não haja sobrescrita de progresso.
     async function saveCloud(){
-      try { await setDoc(doc(db, "users", auth.currentUser.uid), S, {merge:true}); } catch(e){console.error(e);}
+      try { 
+        const docRef = doc(db, "users", auth.currentUser.uid);
+        
+        // 1. Atualiza todos os campos (XP, updatedAt, etc.) exceto arrays complexos
+        await setDoc(docRef, S, {merge:true});
+        
+        // 2. Garante que o array 'completed' adicione itens (arrayUnion) sem apagar os existentes
+        if(S.completed.length > 0){
+          await updateDoc(docRef, {
+            completed: arrayUnion(...S.completed)
+          });
+        }
+        
+        // 3. Mescla o log de concluídos
+        if(S.completedLog.length > 0){
+            await updateDoc(docRef, {
+                completedLog: arrayUnion(...S.completedLog)
+            });
+        }
+
+      } catch(e){console.error(e);}
     }
 
     function getLevelInfo(mod){ return LEVELS.find(l=>l.id===mod.level) || LEVELS[0]; }
@@ -806,10 +829,31 @@
       if(user){
         const docRef = doc(db, "users", user.uid);
         const snap = await getDoc(docRef);
+        
+        // CORREÇÃO: Lógica de mesclagem robusta para proteger o array 'completed'
         if(snap.exists()){
           const cloud = snap.data();
-          if(cloud.updatedAt > S.updatedAt) S = {...S, ...cloud};
+          if(cloud.updatedAt > S.updatedAt) {
+            // Salva os dados de progresso local (que podem estar mais completos)
+            const localCompleted = S.completed || [];
+            const localCompletedLog = S.completedLog || [];
+
+            // 1. Faz o merge do restante dos campos (XP, configs, etc.)
+            S = {...S, ...cloud};
+            
+            // 2. Garante que o array 'completed' (IDs) não perca itens locais. 
+            // Cria um Set (coleção de itens únicos) para unir ambos os arrays.
+            const cloudCompleted = cloud.completed || [];
+            const mergedCompleted = new Set([...cloudCompleted, ...localCompleted]);
+            S.completed = Array.from(mergedCompleted);
+
+            // 3. Mescla o log de concluídos, transformando objetos em JSON para garantir unicidade no Set
+            const cloudCompletedLog = cloud.completedLog || [];
+            const mergedLog = new Set([...cloudCompletedLog.map(JSON.stringify), ...localCompletedLog.map(JSON.stringify)]);
+            S.completedLog = Array.from(mergedLog).map(JSON.parse);
+          }
         }
+        
         onSnapshot(docRef, (s) => {
            if(s.exists() && s.data().updatedAt > S.updatedAt) { 
              S = {...S, ...s.data()}; 
