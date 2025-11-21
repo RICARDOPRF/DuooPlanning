@@ -18,238 +18,210 @@
       --lv-vis:#00bcd4;      /* Visionário */
     }
     html,body{width:100%;height:100%;margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;overflow-x:hidden}
-    .full-center{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%}
-    .container{width:100%;max-width:480px;margin:0 auto;padding:0 20px;box-sizing:border-box}
-    .panel{background:var(--panel);border-radius:12px;padding:20px;margin-bottom:15px;border:1px solid var(--border)}
-    h1{font-size:2em;margin-bottom:0}
-    h2{font-size:1.5em;margin-top:0;color:var(--accent)}
-    .input-group{margin-bottom:15px;width:100%}
-    input[type="text"], input[type="password"]{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);box-sizing:border-box}
-    button{width:100%;padding:12px;border-radius:8px;border:none;font-weight:bold;cursor:pointer;margin-top:10px;transition:background-color 0.2s}
-    .btn-google{background:#4285f4;color:white}
-    .btn-google:hover{background:#357ae8}
-    .btn-local{background:var(--accent);color:var(--bg)}
-    .btn-local:hover{background:#44a502}
-    .btn-danger{background:var(--danger);color:white}
-    .btn-danger:hover{background:#cc3d3f}
-    .btn-secondary{background:var(--border);color:var(--text)}
-    .btn-secondary:hover{background:#3c4a63}
-    .hidden{display:none!important}
-    .row{display:flex;gap:10px;align-items:center}
-    .badge{display:inline-block;padding:4px 8px;border-radius:15px;font-size:0.75em;font-weight:bold;margin-left:5px}
-    .xp-bar{width:100%;height:10px;background:var(--border);border-radius:5px;margin-top:5px}
-    .xp-fill{height:100%;background:var(--accent);border-radius:5px;transition:width 0.5s}
-    .stat-box{text-align:center;padding:10px;border-radius:8px;background:var(--bg);flex:1;border:1px solid var(--border)}
-    .stat-value{font-size:1.5em;font-weight:bold;color:var(--accent)}
-    .quiz-options button{background:var(--panel);border:1px solid var(--border);margin-top:8px;text-align:left;white-space:normal;height:auto;line-height:1.3;color:var(--text)}
-    .quiz-options button.selected{border:2px solid var(--accent);background:#232d43}
-    .quiz-options button.correct{background:var(--success);color:white}
-    .quiz-options button.incorrect{background:var(--danger);color:white}
-    .footer-nav{display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid var(--border);position:fixed;bottom:0;width:100%;max-width:480px;background:var(--panel);box-shadow:0 -2px 10px rgba(0,0,0,0.5);z-index:100}
-    .nav-item{cursor:pointer;color:var(--muted);font-size:0.75em;text-align:center}
-    .nav-item.active{color:var(--accent)}
-    .nav-icon{font-size:1.5em}
-    .module-card{padding:15px;border-radius:8px;margin-bottom:10px;cursor:pointer;transition:background-color 0.2s;position:relative}
-    .module-card.locked{background:var(--panel);border:1px dashed var(--border)}
-    .module-card.completed{background:var(--success);color:white!important}
-    .module-card:not(.locked):hover{background:var(--border)}
-    .module-card-title{font-weight:bold;margin-bottom:5px}
-    .module-card .lock-icon{position:absolute;top:10px;right:15px;font-size:1.5em;color:var(--muted)}
-    .module-card.locked .lock-icon{color:var(--danger)}
-    .module-card.completed .lock-icon{color:white}
-    .level-header{font-size:1.2em;font-weight:bold;margin-top:20px;margin-bottom:10px;padding-left:10px;border-left:4px solid var(--accent)}
-    /* Cores dos níveis na lista */
-    .level-tec{border-left-color:var(--lv-tec)!important;color:var(--lv-tec)}
-    .level-ana{border-left-color:var(--lv-ana)!important;color:var(--lv-ana)}
-    .level-esp{border-left-color:var(--lv-esp)!important;color:var(--lv-esp)}
-    .level-ger{border-left-color:var(--lv-ger)!important;color:var(--lv-ger)}
-    .level-vis{border-left-color:var(--lv-vis)!important;color:var(--lv-vis)}
+    .wrap{max-width:480px;margin:0 auto;padding:16px; min-height: 100vh; display: flex; flex-direction: column;}
+    h1,h2,h3{margin:0 0 10px;line-height:1.2}
+    .hidden{display:none !important}
+    .panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:16px}
+    .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    input,select,button{font-size:16px;padding:12px;border-radius:10px;border:1px solid var(--border);background:#1b2230;color:var(--text);box-sizing:border-box; outline:none;}
+    input:focus, select:focus{border-color:var(--accent);}
+    input,select{width:100%}
+    button.primary{background:var(--accent);color:#fff;border:none;cursor:pointer;transition:.2s; font-weight: 600;}
+    button.ghost{background:transparent;border:1px solid var(--border);color:var(--text); cursor: pointer;}
+    button.primary:hover{opacity:.9; transform: translateY(-1px);}
+    button:active{transform: scale(0.98);}
+    button:disabled{opacity: 0.5; cursor: not-allowed; filter: grayscale(1);}
     
-    .module-card[data-level='Técnico']{border-left:5px solid var(--lv-tec)}
-    .module-card[data-level='Analista']{border-left:5px solid var(--lv-ana)}
-    .module-card[data-level='Especialista']{border-left:5px solid var(--lv-esp)}
-    .module-card[data-level='Gerente/Diretor']{border-left:5px solid var(--lv-ger)}
-    .module-card[data-level='Visionário']{border-left:5px solid var(--lv-vis)}
+    .meta{color:var(--muted);font-size:14px}
+    #topBar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    #topBar h1{font-size:20px; font-weight: 800; letter-spacing: -0.5px;}
+    #topBar .actions{display:flex;gap:8px}
     
-    .quiz-result-feedback{margin-top:15px;padding:15px;border-radius:8px;font-size:0.9em}
-    .quiz-result-feedback.success{background-color:#27ae6030;border:1px solid var(--success)}
-    .quiz-result-feedback.fail{background-color:#ff4d4f30;border:1px solid var(--danger)}
-    .quiz-feedback-title{font-weight:bold;margin-bottom:5px}
+    .xp{display:flex;align-items:center;gap:8px; margin-top: 8px;}
+    .xpbar{flex:1;height:10px;background:#0e1522;border:1px solid var(--border);border-radius:999px;overflow:hidden; position: relative;}
+    .xpbar > i{display:block;height:100%;background:var(--accent);width:0; transition: width 0.5s ease-out; box-shadow: 0 0 10px var(--accent);}
     
-    .loading-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      z-index: 1000;
-      font-size: 1.2em;
-    }
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .card{background:#0e1522;border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;position:relative; transition: .2s;}
+    .card:active{background: #131b29;}
+    .card h4{margin:0;font-size:14px; line-height: 1.3;}
+    .icon{font-size:24px; margin-bottom: 4px;}
+    .ribbon{position:absolute;inset:12px auto 12px 0;width:3px;border-radius:0 4px 4px 0;background:var(--accent)}
+    
+    .chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:4px 8px;border-radius:999px;background:#0f1722;border:1px solid var(--border); font-weight: 600; text-transform: uppercase;}
+    
+    /* Cores dinâmicas */
+    .lv-tec{--lv:var(--lv-tec)} .lv-ana{--lv:var(--lv-ana)} .lv-esp{--lv:var(--lv-esp)} .lv-ger{--lv:var(--lv-ger)} .lv-vis{--lv:var(--lv-vis)}
+    .lv .ribbon{background:var(--lv)} 
+    .lv .chip{border-color:color-mix(in srgb, var(--lv) 40%, transparent); color: var(--lv);}
+    .lv .primary{background:var(--lv)}
+    
+    .mod-footer{display:flex;align-items:center;justify-content:space-between; margin-top: auto; padding-top: 8px;}
+    .status{font-size:11px;opacity:.8; font-weight: 500;}
+    .status.done{color:var(--success)} .status.lock{color:var(--muted)}
+    
+    .lock-overlay{position:absolute; inset:0; background:rgba(15, 17, 21, 0.6); display:flex; align-items:center; justify-content:center; border-radius:14px; backdrop-filter: blur(1px);}
+    .lock-icon{font-size: 24px; opacity: 0.7;}
+    .card.locked{opacity:1; pointer-events: none;} 
 
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:16px;z-index:100; backdrop-filter: blur(3px);}
+    .sheet{max-width:480px;width:100%;background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow:hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; max-height: 90vh;}
+    .sheet .head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--border); background: rgba(0,0,0,0.2);}
+    .sheet .body{padding:16px; overflow-y: auto;}
+    
+    .q{font-size:18px;margin:0 0 16px; font-weight: 500;}
+    .opts{display:grid;gap:10px}
+    .opt{padding:14px;border:1px solid var(--border);border-radius:12px;background:#131b29;cursor:pointer; transition: .2s; font-size: 15px;}
+    .opt:hover{background: #1c263a;}
+    .opt.correct{border-color:var(--success);background:rgba(39, 174, 96, 0.15); color: #4ade80;}
+    .opt.wrong{border-color:var(--danger);background:rgba(255, 77, 79, 0.15); opacity: 0.7;}
+    
+    .exp{border-left:3px solid var(--accent);padding:12px;margin-top:16px;background:#0f1622; border-radius: 0 8px 8px 0; font-size: 14px; line-height: 1.4;}
+    .foot{display:flex;align-items:center;justify-content:space-between;margin-top:20px}
+    
+    .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1e293b;border:1px solid var(--border);border-radius:999px;padding:12px 20px;color:#fff;display:none;z-index:200; box-shadow: 0 10px 20px rgba(0,0,0,0.3); font-weight: 500; white-space: nowrap;}
+    
+    @media (max-width:600px){.row{flex-direction:column;align-items:stretch}.grid{grid-template-columns:1fr}.panel{padding:16px}}
+    
+    /* Animações */
+    @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .panel, .card { animation: slideUp 0.4s ease-out; }
   </style>
 </head>
 <body>
-  
-  <div id="loadingOverlay" class="loading-overlay">
-    <div class="row">
-      <span style="font-size:2em;">⏳</span>
-      <span style="margin-left:10px;">Carregando Duoplanning...</span>
+  <div class="wrap">
+    <div id="topBar" class="hidden">
+      <h1>Duoplanning</h1>
+      <div class="actions">
+        <span id="userBadge" class="meta" style="font-size:11px; border:1px solid var(--border); padding:4px 8px; border-radius:8px;"></span>
+        <button id="btnRank" class="ghost" style="padding:8px">🏆</button>
+        <button id="btnConfig" class="ghost" style="padding:8px">⚙️</button>
+        <button id="btnLogout" class="ghost" style="font-size:12px; padding: 8px 12px;">Sair</button>
+      </div>
     </div>
-  </div>
 
-  <div id="viewLogin" class="full-center">
-    <div class="container">
-      <div class="panel">
-        <h1 style="color:var(--accent);">Duoplanning</h1>
-        <p style="color:var(--muted)">Mestre do Planejamento 🧠</p>
-
-        <div class="input-group">
-          <input type="text" id="inpName" placeholder="Seu Nome/Apelido" value="Usuário Local" />
-        </div>
-        
-        <button id="btnGoogle" class="btn-google">
-          <span style="font-size:1.2em; vertical-align:middle; margin-right:5px;">G</span> Entrar com Google
+    <section id="viewLogin" class="panel">
+      <div style="text-align:center; margin-bottom:20px;">
+        <h1 style="font-size:28px; color:var(--accent)">Duoplanning</h1>
+        <p class="meta">Domine o Planejamento de Obras</p>
+      </div>
+      
+      <h2>Entrar</h2>
+      <div class="row">
+        <button id="btnGoogle" class="primary" style="width:100%; background:#fff; color:#000; border-color:#fff;">
+          <span style="margin-right:8px">G</span> Entrar com Google
         </button>
-        
-        <button id="btnLocal" class="btn-local">
-          Começar sem Login (Dados Locais)
-        </button>
-        
-        <p style="text-align:center; margin-top:15px; font-size:0.8em; color:var(--muted)">
-          O login com Google salva seu progresso na nuvem.
-        </p>
+        <div style="display:flex;align-items:center;gap:8px;width:100%; margin: 10px 0;">
+          <div style="height:1px;background:var(--border);flex:1"></div>
+          <span class="meta">ou teste local</span>
+          <div style="height:1px;background:var(--border);flex:1"></div>
+        </div>
+        <input id="inpName" type="text" placeholder="Seu nome" />
+        <button id="btnLocal" class="ghost" style="width:100%">Começar sem Login</button>
+      </div>
+    </section>
+
+    <section id="viewDash" class="hidden">
+      <div class="panel" style="padding-bottom: 24px;">
+        <div class="row" style="justify-content:space-between; margin-bottom:10px;">
+          <h2 id="hello" style="margin:0">Bem-vindo!</h2>
+          <div id="userLvlDisplay" class="chip lv-tec" style="font-size:12px">Técnico</div>
+        </div>
+        <div class="xp">
+          <span id="xpText" style="font-weight:600; font-variant-numeric: tabular-nums;">0 / 1000 XP</span>
+        </div>
+        <div class="xpbar"><i id="xpFill"></i></div>
+      </div>
+
+      <div class="panel">
+        <h3>Missões Ativas</h3>
+        <div class="grid">
+          <div class="card lv lv-tec">
+            <span class="ribbon"></span>
+            <h4>⚡ Missão Diária</h4>
+            <div class="meta" style="font-size:12px">Acerte 3 perguntas (+20 XP)</div>
+            <button class="primary" id="btnDaily" style="margin-top:8px; font-size:13px; padding:8px;">Jogar Agora</button>
+          </div>
+          <div class="card lv lv-ana">
+            <span class="ribbon"></span>
+            <h4>📅 Missão Semanal</h4>
+            <div class="meta" style="font-size:12px" id="wkStatus">Complete 3 módulos</div>
+            <button class="primary" id="btnWeekly" style="margin-top:8px; font-size:13px; padding:8px;" disabled>Resgatar (+100 XP)</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Trilha de Aprendizado</h3>
+        <div id="legend" class="meta" style="margin:8px 0 16px; display:flex; flex-wrap:wrap; gap:6px;"></div>
+        <div id="mods" class="grid"></div>
+      </div>
+    </section>
+  </div>
+
+  <div id="quiz" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong id="quizTitle">Quiz</strong><button id="btnCloseQuiz" class="ghost" style="padding:6px 12px; font-size:12px;">Fechar</button></div>
+      <div class="body">
+        <div id="qText" class="q">Pergunta</div>
+        <div id="opts" class="opts"></div>
+        <div id="exp" class="exp hidden"></div>
+        <div class="foot">
+          <div id="qProg" class="meta">1/10</div>
+          <button id="btnNext" class="primary hidden">Confirmar</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <div id="viewDash" class="hidden">
-    <div class="container" style="padding-top:20px; padding-bottom:70px">
-      
-      <div class="panel">
-        <div class="row" style="align-items:flex-start">
-          <div>
-            <h2 id="userName" style="margin-bottom:5px;">Olá, Mestre!</h2>
-            <p id="userLevel" style="margin-top:0; font-weight:bold; color:var(--muted)">Nível: Desconhecido</p>
+  <div id="config" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong>Configurações</strong><button id="btnCloseConfig" class="ghost">x</button></div>
+      <div class="body">
+        <div class="opts">
+          <div class="row" style="justify-content:space-between">
+            <label>🎉 Confetes</label>
+            <input type="checkbox" id="cfgConfetti" style="width:auto">
           </div>
-          <span id="rankBtn" class="badge" style="background:#f2b01c; color:var(--bg); margin-left:auto; cursor:pointer">Ranking 🏆</span>
-        </div>
-        
-        <p style="font-size:0.8em; margin:10px 0 5px 0">XP Total: <span id="xpCurrent">0</span></p>
-        <div class="xp-bar"><div id="xpFill" class="xp-fill" style="width:0%"></div></div>
-
-        <div class="row" style="margin-top:15px">
-          <div class="stat-box">
-            <div id="statCompleted" class="stat-value">0</div>
-            <div style="font-size:0.8em; color:var(--muted)">Módulos OK</div>
+          <div class="row" style="justify-content:space-between">
+            <label>🔊 Efeitos Sonoros</label>
+            <input type="checkbox" id="cfgSound" style="width:auto">
           </div>
-          <div class="stat-box">
-            <div id="statProgress" class="stat-value">0%</div>
-            <div style="font-size:0.8em; color:var(--muted)">Progresso Total</div>
-          </div>
-          <div class="stat-box">
-            <div id="statLevelBadge" class="stat-value" style="color:var(--lv-tec)">T</div>
-            <div style="font-size:0.8em; color:var(--muted)">Nível Atual</div>
+          <div class="row" style="justify-content:space-between">
+            <label>🎓 Exigir 70% para passar</label>
+            <input type="checkbox" id="cfgRequire70" checked style="width:auto">
           </div>
         </div>
-      </div>
-      
-      <div id="modulesList">
-        </div>
-      
-    </div>
-    
-    <div class="footer-nav">
-      <div class="nav-item active" data-view="dashboard">
-        <div class="nav-icon">🧠</div>
-        <div>Módulos</div>
-      </div>
-      <div id="navQuiz" class="nav-item" data-view="quiz">
-        <div class="nav-icon">🔥</div>
-        <div>Quiz</div>
-      </div>
-      <div class="nav-item" data-view="config">
-        <div class="nav-icon">⚙️</div>
-        <div>Ajustes</div>
+        <hr style="border-color:var(--border);opacity:.3;margin:20px 0">
+        <button id="btnReset" class="ghost" style="width:100%; border-color:var(--danger); color:var(--danger)">Zerar todo progresso</button>
       </div>
     </div>
   </div>
 
-  <div id="viewQuiz" class="hidden">
-    <div class="container" style="padding-top:20px; padding-bottom:70px">
-      <h2 style="margin-top:0"><span id="quizModIcon"></span> Módulo <span id="quizModId"></span>: <span id="quizModTitle"></span></h2>
-      <p id="quizStory" style="color:var(--muted); font-style:italic; border-left:2px solid var(--accent); padding-left:10px;"></p>
-      
-      <div id="quizContent" class="panel">
-        <p style="font-weight:bold; font-size:1.1em">Pergunta <span id="quizQIndex">1</span> de 8</p>
-        <p id="quizQuestion" style="font-size:1.2em;"></p>
-        
-        <div id="quizOptions" class="quiz-options">
-          </div>
-        
-        <div id="quizFeedback" class="hidden quiz-result-feedback">
-          <div id="quizFeedbackTitle" class="quiz-feedback-title"></div>
-          <div id="quizFeedbackExp"></div>
-        </div>
+  <div id="ranking" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong>🏆 Ranking Global</strong><button id="btnCloseRank" class="ghost">x</button></div>
+      <div class="body" id="rankBody" style="min-height:200px">
+        <p class="meta">Carregando...</p>
+      </div>
+    </div>
+  </div>
 
-        <button id="btnQuizNext" class="btn-local" style="margin-top:20px" disabled>Próxima Pergunta >></button>
-        <button id="btnQuizFinish" class="btn-local hidden" style="margin-top:20px">Finalizar Módulo</button>
-      </div>
-    </div>
-  </div>
-  
-  <div id="viewConfig" class="hidden">
-    <div class="container" style="padding-top:20px; padding-bottom:70px">
-      <h2 style="margin-top:0">⚙️ Ajustes</h2>
-      
-      <div class="panel">
-        <h3 style="margin-top:0">Conta</h3>
-        <p>Logado como: <span id="configUserName" style="font-weight:bold"></span></p>
-        <p style="font-size:0.8em; color:var(--muted)">Para salvar seu progresso, use o Login com Google.</p>
-        <button id="btnSignOut" class="btn-secondary">Sair da Conta</button>
-      </div>
-
-      <div class="panel">
-        <h3 style="margin-top:0">Progresso</h3>
-        <p style="font-size:0.9em">Se você zerar o progresso, todos os seus XP e módulos concluídos serão perdidos.</p>
-        <button id="btnReset" class="btn-danger">Zerar Todo o Progresso</button>
-      </div>
-      
-      <div class="panel">
-        <h3 style="margin-top:0">Desbloqueio de Nível</h3>
-        <p style="font-size:0.9em">Selecione um módulo bloqueado (com cadeado) e clique no ícone para digitar a senha de desbloqueio.</p>
-        <p style="font-size:0.8em; color:var(--muted)">Senha atual: <span id="currentPass" style="font-weight:bold">2025*</span></p>
-      </div>
-    </div>
-  </div>
-  
-  <div id="viewRanking" class="hidden">
-    <div class="container" style="padding-top:20px; padding-bottom:70px">
-      <h2 style="margin-top:0">🏆 Ranking Global</h2>
-      <div class="panel">
-        <div id="rankBody" style="min-height:100px; color:var(--muted)">
-          Carregando...
-        </div>
-      </div>
-      <button id="btnBackFromRanking" class="btn-secondary">Voltar ao Dashboard</button>
-    </div>
-  </div>
+  <div id="toast" class="toast">Notificação</div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, query, collection, orderBy, limit, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-    // Configurações do Firebase (Mantenha as suas se houver)
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyDAVT6M_mEll69i2S5Btbe2Xpu0gcvB4L4",
+      authDomain: "duoplanning-90738.firebaseapp.com",
+      projectId: "duoplanning-90738",
+      storageBucket: "duoplanning-90738.firebasestorage.app",
+      messagingSenderId: "166228868261",
+      appId: "1:166228868261:web:441565bc95d238e8d6614c",
+      measurementId: "G-24JXV1HEJW"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -257,134 +229,69 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    // Estado Global (Local Storage)
-    let S = JSON.parse(localStorage.getItem('duoplanningState')) || {
-      name: null,
-      uid: null,
-      xp: 0,
-      completed: [], // IDs dos módulos concluídos
-      updatedAt: 0,
-      tempPass: '2025*' // Senha de desbloqueio
-    };
-    
-    const TOTAL_MODULES = 40; // Total de módulos
-    const XP_PER_MODULE = 100;
+    // ===========================================
+    // 1. DADOS E CONSTANTES (LOAD FIRST)
+    // ===========================================
+
     const LEVELS = [
-      { id: 'Técnico', minXp: 0, color: 'var(--lv-tec)' },
-      { id: 'Analista', minXp: 1200, color: 'var(--lv-ana)' },
-      { id: 'Especialista', minXp: 2000, color: 'var(--lv-esp)' },
-      { id: 'Gerente/Diretor', minXp: 3000, color: 'var(--lv-ger)' },
-      { id: 'Visionário', minXp: 3600, color: 'var(--lv-vis)' }
+      {id:'Tecnico',label:'Técnico',icon:'👷‍♂️',color:'var(--lv-tec)',xp:30},
+      {id:'Analista',label:'Analista',icon:'👨‍💻',color:'var(--lv-ana)',xp:40},
+      {id:'Especialista',label:'Especialista',icon:'👨‍🔧',color:'var(--lv-esp)',xp:50},
+      {id:'Gerente',label:'Gerente',icon:'👔',color:'var(--lv-ger)',xp:60},
+      {id:'Visionario',label:'Visionário',icon:'🔮',color:'var(--lv-vis)',xp:80}
     ];
 
-    // Mapeamento de Elementos UI
-    const UI = {
-      loadingOverlay: document.getElementById('loadingOverlay'),
-      viewLogin: document.getElementById('viewLogin'),
-      viewDash: document.getElementById('viewDash'),
-      viewQuiz: document.getElementById('viewQuiz'),
-      viewConfig: document.getElementById('viewConfig'),
-      viewRanking: document.getElementById('viewRanking'),
-      
-      inpName: document.getElementById('inpName'),
-      btnGoogle: document.getElementById('btnGoogle'),
-      btnLocal: document.getElementById('btnLocal'),
-      
-      userName: document.getElementById('userName'),
-      userLevel: document.getElementById('userLevel'),
-      xpCurrent: document.getElementById('xpCurrent'),
-      xpFill: document.getElementById('xpFill'),
-      statCompleted: document.getElementById('statCompleted'),
-      statProgress: document.getElementById('statProgress'),
-      statLevelBadge: document.getElementById('statLevelBadge'),
-      
-      modulesList: document.getElementById('modulesList'),
-      navQuiz: document.getElementById('navQuiz'),
-      
-      quizModIcon: document.getElementById('quizModIcon'),
-      quizModId: document.getElementById('quizModId'),
-      quizModTitle: document.getElementById('quizModTitle'),
-      quizStory: document.getElementById('quizStory'),
-      quizQIndex: document.getElementById('quizQIndex'),
-      quizQuestion: document.getElementById('quizQuestion'),
-      quizOptions: document.getElementById('quizOptions'),
-      quizFeedback: document.getElementById('quizFeedback'),
-      quizFeedbackTitle: document.getElementById('quizFeedbackTitle'),
-      quizFeedbackExp: document.getElementById('quizFeedbackExp'),
-      btnQuizNext: document.getElementById('btnQuizNext'),
-      btnQuizFinish: document.getElementById('btnQuizFinish'),
-      
-      btnSignOut: document.getElementById('btnSignOut'),
-      btnReset: document.getElementById('btnReset'),
-      configUserName: document.getElementById('configUserName'),
-      currentPass: document.getElementById('currentPass'),
-      rankBtn: document.getElementById('rankBtn'),
-      rankBody: document.getElementById('rankBody'),
-      btnBackFromRanking: document.getElementById('btnBackFromRanking')
-    };
-    
-    // =========================================================================
-    // BANCO DE DADOS (DB_MODULES)
-    // =========================================================================
+    // IDs que compõem o nível técnico para lógica de bloqueio
+    const TEC_IDS = [1,2,3,4,5,6,7,8,9,10,11,12];
 
-    const DB_MODULES = [
-      // MÓDULOS TÉCNICO
-      { id: 1, title: 'LPS — Last Planner System', icon: '🎯', level: 'Técnico' },
-      { id: 2, title: 'Cronograma — Lógica e EAP', icon: '🗓️', level: 'Técnico' },
-      { id: 3, title: 'Programação Semanal (M. Curto Prazo)', icon: '📝', level: 'Técnico' },
-      { id: 4, title: 'Folha Tarefa — Aderência (PPC)', icon: '✅', level: 'Técnico' },
-      { id: 5, title: 'Produtos Notáveis (Produtividade)', icon: '📈', level: 'Técnico' },
-      { id: 6, title: 'Painel de Bordo (Indicadores)', icon: '📊', level: 'Técnico' },
-      { id: 7, title: 'Rundown / Curva S', icon: '📉', level: 'Técnico' },
-      { id: 8, title: 'Índices & Produtividade', icon: '🏭', level: 'Técnico' },
-      { id: 9, title: 'Reuniões Lean (Daily Meeting)', icon: '🤝', level: 'Técnico' },
-      { id: 10, title: 'Restrições e Lookahead', icon: '🚧', level: 'Técnico' },
-      { id: 11, title: 'Waste Time (Perda de Tempo)', icon: '⏱️', level: 'Técnico' },
-      { id: 12, title: 'As-Built e Fechamento', icon: '🏗️', level: 'Técnico' },
-      
-      // MÓDULOS ANALISTA
-      { id: 13, title: 'Linha de Produção na Obra (Lean aplicado)', icon: '🔥', level: 'Analista' },
-      { id: 14, title: 'Alinhamento Engenharia x Planejamento', icon: '🧩', level: 'Analista' },
-      { id: 15, title: 'Produtividade e Efetivo (Análise crítica)', icon: '🚀', level: 'Analista' },
-      { id: 16, title: 'Cadeia de Suprimentos', icon: '🔗', level: 'Analista' },
-      { id: 17, title: 'Equipamentos e Logística (Gruas, Guindastes)', icon: '⚙️', level: 'Analista' },
-      { id: 18, title: 'Inspeções, Qualidade e Testes', icon: '🔍', level: 'Analista' },
-      { id: 19, title: 'Integração com Segurança', icon: '🔥', level: 'Analista' },
-      { id: 20, title: 'Comissionamento e Entrega', icon: '⚡', level: 'Analista' },
-
-      // MÓDULOS ESPECIALISTA
-      { id: 21, title: 'Gestão de Interfaces entre Disciplinas', icon: '🟣', level: 'Especialista' },
-      { id: 22, title: 'Planejamento Integrado com BIM (4D)', icon: '🧩', level: 'Especialista' },
-      { id: 23, title: 'Planejamento de Grandes Paradas (Shutdowns)', icon: '⚙️', level: 'Especialista' },
-      { id: 24, title: 'Logística Avançada de Campo', icon: '🚚', level: 'Especialista' },
-      { id: 25, title: 'Análise de Desempenho com Dados (KPIs avançados)', icon: '📊', level: 'Especialista' },
-      { id: 26, title: 'Gestão de Mudanças (Change Management)', icon: '🔄', level: 'Especialista' },
-      { id: 27, title: 'Curva de Aprendizado (Learning Curve)', icon: '🔬', level: 'Especialista' },
-      { id: 28, title: 'Resolução de Problemas (Lean PDCA / 5 Porquês)', icon: '🧠', level: 'Especialista' },
-      { id: 29, title: 'Planejamento Orientado ao Cliente (VOE — Valor)', icon: '🏗️', level: 'Especialista' },
-      { id: 30, title: 'Controle em Tempo Real (Live-Data Planning)', icon: '🛰️', level: 'Especialista' },
-
-      // MÓDULOS GERENTE / DIRETOR
-      { id: 31, title: 'Liderança no Planejamento', icon: '👔', level: 'Gerente/Diretor' },
-      { id: 32, title: 'Gestão de Custos & Orçamento', icon: '💰', level: 'Gerente/Diretor' },
-      { id: 33, title: 'Gestão de Riscos', icon: '⚠️', level: 'Gerente/Diretor' },
-      { id: 34, title: 'Comunicação Executiva', icon: '🎯', level: 'Gerente/Diretor' },
-      { id: 35, title: 'AWP com Cronograma Integrado', icon: '🧮', level: 'Gerente/Diretor' },
-      { id: 36, title: 'Tomada de Decisão Estratégica', icon: '🧨', level: 'Gerente/Diretor' },
-
-      // MÓDULOS VISIONÁRIO
-      { id: 37, title: 'Inteligência Artificial na Obra', icon: '🤖', level: 'Visionário' },
-      { id: 38, title: 'Planejamento 5D (Custo + Prazo + Modelo)', icon: '🛰️', level: 'Visionário' },
-      { id: 39, title: 'Power BI e Dashboards Integrados', icon: '📡', level: 'Visionário' },
-      { id: 40, title: 'Planejamento Baseado em Simulações', icon: '🧬', level: 'Visionário' },
+    const MODULES = [
+      // TÉCNICO
+      { id: 1, title: 'LPS — Last Planner System', level: 'Tecnico', icon: '🟢' },
+      { id: 2, title: 'Cronograma — Lógica e EAP', level: 'Tecnico', icon: '🔵' },
+      { id: 3, title: 'Programação Semanal', level: 'Tecnico', icon: '🗂️' },
+      { id: 4, title: 'Folha Tarefa — Aderência', level: 'Tecnico', icon: '📊' },
+      { id: 5, title: 'Produtos Notáveis (Produtividade)', level: 'Tecnico', icon: '📈' },
+      { id: 6, title: 'Painel de Bordo (Indicadores)', level: 'Tecnico', icon: '📊' },
+      { id: 7, title: 'Rundown / Curva S', level: 'Tecnico', icon: '📉' },
+      { id: 8, title: 'Índices & Produtividade', level: 'Tecnico', icon: '🔧' },
+      { id: 9, title: 'Reuniões Lean', level: 'Tecnico', icon: '👥' },
+      { id:10, title: 'Restrições e Lookahead', level: 'Tecnico', icon: '🚧' },
+      { id:11, title: 'Waste Time', level: 'Tecnico', icon: '🟠' },
+      { id:12, title: 'As-Built e Fechamento', level: 'Tecnico', icon: '📋' },
+      // ANALISTA
+      { id:13, title: 'Linha de Produção (Lean)', level: 'Analista', icon: '🔥' },
+      { id:14, title: 'Alinhamento Eng x Plan', level: 'Analista', icon: '🧩' },
+      { id:15, title: 'Produtividade e Efetivo', level: 'Analista', icon: '🚀' },
+      { id:16, title: 'Cadeia de Suprimentos', level: 'Analista', icon: '🔗' },
+      { id:17, title: 'Equipamentos e Logística', level: 'Analista', icon: '⚙️' },
+      { id:18, title: 'Inspeções e Qualidade', level: 'Analista', icon: '🔍' },
+      { id:19, title: 'Integração com Segurança', level: 'Analista', icon: '🔥' },
+      { id:20, title: 'Comissionamento e Entrega', level: 'Analista', icon: '⚡' },
+      // ESPECIALISTA
+      { id:21, title: 'Gestão de Interfaces', level: 'Especialista', icon: '🟣' },
+      { id:22, title: 'Planejamento BIM 4D', level: 'Especialista', icon: '🧩' },
+      { id:23, title: 'Grandes Paradas', level: 'Especialista', icon: '⚙️' },
+      { id:24, title: 'Logística Avançada', level: 'Especialista', icon: '🚚' },
+      { id:25, title: 'Análise de KPIs Avançados', level: 'Especialista', icon: '📊' },
+      { id:26, title: 'Gestão de Mudanças', level: 'Especialista', icon: '🔄' },
+      { id:27, title: 'Curva de Aprendizado', level: 'Especialista', icon: '🔬' },
+      { id:28, title: 'Resolução de Problemas', level: 'Especialista', icon: '🧠' },
+      { id:29, title: 'Planejamento Orientado a Valor', level: 'Especialista', icon: '🏗️' },
+      { id:30, title: 'Controle em Tempo Real', level: 'Especialista', icon: '🛰️' },
+      // GERENTE
+      { id:31, title: 'Liderança no Planejamento', level: 'Gerente', icon: '👔' },
+      { id:32, title: 'Custos e Orçamento', level: 'Gerente', icon: '💰' },
+      { id:33, title: 'Gestão de Riscos', level: 'Gerente', icon: '⚠️' },
+      { id:34, title: 'Comunicação Executiva', level: 'Gerente', icon: '🎯' },
+      { id:35, title: 'AWP Integrado', level: 'Gerente', icon: '🧮' },
+      { id:36, title: 'Tomada de Decisão', level: 'Gerente', icon: '🧨' },
+      // VISIONÁRIO
+      { id:37, title: 'IA na Obra', level: 'Visionario', icon: '🤖' },
+      { id:38, title: 'Planejamento 5D', level: 'Visionario', icon: '🛰️' },
+      { id:39, title: 'Power BI Integrado', level: 'Visionario', icon: '📡' },
+      { id:40, title: 'Simulações Monte Carlo', level: 'Visionario', icon: '🧬' }
     ];
-    
-    // =========================================================================
-    // BANCO DE DADOS (DB_QUIZ) - COM AS 40 QUESTÕES CORRIGIDAS
-    // =========================================================================
-    
-    const TEC_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    
+
     const DB_QUIZ = {
       // MOD 1: LPS
       1: [
@@ -414,7 +321,7 @@
         {q:'Uma atividade programada e não concluída vira:',opts:['Um problema esquecido','WNC (Why Not Completed) / Causa Raiz','Hora extra automática'],ok:1,exp:'Deve-se analisar o motivo do não cumprimento para não repetir o erro.'},
         {q:'O plano semanal precisa garantir:',opts:['Recursos + Frente Liberada + Sem restrições','Apenas vontade de fazer','Máximo de atividades possível'],ok:0,exp:'Só se promete o que se pode cumprir (Confiabilidade).'},
         {q:'Como definir a prioridade das equipes?',opts:['Quem gritar mais alto','Caminho crítico e gargalos de produção','Sorteio'],ok:1,exp:'Focar no que libera as próximas etapas ou impacta o prazo final.'},
-        {q:'O que um PPC baixo na semana indica?',opts:['Chuva excessiva sempre','Falhas de fluxo e liberação de serviço','Azar'],ok:1,exp:'Geralmente mostra que enviamos trabalho com restrição para o campo.'},
+        {q:'O que um PPC baixo na semana indica?',opts:['Chuva excessiva sempre','Falta de preparo ou planejamento ruim','Azar'],ok:1,exp:'Geralmente mostra que enviamos trabalho com restrição para o campo.'},
         {q:'Qual a ferramenta de controle diário do plano semanal?',opts:['E-mail','Folha Tarefa / Diário de Obra','WhatsApp'],ok:1,exp:'Registro formal do que foi feito vs planejado dia a dia.'},
         {q:'Qual a duração ideal do plano de curto prazo?',opts:['1 mês','Apenas a semana (ou quinzena)','1 ano'],ok:1,exp:'Foco total na execução imediata com alta precisão.'},
         {q:'Qual técnica Lean é aplicada na programação semanal?',opts:['Empurrar produção','Pull Planning (Puxar produção)','Estoque infinito'],ok:1,exp:'Produzir o que a próxima etapa precisa, quando precisa.'}
@@ -515,697 +422,370 @@
         {q:'O As-Built ajuda muito em qual fase futura?',opts:['Mobilização','Comissionamento e Operação','Orçamento inicial'],ok:1,exp:'A equipe de startup precisa saber exatamente o que está instalado.'},
         {q:'Uma boa prática para As-Built é:',opts:['Marcação visual em planta (Red lines) por cores','Apenas fotos','Memorizar'],ok:0,exp:'Manter as plantas de campo marcadas (caneta vermelha) atualizadas.'},
         {q:'O resultado final do As-Built é:',opts:['Um desenho bonito','Documento técnico confiável para o cliente (Data Book)','Lixo'],ok:1,exp:'Faz parte da entrega formal do ativo.'}
-      ],
-      
-      // =======================
-      // NÍVEL ANALISTA (13-20)
-      // =======================
-      
-      // MOD 13: Linha de Produção na Obra (Lean aplicado)
-      13: [
-        {q:'Linha de produção significa:',opts:['Fluxo contínuo e previsível','Produzir o máximo possível','Estoque alto no canteiro'],ok:0,exp:'O foco do Lean é o fluxo contínuo e a estabilidade.'},
-        {q:'Qual o maior vilão do fluxo contínuo?',opts:['Reuniões curtas','Interrupções e movimentação desnecessária','Muitos engenheiros'],ok:1,exp:'Interrupções (paradas, esperas) e movimentação são desperdícios (Mudas).'},
-        {q:'O conceito Takt na construção é:',opts:['A velocidade da chuva','Ritmo ideal de produção exigido pelo cliente','Custo diário'],ok:1,exp:'Define o ritmo que a obra precisa ter para terminar no prazo, trabalhando de forma sustentável.'},
-        {q:'Work in Progress (WIP) alto indica:',opts:['Produtividade alta','Acúmulo de trabalho sem entrega final','Equipe motivada'],ok:1,exp:'WIP alto aumenta a complexidade, a chance de erros e atrasa a entrega de valor.'},
-        {q:'O balanceamento de linha evita:',opts:['Mão de obra ociosa','Gargalos e subutilização de recursos','Desperdício'],ok:1,exp:'Balancear garante que todas as etapas têm capacidade para absorver o volume da etapa anterior, evitando gargalos.'},
-        {q:'Fluxo em U (layout) facilita:',opts:['Aumento de custos','Entrega, supervisão e redução de movimentação','Mais burocracia'],ok:1,exp:'Otimiza o transporte e a comunicação entre as frentes.'},
-        {q:'Para manter o fluxo contínuo, é fundamental:',opts:['Aumentar o estoque','Remover restrições e garantir recursos','Pressionar a equipe'],ok:1,exp:'O fluxo só acontece se as atividades estiverem preparadas para iniciar (sem travas).'},
-        {q:'Os indicadores que melhor refletem a saúde do fluxo são:',opts:['Apenas o custo','PPC (Confiabilidade) + Produtividade (Eficiência)','Número de reclamações'],ok:1,exp:'PPC e produtividade mostram se o combinado está sendo cumprido com eficiência.'}
-      ],
-      // MOD 14: Alinhamento Engenharia x Planejamento
-      14: [
-        {q:'O principal papel da Engenharia no planejamento é:',opts:['Fazer a compra de material','Fornecer informações completas (projetos) no tempo certo','Apenas fiscalizar a obra'],ok:1,exp:'O planejamento é refém da informação de engenharia (projetos, isométricos, lista de materiais).'},
-        {q:'A falta de detalhamento ou especificação gera o que para o Planejamento?',opts:['Adiantamento','Restrição e inviabilidade de execução','Melhoria de custo'],ok:1,exp:'Sem informação detalhada, a atividade não pode ser liberada (restrição de engenharia).'},
-        {q:'Qual documento essencial a Engenharia deve liberar com antecedência?',opts:['Apenas o desenho 2D','Lista de materiais (LM) e desenhos revisados','O cronograma do cliente'],ok:1,exp:'A LM é crucial para que o Suprimentos comece a agir e o Planejamento calcule o efetivo.'},
-        {q:'A sequência construtiva depende diretamente de:',opts:['Ordem alfabética das disciplinas','Liberação de projetos e interfaces','Disponibilidade de café'],ok:1,exp:'Não adianta planejar solda antes da pré-montagem (erro de lógica).'},
-        {q:'Para garantir o alinhamento, a Engenharia deve:',opts:['Apenas enviar o projeto por e-mail','Participar ativamente no Pull Planning e Lookahead','Não se envolver com o campo'],ok:1,exp:'O diálogo entre as áreas é vital para a construtibilidade.'},
-        {q:'A melhor forma de evitar retrabalho causado pela Engenharia é:',opts:['Fazer o projeto perfeito','Revisar interfaces e validar pacotes de trabalho conjuntamente','Culpar o campo'],ok:1,exp:'A validação cruzada pega erros lógicos e de interferência antes da execução.'},
-        {q:'O controle de revisões (Versionamento) é:',opts:['Desnecessário','Indispensável para garantir a rastreabilidade do projeto','Só útil no final da obra'],ok:1,exp:'A construção deve usar a última revisão validada. Erro de revisão é erro crítico.'},
-        {q:'O alinhamento constante entre as áreas deve ser feito através de:',opts:['Memorandos internos','Reuniões semanais integradas (Eng/Plan/Supr/Campo)','Reuniões anuais'],ok:1,exp:'A frequência alta permite corrigir a rota antes que o problema se agrave.'}
-      ],
-      // MOD 15: Produtividade e Efetivo (Análise crítica)
-      15: [
-        {q:'Produtividade baixa com efetivo alto na frente de serviço indica:',opts:['Eficácia na gestão','Falta de fluxo e coordenação','Apenas mau tempo'],ok:1,exp:'Pessoas demais paradas/ociosas (Waste Time) esperando material ou recurso chave.'},
-        {q:'Antes de aumentar o efetivo para ganhar prazo, você deve:',opts:['Contratar mais gente','Melhorar a produtividade do time atual e remover restrições','Mudar o gerente'],ok:1,exp:'Se o fluxo é ruim, mais gente só fará mais gente ficar parada.'},
-        {q:'O excesso de pessoas em uma frente de serviço pequena pode causar:',opts:['Aumento da eficiência','Aglomeração, insegurança e interferência','Produtividade máxima'],ok:1,exp:'Otimizar o número para o tamanho do serviço (Trabalho em Progresso Ideal).'},
-        {q:'O principal indicador para análise crítica de efetivo é:',opts:['Número de reuniões','HH/Unidade (Razão Unitária) e produção diária','Salário médio'],ok:1,exp:'Mede a eficiência real da equipe (quantas horas demoram para fazer uma unidade).'},
-        {q:'Planejar a logística das frentes ajuda a evitar:',opts:['Trabalho','Deslocamento excessivo e espera por material','Otimismo'],ok:1,exp:'Reduzir a distância entre o estoque e o ponto de consumo é ganho puro de HH.'},
-        {q:'O efetivo ideal para uma obra é:',opts:['O maior possível','O mínimo necessário para manter o fluxo contínuo e a meta de produção','O número orçado no projeto'],ok:1,exp:'Atingir a meta com a menor quantidade de esforço (Lean).'},
-        {q:'Longa espera por equipamento (guindaste, munck) indica:',opts:['Boa gestão','Má coordenação e agendamento de recursos compartilhados','Equipe desmotivada'],ok:1,exp:'Ociosiade de pessoas é um erro de planejamento de logística.'},
-        {q:'O efetivo deve ser relacionado e validado com:',opts:['Apenas o RH','Curva S, PPC e as quantidades a produzir','Custo do aluguel'],ok:1,exp:'O efetivo tem que ser suficiente para cumprir o que a Curva S (Plano) exige e para manter o PPC alto.'}
-      ],
-      // MOD 16: Cadeia de Suprimentos
-      16: [
-        {q:'O papel principal da área de Suprimentos é:',opts:['Apenas achar o menor preço','Garantir materiais na hora certa (Data Necessária da Obra)','Contratar o RH'],ok:1,exp:'O material que chega tarde bloqueia o caminho crítico.'},
-        {q:'A integração de Suprimentos com o cronograma define:',opts:['A cor do capacete','A data de entrega necessária na obra (DNO)','O tipo de solda'],ok:1,exp:'A DNO deve ser a base para a compra e o follow-up.'},
-        {q:'O controle recomendado para rastrear o material é:',opts:['Status de compras e datas de entregas confirmadas (Tracking)','Apenas o número do pedido','O valor total gasto'],ok:0,exp:'Monitorar o pedido desde a emissão até a chegada na obra (follow-up ativo).'},
-        {q:'Material crítico é aquele que:',opts:['É muito caro','Impacta o caminho crítico e tem longo prazo de fabricação','É importado'],ok:1,exp:'Atraso em material crítico significa atraso no prazo final da obra.'},
-        {q:'Uma falha comum na gestão de materiais é:',opts:['Planejar com antecedência','Pedido tardio ou sem detalhamento da Engenharia','Comprar em excesso'],ok:1,exp:'O planejamento da compra não acompanhou o cronograma, gerando atraso na solicitação.'},
-        {q:'Quem sinaliza a urgência de um item para Suprimentos?',opts:['A diretoria','O Planejamento, com base no cronograma e Lookahead','O almoxarifado'],ok:1,exp:'O Planejamento é a voz do campo e do prazo no processo de compra.'},
-        {q:'O follow-up com o fornecedor deve ser:',opts:['Uma vez por mês','Semanal no mínimo (ou diário para itens críticos)','No dia da entrega'],ok:1,exp:'O risco é muito alto para confiar apenas no prazo inicial do pedido.'},
-        {q:'O armazenamento incorreto do material no canteiro gera:',opts:['Facilidade na inspeção','Perda, avaria e atraso na localização/montagem','Economia'],ok:1,exp:'A logística de campo (Mod. 24) deve garantir a guarda e organização.'}
-      ],
-      // MOD 17: Equipamentos e Logística (Gruas, Guindastes)
-      17: [
-        {q:'O içamento de grandes peças exige:',opts:['Força bruta','Planejamento detalhado, Rigger e Análise de Risco','Apenas um bom guindasteiro'],ok:1,exp:'É uma atividade crítica que precisa de plano de içamento e segurança.'},
-        {q:'Uma interferência aérea (operação de guindaste) costuma causar:',opts:['Felicidade','Parada total de outros serviços (segurança)','Maior produtividade'],ok:1,exp:'Por segurança, todas as frentes sob o raio de giro precisam parar.'},
-        {q:'A melhor programação de guindastes é feita com:',opts:['Ordem de chegada','Janela exclusiva de tempo com liberação de frente','Uso contínuo sem parar'],ok:1,exp:'Agendar o uso para minimizar o impacto nas frentes vizinhas (recurso compartilhado).'},
-        {q:'O principal risco em uma operação de içamento é:',opts:['Atraso de 5 minutos','Queda, colisão e acidentes graves','Dificuldade na comunicação'],ok:1,exp:'O risco à segurança é a prioridade zero.'},
-        {q:'Um recurso compartilhado (como um guindaste) deve ter:',opts:['Apenas o custo registrado','Agendamento visual e claro para todas as frentes','Uso liberado a quem chegar primeiro'],ok:1,exp:'A transparência na agenda evita conflitos e paradas (Gestão à Vista).'},
-        {q:'A produtividade da frente de montagem cai com:',opts:['Espera longa pelo guindaste','Equipe pequena e focada','Material no pé do serviço'],ok:0,exp:'Se o principal recurso (guindaste) está em espera, as pessoas ficam ociosas.'},
-        {q:'Liberar a área de içamento significa:',opts:['Apenas isolar com fita','Garantir Segurança, sinalização e comunicação com frentes','Chamar o cliente'],ok:1,exp:'É um conjunto de ações para garantir que a operação ocorra sem incidentes.'},
-        {q:'Qual disciplina deve ter prioridade no agendamento de equipamentos?',opts:['A mais fácil','As frentes críticas (caminho crítico)','A mais suja'],ok:1,exp:'O foco deve estar no que define o prazo final da obra.'}
-      ],
-      // MOD 18: Inspeções, Qualidade e Testes
-      18: [
-        {q:'A inspeção de qualidade no campo garante:',opts:['Conformidade técnica do serviço e liberação','Apenas o registro no sistema','Que o soldador é bom'],ok:0,exp:'É a verificação formal se o trabalho atende aos requisitos do projeto.'},
-        {q:'Sem a liberação do inspetor de qualidade (RTL), o que acontece?',opts:['O próximo serviço pode começar','Nada avança e gera backlog','A obra adiantada'],ok:1,exp:'O próximo serviço que depende desse ponto de controle não pode ser iniciado.'},
-        {q:'O controle da inspeção deve ser feito por:',opts:['Diário de obra','Status visual (liberado, pendente, rejeitado) e rastreabilidade','Apenas e-mail'],ok:1,exp:'O Planejamento monitora o status de liberação como uma restrição.'},
-        {q:'O retrabalho gerado por falha na qualidade acarreta:',opts:['Perda de prazo e custo adicional','Lucro','Aumento do efetivo'],ok:0,exp:'Retrabalho é o pior dos desperdícios, pois se gasta tempo e dinheiro corrigindo o que já devia estar pronto.'},
-        {q:'Quem define os pontos de controle (PC) e testes essenciais?',opts:['O almoxarifado','Engenharia, Qualidade e a Norma Técnica','O Planejamento'],ok:1,exp:'É um requisito técnico definido no Plano de Inspeção e Testes (PIT).'},
-        {q:'Os testes hidrostáticos ou elétricos são considerados:',opts:['Uma formality','Marco essencial de avanço e liberação','Uma perda de tempo'],ok:1,exp:'A conclusão bem-sucedida de um teste é um marco de avanço físico real.'},
-        {q:'A documentação de inspeção (Data Book) deve ser:',opts:['Feita com pressa','Completa, rastreável e organizada','Apenas armazenada'],ok:1,exp:'É a prova de que a obra foi construída conforme especificado.'},
-        {q:'A entrega final da obra depende de:',opts:['Aprovação visual','Punch list zerada (pendências resolvidas)','O desejo do cliente'],ok:1,exp:'O cliente só recebe o ativo quando todas as pendências (Punch) estão resolvidas.'}
-      ],
-      // MOD 19: Integração com Segurança
-      19: [
-        {q:'A Segurança deve vir antes de:',opts:['Custos','Execução de qualquer tarefa','Reunião'],ok:1,exp:'O Planejamento não pode liberar o que não tem condições seguras para ser feito.'},
-        {q:'A liberação de trabalho (Permissão de Trabalho) é:',opts:['Uma etapa burocrática','Condição necessária e formal para o início de serviços de risco','Opicional'],ok:1,exp:'Sem PT/APR, o serviço está bloqueado (restrição de segurança).'},
-        {q:'A Análise Preliminar de Risco (APR) deve:',opts:['Ser copiada da obra anterior','Antecipar riscos e definir medidas de controle','Apenas ser assinada'],ok:1,exp:'É feita antes do início para mapear e mitigar os perigos da atividade.'},
-        {q:'O que acontece com o cronograma se a frente de trabalho está sem liberação de Segurança?',opts:['O trabalho avança','A obra para (Segurança bloqueia a execução)','O planejamento é refeito'],ok:1,exp:'O bloqueio por segurança é inegociável.'},
-        {q:'A integração da Segurança no Pull Planning e Lookahead permite:',opts:['Criar mais risco','Evitar retrabalho e paradas por falta de APR/PT','Deixar a responsabilidade só para o Técnico de Segurança'],ok:1,exp:'Planejar a Segurança junto com a produção é o ideal.'},
-        {q:'Um bom indicador de segurança para o Planejamento é:',opts:['Número de treinamentos','Taxa de desvios/condições inseguras encontradas','Número de engenheiros'],ok:1,exp:'Mede a prevenção e o engajamento da equipe em evitar o risco.'},
-        {q:'A área de Segurança deve integrar com:',opts:['Apenas o RH','Todas as frentes e disciplinas da obra','O financeiro'],ok:1,exp:'O risco existe em toda a obra, a integração é total.'},
-        {q:'O objetivo final da integração Planejamento/Segurança é:',opts:['Aumentar o prazo','Zero incidente e garantir o fluxo de trabalho','Câmera de segurança'],ok:1,exp:'Segurança é condição para a produtividade e a saúde do projeto.'}
-      ],
-      // MOD 20: Comissionamento e Entrega
-      20: [
-        {q:'O Comissionamento é a fase que garante:',opts:['Apenas a limpeza da obra','O sistema funcionando conforme especificado (Startup)','O pagamento do contrato'],ok:1,exp:'É a prova final de que todos os subsistemas interagem e operam.'},
-        {q:'O Pré-comissionamento exige que:',opts:['O cliente esteja presente','Todos os sistemas interligados e testados individualmente','Apenas 50% da obra esteja pronta'],ok:1,exp:'Verifica a integridade e prontidão do sistema antes do teste final.'},
-        {q:'Quem coordena a fase de Comissionamento?',opts:['O RH','O Planejamento em conjunto com a equipe de Comissionamento/Operação','A Engenharia'],ok:1,exp:'O Planejamento atua como PMO, integrando e sequenciando os testes.'},
-        {q:'Um atraso típico no Comissionamento é causado por:',opts:['Excesso de recursos','Falta de interface concluída (um sistema esperando o outro)','Organização excessiva'],ok:1,exp:'Os sistemas são interdependentes, e a falha em um trava o teste do outro.'},
-        {q:'Qual o documento chave para a entrega formal ao cliente?',opts:['Diário de obra','Dossiê de entregas (Data Book) e As-Built final','A foto da obra'],ok:1,exp:'Comprova que a obra foi construída e testada conforme contrato.'},
-        {q:'A Punch List (Lista de Pendências) na entrega representa:',opts:['Bônus para a equipe','Pendências ou não-conformidades que precisam ser resolvidas','Trabalho extra não planejado'],ok:1,exp:'Deve ser zerada antes do Acceptance Certificate do cliente.'},
-        {q:'Validar o sistema indica:',opts:['Obras a fazer','Entrega formal ao cliente e início da garantia/operação','Fim do projeto'],ok:1,exp:'É a transferência de responsabilidade da construtora para o operador.'},
-        {q:'Qual disciplina geralmente é mais crítica/final no Comissionamento?',opts:['Estrutura civil','Instrumentação/tubulação e elétrica','Pintura'],ok:1,exp:'São os sistemas que controlam a operação e a automação da planta.'}
-      ],
-      
-      // ===========================
-      // NÍVEL ESPECIALISTA (21-30)
-      // ===========================
-      
-      // MOD 21: Gestão de Interfaces entre Disciplinas
-      21: [
-        {q:'Interface é definida como:',opts:['Uma reunião chata','Dependência e ponto de conexão entre duas disciplinas (ex: Civil e Mecânica)','Apenas o limite de um contrato'],ok:1,exp:'Onde uma disciplina termina e a outra começa; pontos críticos de coordenação.'},
-        {q:'A falha comum na gestão de interfaces é:',opts:['O alinhamento constante','Disciplinas não se conversarem ou não definirem o ponto de entrega','A falta de guindaste'],ok:1,exp:'A falta de comunicação sobre os limites e requisitos mútuos gera retrabalho.'},
-        {q:'Qual a ferramenta chave para gerenciar interfaces?',opts:['Ata de reunião','Reuniões de interface focadas e Matriz de Responsabilidades (RACI)','E-mail para todos'],ok:1,exp:'Reuniões periódicas para travar os requisitos e monitorar o status mútuo.'},
-        {q:'O indicador mais crítico da gestão de interface é:',opts:['Número de documentos','Impacto no caminho crítico','Custo da interface'],ok:1,exp:'Focar nas interfaces que, se falharem, atrasam o projeto inteiro.'},
-        {q:'Uma gestão eficiente de interfaces reduz:',opts:['A segurança','Retrabalho, conflitos e paradas inesperadas','Apressa a execução'],ok:1,exp:'Evita que o trabalho tenha que ser refeito porque a outra equipe não estava pronta.'},
-        {q:'Quem deve ser o "Dono" da Interface?',opts:['O Planejamento','A disciplina que precisa liberar o avanço ou tem o risco maior','O cliente'],ok:1,exp:'A responsabilidade clara para destravar o avanço é vital (accountability).'},
-        {q:'Atrasos e problemas normalmente surgem em:',opts:['Frentes grandes e simples','Interligações, testes e pontos de transição','Serviços isolados'],ok:1,exp:'A complexidade aumenta na junção dos sistemas.'},
-        {q:'A melhor solução para evitar falhas em interfaces é:',opts:['Planejar separado','Planejamento conjunto, alinhado e documentação clara dos limites','Deixar para o campo resolver'],ok:1,exp:'Pull Planning e Lookahead multi-disciplinar são ideais.'}
-      ],
-      // MOD 22: Planejamento Integrado com BIM (4D)
-      22: [
-        {q:'Planejamento 4D é definido como:',opts:['O projeto bonito','O cronograma integrado ao modelo 3D (Tempo)','O custo da obra'],ok:1,exp:'Adiciona a dimensão tempo (schedule) ao modelo 3D.'},
-        {q:'O benefício principal do 4D é:',opts:['Aumento do custo','Visualização da sequência construtiva e identificação de conflitos','Redução de reuniões'],ok:1,exp:'Permite simular o processo e ver a evolução da obra antes de começar.'},
-        {q:'A simulação 4D ajuda o Planejamento a:',opts:['Comprar material','Identificar interferências de logística, acesso e sequência','Calcular efetivo'],ok:1,exp:'Evita que o guindaste bloqueie a passagem ou que a sequência seja ilógica.'},
-        {q:'Os resultados visuais do 4D são:',opts:['Plantas coloridas','Simulações de avanço e vídeos de construção virtual','Planilhas de custo'],ok:1,exp:'O vídeo da construção é uma ferramenta poderosa de alinhamento.'},
-        {q:'Quem deve alimentar e manter o modelo 4D atualizado?',opts:['O cliente','Planejamento e Engenharia (responsáveis pela informação)','O time de montagem'],ok:1,exp:'O modelo deve refletir o que está sendo planejado e executado.'},
-        {q:'A atualização do modelo 4D deve ser:',opts:['Apenas no início','Semanal ou quinzenalmente','Somente no final da obra'],ok:1,exp:'Precisa acompanhar o ciclo do planejamento de curto prazo para ser útil.'},
-        {q:'A tomada de decisão baseada em 4D usa:',opts:['Intuição','Cenários realistas de construtibilidade e prazos','Relatórios longos'],ok:1,exp:'Permite comparar planos (A vs B) e escolher o de menor risco/melhor fluxo.'},
-        {q:'A integração 4D gera uma grande vantagem em:',opts:['Orçamento','Startup, comissionamento e sequenciamento de frentes','Contratação de pessoal'],ok:1,exp:'A sequência lógica do comissionamento é validada visualmente no 4D.'}
-      ],
-      // MOD 23: Planejamento de Grandes Paradas (Shutdowns)
-      23: [
-        {q:'O principal desafio de uma Grande Parada é:',opts:['Almoço','Janela curta de tempo com ótimos recursos e alta criticidade','Falta de projetos'],ok:1,exp:'Tempo é dinheiro (milhões/dia). O plano precisa ser cirúrgico.'},
-        {q:'Na Parada, quem "manda" no cronograma?',opts:['O cliente','O Caminho Crítico (folga zero)','O almoxarifado'],ok:1,exp:'Qualquer deslize no caminho crítico impacta o prazo total da Parada.'},
-        {q:'O cronograma da Parada deve ser:',opts:['Apenas diário','Horário e com folga zero ou negativa','Com folga de 30%'],ok:1,exp:'Planejamento de micro-escala, com horas exatas para cada tarefa do CC.'},
-        {q:'A frequência das reuniões de alinhamento na Parada é:',opts:['Mensal','Diária e rápida (antes e depois do turno)','Semanal'],ok:1,exp:'O monitoramento precisa ser em tempo real para ações imediatas.'},
-        {q:'O maior risco em uma Parada é:',opts:['Custo alto','Atraso em atividade crítica do Caminho Crítico','Falta de café'],ok:1,exp:'O atraso do CC aumenta o tempo de inatividade da planta.'},
-        {q:'A Contingência (Plano B) na Parada deve envolver:',opts:['Novos contratos','Equipes reserva, equipamentos de emergência e planos alternativos','Apenas promessas'],ok:1,exp:'Tudo precisa estar pronto para ser acionado se o plano A falhar.'},
-        {q:'A interface essencial para a Parada é:',opts:['RH','Segurança, Qualidade e Suprimentos (entrega just-in-time)','Marketing'],ok:1,exp:'Segurança para liberar e Suprimentos para garantir os itens na hora exata.'},
-        {q:'O fim da Parada depende de:',opts:['Liberação do engenheiro','Comissionamento e testes liberados','Fim do pagamento'],ok:1,exp:'O sistema precisa ser testado e entregue para operação.'}
-      ],
-      // MOD 24: Logística Avançada de Campo
-      24: [
-        {q:'A Logística de Campo visa principalmente:',opts:['Aumentar o número de reuniões','Reduzir o deslocamento e o tempo de espera (Waste Time)','Comprar mais caminhões'],ok:1,exp:'Otimizar o fluxo de materiais e pessoas.'},
-        {q:'O movimento e a espera de material são considerados:',opts:['Trabalho que agrega valor','Desperdício (Muda)','Uma necessidade'],ok:1,exp:'O material deve ir direto para o ponto de consumo.'},
-        {q:'Um Layout de Canteiro eficiente influencia diretamente:',opts:['Apenas o custo','A Produtividade e o tempo de deslocamento','A cor do uniforme'],ok:1,exp:'Reduzir a distância entre o almoxarifado e a frente é ganho de HH.'},
-        {q:'A gestão de frota compartilhada (ônibus, muncks) exige:',opts:['Uso livre','Programação visual e agendamento centralizado','Muitas planilhas'],ok:1,exp:'Transparência e agendamento evitam o conflito de recursos.'},
-        {q:'Janela logística significa:',opts:['Horário de almoço','Horários específicos para entrada e acesso de veículos e materiais críticos','Tempo de folga'],ok:1,exp:'Controlar o fluxo de acesso para não congestionar o canteiro e as frentes.'},
-        {q:'Melhorar a logística de campo gera:',opts:['Caos','Fluxo contínuo e redução de ociosidade','Mais inventário'],ok:1,exp:'Se a logística falha, o fluxo da obra quebra.'},
-        {q:'Estoque de material posicionado próximo à frente de serviço:',opts:['Ganha tempo de montagem e reduz movimentação','Causa desorganização','É mais caro'],ok:0,exp:'Estoque no ponto de uso (Ponto de Consumo) é Lean.'},
-        {q:'O check diário de rotas e acessos garante que:',opts:['A logística está em dia e as rotas estão livres de interferências','A equipe está no horário','O clima está bom'],ok:0,exp:'Verificar a condição das estradas internas e a liberação das frentes.'}
-      ],
-      // MOD 25: Análise de Desempenho com Dados (KPIs avançados)
-      25: [
-        {q:'Um KPI (Key Performance Indicator) deve ser:',opts:['Complexo e detalhado','Relevante, atualizado e acionável','Estático'],ok:1,exp:'Precisa te dizer o que fazer e onde agir (foco no futuro, não no passado).'},
-        {q:'Um KPI "bonito" mas que não gera ação é um:',opts:['Sucesso','Desperdício de tempo e esforço','Necessidade'],ok:1,exp:'Não perca tempo medindo o que não é crítico para a decisão.'},
-        {q:'O KPI do Caminho Crítico deve ter qual prioridade de monitoramento?',opts:['Baixa','Absoluta','Média'],ok:1,exp:'Se o CC desvia, o prazo final desvia. O CC é a prioridade.'},
-        {q:'A frequência de análise dos KPIs críticos deve ser:',opts:['Mensal','Semanal ou diária','Anual'],ok:1,exp:'A ação corretiva precisa ser rápida, então o dado tem que ser fresco.'},
-        {q:'A cor vermelha em um Dashboard significa:',opts:['Tudo bem','Risco ou desvio crítico que exige Ação Imediata','Problema do cliente'],ok:1,exp:'Semaforização é o motor da gestão à vista (Gestão por Exceção).'},
-        {q:'Os dados que alimentam os KPIs devem ser:',opts:['Aproximados','Confiáveis, rastreáveis e validados no campo','Apenas do software'],ok:1,exp:'Decisão baseada em fatos, não em palpites (GIGO - Garbage In, Garbage Out).'},
-        {q:'Os responsáveis por atualizar os dados (proprietários do KPI) devem ser:',opts:['A diretoria','Planejamento e Campo (Last Planners)','O RH'],ok:1,exp:'O dado nasce na ponta, no chão de fábrica/obra.'},
-        {q:'A decisão estratégica na obra deve ser baseada em:',opts:['Opinião do gerente','Fatos, indicadores e dados confiáveis','Apenas no humor do dia'],ok:1,exp:'Gestão data-driven (orientada a dados).'}
-      ],
-      // MOD 26: Gestão de Mudanças (Change Management)
-      26: [
-        {q:'Uma mudança no escopo ou projeto altera sempre:',opts:['A cor da obra','Escopo, prazo e custo','Apenas o material'],ok:1,exp:'A Tríade de Ferro é sempre impactada por mudanças não controladas.'},
-        {q:'A ferramenta de controle de mudanças mais importante é:',opts:['Reunião informal','Registro formal da mudança (Request For Change - RFC)','O diário de obra'],ok:1,exp:'Documentar o que mudou, quem pediu, por quê e o impacto.'},
-        {q:'O impacto da mudança no prazo deve:',opts:['Ser ignorado','Ser avaliado imediatamente no cronograma (Quick Check)','Ser checado no final'],ok:1,exp:'Qualquer mudança no escopo/projeto pode mover o Caminho Crítico.'},
-        {q:'Quem inicia formalmente o processo de mudança (RFC)?',opts:['O Planejamento','Engenharia, Cliente ou qualquer parte afetada','O segurança'],ok:1,exp:'A origem da mudança pode ser interna ou externa.'},
-        {q:'Quem deve validar e aprovar a mudança (RFC)?',opts:['Apenas o campo','Planejamento, Gerenciamento de Projetos e Cliente (se for impacto contratual)','O fornecedor'],ok:1,exp:'Envolve o custo, o prazo e o contrato.'},
-        {q:'A mudança deve ser documentada?',opts:['Não, é perda de tempo','Sempre, para evitar conflitos e rastrear o custo','Apenas as grandes'],ok:1,exp:'A documentação é a defesa da empresa em casos de disputa.'},
-        {q:'Regras claras de gestão de mudanças evitam:',opts:['Trabalho','Conflitos contratuais, estouro de custo e atrasos não previstos','O atraso'],ok:1,exp:'Estabelece o processo formal de ajuste do contrato/escopo.'},
-        {q:'As mudanças afetam diretamente o:',opts:['Almoço','Caminho Crítico','O humor da equipe'],ok:1,exp:'O Planejamento precisa recalcular o CC após a aprovação da mudança.'}
-      ],
-      // MOD 27: Curva de Aprendizado (Learning Curve)
-      27: [
-        {q:'Equipe experiente (Curva de Aprendizado) tipicamente:',opts:['Produz a mesma coisa','Produz mais rápido e com mais qualidade','Causa mais problemas'],ok:1,exp:'O tempo para fazer a mesma tarefa diminui a cada repetição.'},
-        {q:'A Curva de Aprendizado significa:',opts:['Mais HH gasto','Redução progressiva do tempo/HH necessário para uma unidade','Construção mais lenta'],ok:1,exp:'Menos esforço para o mesmo resultado ao longo do tempo.'},
-        {q:'O indicador (HH/unidade) melhora com:',opts:['Falta de planejamento','A cada ciclo de repetição','Mudanças constantes'],ok:1,exp:'A performance aumenta conforme o time pega o jeito.'},
-        {q:'O dado que precisamos medir para plotar a Curva é:',opts:['Peso do material','HH/unidade inicial e a produção em cada ciclo','Apenas o custo'],ok:1,exp:'Mede a taxa de melhoria da produtividade.'},
-        {q:'A melhor forma de acelerar o aprendizado é com:',opts:['Nenhuma intervenção','Treinamento, repetição e feedback constante do planejamento','Contratar mais gente'],ok:1,exp:'Planejamento pode criar "Work Packages" repetitivos para otimizar.'},
-        {q:'A sobrecarga ou pressa excessiva da equipe na curva:',opts:['Acelera o aprendizado','Destrói a curva e aumenta os erros/retrabalho','É fundamental'],ok:1,exp:'Estabilidade e qualidade são cruciais para o aprendizado.'},
-        {q:'Um ciclo de trabalho curto (tarefas menores) ajuda a:',opts:['Confundir','Acelerar a evolução da curva e o feedback','Diminuir a produtividade'],ok:1,exp:'O feedback sobre a performance é mais rápido.'},
-        {q:'A Curva de Aprendizado é mais visível em:',opts:['Atividades únicas','Atividades repetitivas (ex: lançamento de tubulação, solda de esquadrias)','Reuniões'],ok:1,exp:'A repetição é o motor do aprendizado.'}
-      ],
-      // MOD 28: Resolução de Problemas (Lean PDCA / 5 Porquês)
-      28: [
-        {q:'O ciclo PDCA significa:',opts:['Primeiro-Depois-Chega-Atrasa','Plan-Do-Check-Act (Planejar-Fazer-Checar-Agir)','Pode-Dar-Certo-Amanhã'],ok:1,exp:'Metodologia de melhoria contínua (deming wheel).'},
-        {q:'A técnica dos "5 Porquês" revela:',opts:['A desculpa do atraso','A Causa Raiz do problema','O responsável pelo erro'],ok:1,exp:'Permite ir além do sintoma e achar a fonte do problema.'},
-        {q:'A solução de um problema deve ser:',opts:['Imediata','Eficaz, padronizada e verificável (que funcione e evite recorrência)','Temporária'],ok:1,exp:'Agir sobre a causa raiz para que o problema não volte.'},
-        {q:'O "Dono da Ação" (Responsável pela Solução) deve ser:',opts:['O Planejamento','Quem tem o poder/responsabilidade de executá-la','O cliente'],ok:1,exp:'Accountability para garantir que a ação de melhoria seja feita.'},
-        {q:'A Revisão do impacto (Check) deve ser feita:',opts:['Nunca','Após a implementação da solução','Na hora do problema'],ok:1,exp:'Avaliar se a solução (Act) realmente resolveu o problema (Análise de Resultados).'},
-        {q:'Reagir a problemas sem análise prévia geralmente:',opts:['Resolve tudo','Gera retrabalho e mais problemas (apenas no sintoma)','É a melhor prática'],ok:1,exp:'Tentar remediar sem saber a causa raiz é perda de tempo.'},
-        {q:'A causa comum de falha na resolução de problemas é:',opts:['Falta de dinheiro','Treinar só no sintoma, sem atacar a causa raiz','Ter muitos dados'],ok:1,exp:'O tratamento precisa ser na raiz, não na folha.'},
-        {q:'A melhoria contínua (Kaizen) exige da equipe:',opts:['Apenas treinamento','Cultura de aprendizado, transparência e disciplina','Punição por erro'],ok:1,exp:'Incentivar a identificação e a correção de problemas.'}
-      ],
-      // MOD 29: Planejamento Orientado ao Cliente (VOE — Valor)
-      29: [
-        {q:'No Lean, o Cliente define:',opts:['O cronograma','O que realmente tem valor','Quem será o gerente'],ok:1,exp:'Valor é definido pela perspectiva de quem usa o produto final.'},
-        {q:'Valor é o que:',opts:['Dá mais lucro','Avança o resultado final e o cliente está disposto a pagar','É fácil de fazer'],ok:1,exp:'Tudo que não agrega valor é desperdício.'},
-        {q:'Uma atividade sem valor (desnecessária) é considerada:',opts:['Processo','Desperdício (Waste/Muda)','Trabalho'],ok:1,exp:'Ex: Refazer um desenho ou esperar material.'},
-        {q:'A prioridade do planejamento deve vir de:',opts:['O que o mestre quer','Caminho crítico + o que entrega valor ao cliente','Apenas o custo'],ok:1,exp:'Focar no que avança a entrega final do ativo.'},
-        {q:'O feedback do cliente (VOE - Voice of the Customer) deve ser:',opts:['Uma vez por ano','Constante e integrado ao planejamento','Apenas em caso de briga'],ok:1,exp:'Garantir que o que está sendo construído ainda atende à necessidade atual dele.'},
-        {q:'O cliente participa da programação da obra em qual processo?',opts:['Reunião de RH','No Pull Planning (definição das macro-etapas)','No diário de obra'],ok:1,exp:'Ele ajuda a definir a sequência lógica e a prioridade das entregas.'},
-        {q:'O valor (prioridade do cliente) muda com:',opts:['O tempo','Contexto e mudança de mercado','A fase da lua'],ok:1,exp:'O planejamento precisa ser flexível para se adaptar à mudança de valor.'},
-        {q:'O resultado de um planejamento orientado a valor é:',opts:['Economia de 10%','Entrega com excelência, no prazo e no escopo que o cliente realmente precisa','Mais trabalho'],ok:1,exp:'Focar no que o cliente realmente valoriza.'}
-      ],
-      // MOD 30: Controle em Tempo Real (Live-Data Planning)
-      30: [
-        {q:'Dado em tempo real no planejamento permite:',opts:['Atraso','Agilidade na tomada de decisão e correção de rota','Mais dúvidas'],ok:1,exp:'Saber o que está acontecendo AGORA (ou D-1) e não no final do mês.'},
-        {q:'Informar o status da execução (check-in/out) deve ser feito:',opts:['Com 1 semana de atraso','Imediatamente, via app ou Folha Tarefa digital','Apenas por e-mail'],ok:1,exp:'O delay do dado é o delay da ação corretiva.'},
-        {q:'A tecnologia (apps, tablets) facilita:',opts:['Atrasar','O fluxo da informação do campo para a decisão','O desperdício'],ok:1,exp:'A digitalização da Folha Tarefa/Checklist agiliza o processo.'},
-        {q:'Os indicadores chave (KPIs) para controle em tempo real são:',opts:['Apenas o custo','Produtividade e PPC (Percent Plan Complete)','Número de soldas'],ok:1,exp:'Medir a eficiência e a confiabilidade de forma imediata.'},
-        {q:'A falha mais comum no Live-Data Planning é:',opts:['O dado atrasado ou incorreto','A pressa','O custo do app'],ok:0,exp:'Se o dado não reflete a realidade do momento, ele não serve para o controle.'},
-        {q:'A atualização do status deve ser feita com qual frequência?',opts:['Anual','Na hora da execução (ou D-1)','Mensal'],ok:1,exp:'Garantir que a informação na tela é a realidade do campo.'},
-        {q:'O ganho direto do controle em tempo real é:',opts:['Aumento do lucro','Redução de espera, ociosidade e desperdício (Waste Time)','Mais reuniões'],ok:1,exp:'O planejador consegue agir antes que a frente pare.'},
-        {q:'O controle em tempo real exige uma forte integração entre:',opts:['Contabilidade e RH','Campo (Execução) e Planejamento','O cliente e o fornecedor'],ok:1,exp:'O campo alimenta, o planejamento decide e o campo executa a correção.'}
-      ],
-      
-      // ===========================
-      // NÍVEL GERENTE / DIRETOR (31-36)
-      // ===========================
-      
-      // MOD 31: Liderança no Planejamento
-      31: [
-        {q:'O gerente deve liderar a equipe de Planejamento com:',opts:['Autoritarismo','Transparência e dados (Gestão à Vista)','Intuição'],ok:1,exp:'O time precisa saber onde está o problema e o que é esperado.'},
-        {q:'A Liderança Lean incentiva:',opts:['Fazer tudo sozinho','Participação do time na solução de problemas','Culpar os outros'],ok:1,exp:'O time que planeja junto se compromete junto.'},
-        {q:'A comunicação do gerente deve ser:',opts:['Vaga','Direta, objetiva e com foco nas prioridades','Cheia de jargões'],ok:1,exp:'Eliminar o ruído para que todos entendam a mensagem crítica.'},
-        {q:'A tomada de decisão gerencial deve ser baseada em:',opts:['Senso comum','Fatos, indicadores (KPIs) e dados reais','A opinião do mais velho'],ok:1,exp:'Gestão baseada em dados, não em achismos.'},
-        {q:'O reconhecimento pelo bom desempenho (celebrar o PPC alto) melhora:',opts:['A pressão','O engajamento e a cultura de alta performance','O custo'],ok:1,exp:'Motivação e reforço positivo são cruciais.'},
-        {q:'A rotina diária do gerente (Lean) deve incluir:',opts:['Ficar no escritório','Checar o Gemba (Campo) e os KPIs críticos','Ligar para o cliente'],ok:1,exp:'Ver o problema no local onde ele acontece.'},
-        {q:'O gestor deve focar em remover o que para a equipe?',opts:['O tempo','Barreiras, restrições e impedimentos ao fluxo de trabalho','O café'],ok:1,exp:'Servir a equipe (Servant Leadership) para que ela possa produzir.'},
-        {q:'A cultura de aprendizado contínuo exige do gerente:',opts:['Punição','Feedback contínuo, seguro para errar e PDCA','Indiferença'],ok:1,exp:'Transformar erro em aprendizado (sem medo de expor o problema).'}
-      ],
-      // MOD 32: Gestão de Custos & Orçamento
-      32: [
-        {q:'O custo real de uma tarefa depende diretamente de:',opts:['Impostos','Produtividade e horas trabalhadas (HH)','Apenas do material'],ok:1,exp:'Custo = HH x Valor da HH. A produtividade baixa estoura a HH.'},
-        {q:'O estouro de custo geralmente nasce:',opts:['Na negociação','No campo (baixa produtividade, retrabalho)','No escritório'],ok:1,exp:'O HH real gasto é o principal vilão do custo.'},
-        {q:'O controle ideal de custo deve ser feito:',opts:['No final do contrato','Semana a semana com dados reais de produção/HH','Mensalmente'],ok:1,exp:'O atraso de informação impede a ação corretiva.'},
-        {q:'O índice direto de custo mais importante para o planejamento é:',opts:['Valor total do contrato','HH por unidade (Razão Unitária)','Preço da gasolina'],ok:1,exp:'Mede a eficiência do trabalho humano (o que impacta o custo).'},
-        {q:'Um desvio negativo no custo (estouro) requer:',opts:['Espera','Ação imediata e plano de recuperação','Nada'],ok:1,exp:'É preciso agir rápido para proteger a margem do contrato.'},
-        {q:'A melhor forma de identificar desvios de custo é com:',opts:['Opinião','Curva de custo (S-Curve) e KPIs de produtividade','Email'],ok:1,exp:'Comparar o custo previsto com o realizado (EVM - Earned Value Management).'},
-        {q:'A primeira linha de defesa contra o estouro de custo é:',opts:['Contratar consultoria','Planejamento bem feito (evitar retrabalho e ociosidade)','Cortar o café'],ok:1,exp:'Planejamento elimina os desperdícios que mais geram custo (HH improdutivo).'},
-        {q:'Melhorar o custo da obra exige:',opts:['Reduzir o salário','Aumentar a entrega (produção) sem aumentar a HH gasta','Diminuir a qualidade'],ok:1,exp:'Ser mais eficiente com os recursos atuais.'}
-      ],
-      // MOD 33: Gestão de Riscos
-      33: [
-        {q:'Risco é definido como:',opts:['Uma certeza','Evento incerto com potencial impacto positivo ou negativo','Um erro'],ok:1,exp:'Tem probabilidade de ocorrer (incerteza) e, se ocorrer, gera impacto.'},
-        {q:'Os riscos devem ser classificados por:',opts:['Ordem alfabética','Probabilidade x Impacto (Matriz de Risco)','Quem gritou mais alto'],ok:1,exp:'Focar os esforços de mitigação nos riscos de alto impacto/alta probabilidade.'},
-        {q:'A melhor forma de controle de risco é:',opts:['Aceitar','Ação preventiva (Mitigação)','Ignorar'],ok:1,exp:'Agir antes que o risco vire problema (ex: checar restrições do CC antes do Lookahead).'},
-        {q:'O "Dono do Risco" é:',opts:['O Planejamento','O responsável pela mitigação e monitoramento (quem pode agir)','O cliente'],ok:1,exp:'Cada risco deve ter um responsável claro.'},
-        {q:'Os riscos devem ser monitorados em:',opts:['Oculto','Reuniões constantes (semanais/mensais)','No final do mês'],ok:1,exp:'A matriz de risco é um documento vivo que precisa de revisão constante.'},
-        {q:'Se um risco se materializa e vira problema, você aciona:',opts:['O jurídico','O Plano de Contingência','O pânico'],ok:1,exp:'O plano de contingência é o Plano B previamente desenhado.'},
-        {q:'O risco de cronograma afeta diretamente o:',opts:['Custo de material','Caminho Crítico e a folga do projeto','A cor da parede'],ok:1,exp:'O foco na matriz deve ser nos riscos que afetam o prazo.'},
-        {q:'A revisão do risco deve ser:',opts:['Estática','Contínua (em diferentes fases do projeto)','Apenas para o cliente'],ok:1,exp:'O risco da mobilização é diferente do risco do comissionamento.'}
-      ],
-      // MOD 34: Comunicação Executiva
-      34: [
-        {q:'Para a Diretoria (Comunicação Executiva), a informação deve:',opts:['Ser o mais longa possível','Ser simples, direta e focada no resultado','Ter muitos detalhes técnicos'],ok:1,exp:'O Executivo precisa tomar uma decisão rápida: "Onde estamos e o que precisamos fazer?".'},
-        {q:'O KPI visual para a diretoria deve:',opts:['Ter muitas cores','Mostrar o que realmente importa (CC, Desvio de Custo, Margem)','Ser escondido'],ok:1,exp:'Focar nos 3 a 5 indicadores críticos.'},
-        {q:'O vermelho (semaforização) em um dashboard executivo significa:',opts:['Atraso','Decidir rápido ou aprovar recursos para recuperação','Está tudo ok'],ok:1,exp:'Chamar a atenção para o desvio crítico.'},
-        {q:'Dashboards para a Execução devem:',opts:['Gerar dúvidas','Gerar conversa clara e acionável (o que fazer agora)','Ser apenas relatórios'],ok:1,exp:'Facilitar a comunicação sem precisar de um manual.'},
-        {q:'Comunicação ruim e complexa gera:',opts:['Mais alinhamento','Decisão errada, atraso na ação e conflito','Mais eficiência'],ok:1,exp:'A mensagem precisa ser absorvida na primeira leitura.'},
-        {q:'O melhor formato de reunião executiva é:',opts:['3 horas de PowerPoint','Curta, em pé e com foco em 3 pontos de decisão','Apenas e-mail'],ok:1,exp:'Foco na decisão e no alinhamento estratégico.'},
-        {q:'O que deve ser evitado na comunicação executiva?',opts:['Fatos','Jargões, detalhes inúteis e explicações complexas','Simplicidade'],ok:1,exp:'Focar no resumo e na solução (Elevator Pitch).'},
-        {q:'O propósito final da comunicação executiva é:',opts:['Impressão','Alinhamento estratégico e apoio às ações do projeto','Relatório'],ok:1,exp:'Obter o suporte e recursos que o projeto precisa.'}
-      ],
-      // MOD 35: AWP com Cronograma Integrado
-      35: [
-        {q:'AWP (Advanced Work Packaging) conecta quais áreas?',opts:['RH e Marketing','Engenharia, Planejamento e Construção (Campo)','O cliente e o fornecedor'],ok:1,exp:'Cria um fluxo de trabalho do projeto até a entrega (Integrated Work Packages).'},
-        {q:'Um Work Package (Pacote de Trabalho) deve ser:',opts:['O maior possível','Construtível, gerenciável e alinhado à sequência de montagem','Apenas um desenho'],ok:1,exp:'Unidade de trabalho lógica, liberada para ser construída no campo.'},
-        {q:'AWP bem implementado reduz:',opts:['Produtividade','Interferências, restrições e ociosidade no campo','Custo de material'],ok:1,exp:'Garante que o campo só comece o que está 100% pronto (prontidão).'},
-        {q:'O sequenciamento do trabalho (IWP/CWP) deve seguir:',opts:['Ordem do gerente','A prioridade do campo (liberar o caminho crítico)','A ordem do projeto'],ok:1,exp:'O plano do AWP é baseado na construtibilidade.'},
-        {q:'A métrica de sucesso do AWP é:',opts:['PPC','Entregas por pacote concluído no prazo e no escopo','Efetivo alto'],ok:1,exp:'O foco é na entrega do pacote de trabalho pronto e liberado.'},
-        {q:'O alinhamento semanal entre as disciplinas no AWP é:',opts:['Opcional','Fundamental para garantir que as restrições sejam resolvidas','Burocrático'],ok:1,exp:'O processo de AWP é um ciclo contínuo de planejamento e feedback.'},
-        {q:'O "Dono do WP" (Work Package) é tipicamente:',opts:['O Planejamento','O líder de execução/Encarregado daquela frente','A Engenharia'],ok:1,exp:'Quem é responsável por entregar o pacote no campo.'},
-        {q:'O benefício principal do AWP para o Planejamento é:',opts:['Mais documentos','Fluxo de trabalho previsível e confiável (alta confiabilidade)','Mais HH'],ok:1,exp:'Elimina o caos da liberação e execução.'}
-      ],
-      // MOD 36: Tomada de Decisão Estratégica
-      36: [
-        {q:'Decisão estratégica na obra considera:',opts:['O menor preço imediato','Custo total do ciclo de vida x impacto no prazo e qualidade','Apenas a pressão'],ok:1,exp:'Olhar o custo e o impacto futuro, não só o gasto de hoje.'},
-        {q:'Os dados do campo (KPIs, produtividade, PPC) devem ser:',opts:['Ignorados','A base de qualquer decisão','Apenas para relatório'],ok:1,exp:'A decisão deve ser informada pela realidade da execução.'},
-        {q:'O teste de uma decisão estratégica é o seu impacto em:',opts:['O almoxarifado','No cliente, no prazo e no custo final','No RH'],ok:1,exp:'Avaliar a decisão pelo valor que ela entrega.'},
-        {q:'O gerente deve evitar na tomada de decisão:',opts:['Análise','Decisões por impulso, sem dados ou análise de risco','Reuniões'],ok:1,exp:'Decisão emocional gera retrabalho caro.'},
-        {q:'As reuniões de tomada de decisão estratégica devem ser:',opts:['Diárias','Semanais e assertivas (foco no que desvia o CC)','Apenas no problema'],ok:1,exp:'Monitorar o desvio e decidir a correção de rota com frequência.'},
-        {q:'Se o contexto muda (ex: mercado, cliente), a decisão anterior:',opts:['É fixa','Pode e deve mudar (flexibilidade)','Está errada'],ok:1,exp:'O planejamento é adaptativo e a decisão acompanha a realidade.'},
-        {q:'O responsável final por uma decisão de alto risco é:',opts:['O Planejamento','O Gerente ou Diretor do Projeto','O cliente'],ok:1,exp:'O líder assume a responsabilidade pelo resultado.'},
-        {q:'O resultado esperado da decisão estratégica é:',opts:['Fazer tudo rápido','Entrega de valor, no prazo e com segurança','Menos trabalho'],ok:1,exp:'O foco é no sucesso do projeto, não na atividade isolada.'}
-      ],
-      
-      // ===========================
-      // NÍVEL VISIONÁRIO (37-40)
-      // ===========================
-
-      // MOD 37: Inteligência Artificial na Obra
-      37: [
-        {q:'A IA (Inteligência Artificial) ajuda o Planejamento a:',opts:['Aumentar o HH','Prever riscos, produtividade e otimizar sequências','Substituir o gerente'],ok:1,exp:'Analisar grandes volumes de dados para identificar padrões e tendências.'},
-        {q:'Uso principal da IA é para gerar:',opts:['Relatórios longos','Decisões mais rápidas e informadas por dados','Mais burocracia'],ok:1,exp:'Transforma a capacidade de análise em ação.'},
-        {q:'A principal limitação no uso de IA é:',opts:['O custo','A qualidade e a integridade dos dados coletados','O clima'],ok:1,exp:'Se o dado de entrada é ruim, a previsão será ruim (Garbage In, Garbage Out).'},
-        {q:'Uma aplicação prática da IA é a:',opts:['Previsão do preço do dólar','Previsão de PPC, índices de produtividade e análise de desvios','Previsão do tempo'],ok:1,exp:'Prever a performance para agir antes que o desvio ocorra.'},
-        {q:'Quem é o responsável por gerenciar a IA no Planejamento?',opts:['O cliente','O Planejamento Digital ou Engenheiro de Dados','O campo'],ok:1,exp:'Especialista que entende o processo e a tecnologia.'},
-        {q:'O benefício da IA no Planejamento é a:',opts:['Lentidão','Agilidade na correção de rota e antecipação de problemas','Aumento de custos'],ok:1,exp:'A máquina analisa mais rápido do que o humano.'},
-        {q:'O Pipeline de dados (fluxo de informação) deve ser:',opts:['Planilha Excel','Campo → Nuvem → Dashboards / IA','Apenas e-mail'],ok:1,exp:'Garantir a coleta de dados da ponta para o sistema de análise.'},
-        {q:'O futuro do Planejamento pode incluir:',opts:['Mais papel','Obra autoconduzida por IA (guiada por dados)','Menos engenheiros'],ok:1,exp:'Otimização e automação máxima do fluxo de trabalho.'}
-      ],
-      // MOD 38: Planejamento 5D (Custo + Prazo + Modelo)
-      38: [
-        {q:'O Planejamento 5D integra:',opts:['Apenas o custo','Custo ao modelo 4D (Tempo + Modelo + Custo)','O material'],ok:1,exp:'Adiciona a 5ª dimensão: o Custo (Budget) no tempo.'},
-        {q:'O benefício do 5D é:',opts:['Atraso','Visualizar o custo real ao longo do tempo (Curva S Financeira)','Menos controle'],ok:1,exp:'Permite ver quanto deve ter sido gasto até uma determinada data (Controle Financeiro).'},
-        {q:'O 5D ajuda o Gerente a:',opts:['Aumentar o risco','Controlar o orçamento, prever o fluxo de caixa e o valor ganho (EVM)','Comprar material'],ok:1,exp:'Ferramenta poderosa de gestão financeira e de cronograma.'},
-        {q:'O dado base para o 5D é:',opts:['Opinião','Quantidades do 3D + RUP (Índice) + Custo Unitário','Apenas o salário'],ok:1,exp:'Custo = Quantidade x (HH/Unid) x Valor/HH.'},
-        {q:'O risco no 5D ocorre quando:',opts:['O custo é baixo','O modelo 3D ou o cronograma não estão revisados/corretos','A equipe é grande'],ok:1,exp:'O 5D herda os erros do 3D e 4D (Garbage In).'},
-        {q:'A atualização do modelo 5D deve ser:',opts:['Anual','Periódica e rastreável (garantir que o custo segue o avanço real)','Apenas para o cliente'],ok:1,exp:'Precisa acompanhar o ciclo do planejamento e medição.'},
-        {q:'O "Dono" do 5D é:',opts:['O cliente','O Planejamento em conjunto com a área de Custos','O financeiro'],ok:1,exp:'Integração total entre escopo, prazo e custo.'},
-        {q:'O resultado do 5D é:',opts:['Planilha longa','Previsão financeira precisa e gestão de desempenho integrada','Mais HH'],ok:1,exp:'A Curva S Financeira gerada é a base do controle.'}
-      ],
-      // MOD 39: Power BI e Dashboards Integrados
-      39: [
-        {q:'BI (Business Intelligence) significa:',opts:['Informação de Negócio','Inteligência do Negócio (Transformar Dados em Conhecimento)','Software caro'],ok:1,exp:'Conjunto de ferramentas e processos para extrair valor dos dados.'},
-        {q:'Dashboards com BI servem para:',opts:['Decoração','Decisão rápida e gestão à vista','Atrasar'],ok:1,exp:'Simplificam dados complexos em visuais fáceis de entender.'},
-        {q:'É preciso ter atenção com o que em um dashboard?',opts:['O nome do gerente','A fonte dos dados (deve ser confiável e única)','A cor'],ok:1,exp:'Se a fonte é manual ou não confiável, o dashboard é inútil.'},
-        {q:'O visual do dashboard deve ser:',opts:['Complexo','Intuitivo, limpo e acionável','Monocromático'],ok:1,exp:'O gestor precisa entender o status em 5 segundos.'},
-        {q:'A atualização do dashboard deve ser:',opts:['Manual e mensal','Automática e em tempo real (se possível)','Apenas para o cliente'],ok:1,exp:'Dados frescos para decisões frescas.'},
-        {q:'O "Dono da Informação" que alimenta o BI é:',opts:['O desenvolvedor','Quem coleta os dados na ponta (Campo/Planejamento)','O CEO'],ok:1,exp:'O campo precisa alimentar o sistema corretamente.'},
-        {q:'O indicador no BI deve mostrar:',opts:['Apenas o sucesso','Padrões, riscos e desvios críticos','Apenas o custo'],ok:1,exp:'Alertar o gerente sobre onde agir (Exceção).'},
-        {q:'O benefício do BI é a:',opts:['Burocracia','Gestão de obra em tempo real e colaboração','Isolamento de dados'],ok:1,exp:'Todos na mesma página, com a mesma visão de status.'}
-      ],
-      // MOD 40: Planejamento Baseado em Simulações
-      40: [
-        {q:'A Simulação (ex: Monte Carlo) ajuda o Planejamento a:',opts:['Chutar o prazo','Antecipar cenários de risco e incerteza','Aumentar o custo'],ok:1,exp:'Testa milhares de cenários com diferentes probabilidades de HH e risco.'},
-        {q:'A base para rodar uma simulação confiável é:',opts:['Opinião','Dados históricos e índices de produtividade reais','Apenas o software'],ok:1,exp:'O dado passado alimenta a previsão futura.'},
-        {q:'A simulação de Cenário Pessimista ajuda a:',opts:['Atrasar','Minimizar riscos e definir folgas de segurança (Buffer)','Otimizar'],ok:1,exp:'Prepara o time para o pior caso, tornando o plano mais robusto.'},
-        {q:'O responsável por rodar e interpretar a simulação é:',opts:['O financeiro','O Planejamento Avançado/Controle','O cliente'],ok:1,exp:'Exige conhecimento estatístico e de cronograma.'},
-        {q:'A maior vantagem da simulação é a:',opts:['Atraso','Mitigação antecipada e alocação inteligente de recursos','Certeza'],ok:1,exp:'Saber onde colocar o esforço de forma estratégica.'},
-        {q:'Uma ferramenta comum de simulação no planejamento é:',opts:['PowerPoint','Simulação Monte Carlo','Excel básico'],ok:1,exp:'Usa estatística para prever a probabilidade de cumprimento de prazo.'},
-        {q:'O melhor uso da simulação é para:',opts:['Tarefas diárias','Grandes decisões e projetos de alto risco/incerteza','Atividades simples'],ok:1,exp:'Decisões estratégicas (ex: Prazo de Entrega do Contrato).'},
-        {q:'O resultado da simulação é um cronograma mais:',opts:['Fácil','Robusto, com buffers alocados e alto % de probabilidade de cumprimento','Caro'],ok:1,exp:'Aumenta a confiança na data de entrega (Project Confidence).'}
       ]
     };
 
-    // =========================================================================
-    // LÓGICA DE NÍVEIS E DESBLOQUEIO
-    // =========================================================================
-    
-    function getLevel(xp) {
-      for (let i = LEVELS.length - 1; i >= 0; i--) {
-        if (xp >= LEVELS[i].minXp) {
-          return LEVELS[i];
-        }
-      }
-      return LEVELS[0];
-    }
-    
-    function isModuleLocked(modId, modLevel) {
-      if (modLevel === 'Técnico') return false;
-      if (S.completed.includes(modId)) return false; 
-      
-      const unlockedByPass = S.tempPass === '2025*'; // Se a senha foi usada e é a padrão
-      
-      if (modLevel === 'Analista') {
-        // Analista exige todos os módulos de Técnico (IDs 1-12)
-        const allTecCompleted = TEC_IDS.every(id => S.completed.includes(id));
-        return !allTecCompleted && !unlockedByPass; // Bloqueia se TEC não estiver completo E a senha não foi usada
-      }
-      
-      // Para outros níveis (Especialista, Gerente, Visionário), vamos simplificar:
-      // Se não for Analista, exige o nível anterior completo.
-      // Ou seja, se o módulo estiver no nível "Analista", e não for o primeiro do nível, ele estaria bloqueado se não tiver TEC completo.
-      // O modo mais simples: se não é Técnico, e não está completo, está bloqueado, a menos que a senha 2025* esteja ativa.
-      // Para manter o desbloqueio por senha, retornamos:
-      return !unlockedByPass;
-    }
-    
-    // =========================================================================
-    // FUNÇÕES DE PERSISTÊNCIA E SINCRONIZAÇÃO
-    // =========================================================================
+    // ===========================================
+    // 2. ESTADO E LOGICA
+    // ===========================================
 
-    function saveState() {
+    const STATE_KEY='duoplanning_v7_fixed'; // Mudança de versão para limpar cache
+    let S = {
+      name:'', xp:0, completed:[], completedLog:[], 
+      weeklyClaimAt:0, confetti:true, sound:true, require70:true,
+      theme:'dark', lang:'pt', updatedAt: Date.now()
+    };
+
+    // Elementos UI
+    const el = (id)=>document.getElementById(id);
+    const UI = {
+      topBar: el('topBar'), viewLogin: el('viewLogin'), viewDash: el('viewDash'),
+      btnGoogle: el('btnGoogle'), btnLocal: el('btnLocal'), inpName: el('inpName'),
+      userBadge: el('userBadge'), btnLogout: el('btnLogout'),
+      mods: el('mods'), hello: el('hello'), xpText: el('xpText'), xpFill: el('xpFill'),
+      legend: el('legend'),
+      btnDaily: el('btnDaily'), btnWeekly: el('btnWeekly'), wkStatus: el('wkStatus'),
+      quiz: el('quiz'), qText: el('qText'), opts: el('opts'), exp: el('exp'), 
+      btnNext: el('btnNext'), qProg: el('qProg'), quizTitle: el('quizTitle'),
+      btnCloseQuiz: el('btnCloseQuiz'), toast: el('toast'),
+      btnConfig: el('btnConfig'), config: el('config'), btnCloseConfig: el('btnCloseConfig'),
+      btnReset: el('btnReset'), cfgConfetti: el('cfgConfetti'), cfgSound: el('cfgSound'), cfgRequire70: el('cfgRequire70'),
+      btnRank: el('btnRank'), ranking: el('ranking'), btnCloseRank: el('btnCloseRank'), rankBody: el('rankBody')
+    };
+
+    // Funções Core
+    function loadState(){
+      try {
+        const raw = JSON.parse(localStorage.getItem(STATE_KEY));
+        if(raw) S = {...S, ...raw};
+        S.xp = +S.xp || 0;
+      } catch(e){ console.log('Novo usuário ou erro de cache'); }
+    }
+    
+    function saveState(){
       S.updatedAt = Date.now();
-      localStorage.setItem('duoplanningState', JSON.stringify(S));
-      if (S.uid) {
-        setDoc(doc(db, "users", S.uid), S, { merge: true }).catch(console.error);
-      }
-      updateUI();
+      localStorage.setItem(STATE_KEY, JSON.stringify(S));
+      if(auth.currentUser) saveCloud();
     }
     
-    function updateUI() {
-      const currentLevel = getLevel(S.xp);
-      const completedCount = S.completed.length;
-      const progress = Math.round((completedCount / TOTAL_MODULES) * 100);
-      
-      UI.userName.textContent = `Olá, ${S.name || 'Mestre'}!`;
-      UI.configUserName.textContent = S.uid ? `${S.name} (Google)` : `${S.name} (Local)`;
-      UI.userLevel.textContent = `Nível: ${currentLevel.id}`;
-      UI.xpCurrent.textContent = S.xp;
-      UI.xpFill.style.width = `${Math.min(100, (S.xp / (currentLevel.minXp + XP_PER_MODULE)) * 100)}%`;
-      UI.statCompleted.textContent = completedCount;
-      UI.statProgress.textContent = `${progress}%`;
-      UI.statLevelBadge.textContent = currentLevel.id.substring(0, 1);
-      UI.statLevelBadge.style.color = currentLevel.color;
-      UI.statLevelBadge.closest('.stat-box').style.borderColor = currentLevel.color;
-      
-      renderModules();
+    async function saveCloud(){
+      try { await setDoc(doc(db, "users", auth.currentUser.uid), S, {merge:true}); } catch(e){console.error(e);}
     }
 
-    function renderModules() {
-      UI.modulesList.innerHTML = '';
-      let currentLevelHeader = '';
-      
-      DB_MODULES.forEach(mod => {
-        if (mod.level !== currentLevelHeader) {
-          currentLevelHeader = mod.level;
-          const levelClass = `level-${mod.level.toLowerCase().replace('/', '').replace(' ', '')}`;
-          UI.modulesList.innerHTML += `<div class="level-header ${levelClass}">${mod.level}</div>`;
-        }
-        
-        const isCompleted = S.completed.includes(mod.id);
-        const isLocked = isModuleLocked(mod.id, mod.level);
-        
-        let statusClass = isCompleted ? 'completed' : (isLocked ? 'locked' : '');
-        let lockIcon = isCompleted ? '✔️' : (isLocked ? '🔒' : '▶️');
-        let cardColor = isCompleted ? 'white' : 'var(--text)';
-        let cardBackground = isCompleted ? 'var(--success)' : (isLocked ? 'var(--panel)' : 'var(--panel)');
-        
-        const modCard = document.createElement('div');
-        modCard.className = `module-card ${statusClass}`;
-        modCard.style.color = cardColor;
-        modCard.style.backgroundColor = cardBackground;
-        modCard.setAttribute('data-id', mod.id);
-        modCard.setAttribute('data-level', mod.level);
-        modCard.innerHTML = `
-          <div class="module-card-title">${mod.id} - ${mod.title}</div>
-          <div style="font-size:0.8em; color:${isCompleted ? 'white' : 'var(--muted)'}">${mod.level}</div>
-          <span class="lock-icon" data-id="${mod.id}">${lockIcon}</span>
-        `;
-        
-        if (!isLocked) {
-          modCard.onclick = () => startQuiz(mod.id);
-        } else {
-          modCard.onclick = () => promptUnlock(mod.id, mod.level);
-        }
-        
-        UI.modulesList.appendChild(modCard);
-      });
-    }
-
-    // =========================================================================
-    // LÓGICA DE QUIZ
-    // =========================================================================
+    function getLevelInfo(mod){ return LEVELS.find(l=>l.id===mod.level) || LEVELS[0]; }
     
-    let currentQuiz = {
-      modId: null,
-      questions: [],
-      qIndex: 0,
-      correctCount: 0
-    };
-
-    function startQuiz(modId) {
-      const mod = DB_MODULES.find(m => m.id === modId);
-      currentQuiz.modId = modId;
-      currentQuiz.questions = DB_QUIZ[modId];
-      currentQuiz.qIndex = 0;
-      currentQuiz.correctCount = 0;
-
-      UI.quizModIcon.textContent = mod.icon;
-      UI.quizModId.textContent = mod.id;
-      UI.quizModTitle.textContent = mod.title;
-      
-      // Storytelling
-      const story = [
-        // Módulos Técnico (para simplificar, não têm storytelling aqui, mas poderiam ser adicionados)
-        1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '', 10: '', 11: '', 12: '',
-        
-        // Módulos Analista
-        13: 'Na Raízen, tubulação estava em “vai e volta”. Você redesenha fluxo unidirecional e ganha 35% de produtividade.',
-        14: 'Suporte sem especificação travou montagem. Você cobra detalhamento com antecedência e destrava frente crítica.',
-        15: 'Efetivo alto sem produção: equipe parada esperando guindaste por 4h.',
-        16: 'Material crítico chega tarde → cronograma explode. Você cria curva de materiais alinhada ao caminho crítico.',
-        17: 'Agendamento ruim → 2 frentes paradas por causa de um único guindaste ocupando área.',
-        18: 'Soldas paradas sem inspetor → backlog enorme antes do comissionamento.',
-        19: 'Frontes prontas, mas sem APR → PPC derrete e aumenta risco.',
-        20: 'Faltou sistema completo para teste — obra pronta, mas sem entregar.',
-        
-        // Módulos Especialista
-        21: 'Instrumentação pronta, mas tubulação não concluiu bicos → atraso crítico no startup.',
-        22: 'Visualização de colisão entre eletrocalha e tubulação antes da execução.',
-        23: 'Parada com 8 dias, 600 pessoas e sincronismo absoluto para evitar atraso milionário.',
-        24: 'Atrito entre frentes devido à logística de material/equipamento.',
-        25: 'Painel digital revela frente crítica escondida → ação imediata salva prazo.',
-        26: 'Mudança não controlada: reembolsos e impacto no prazo → caos administrativo.',
-        27: 'Curva de produtividade melhora 20% após 5 ciclos de repetição.',
-        28: 'Atraso em solda: 5 porquês revelam que a causa raiz é falta de treinamento.',
-        29: 'Cliente não liberou área porque “não era prioridade” → programação sem valor.',
-        30: 'Você recebe dados via app no campo e ajusta programação no mesmo dia → PPC explode para 87%.',
-
-        // Módulos Gerente/Diretor
-        31: 'Você assume uma obra atrasada, com conflito entre equipes. Primeiro passo: restaurar confiança e transparência.',
-        32: 'Produtividade baixa estoura custo → você cria plano de recuperação e protege a margem do contrato.',
-        33: 'Reestruturação no cliente → risco contratual de extensão → você cria plano contingencial.',
-        34: 'Painel cheio de dados — diretoria sem entender nada. Você simplifica e ganha apoio imediado.',
-        35: 'Você implementa Work Packages alinhados ao caminho crítico e integra engenharia → fluxo perfeito.',
-        36: 'Guindaste caro parado X retrabalho futuro. Você decide por custo total do ciclo, não custo imediato.',
-
-        // Módulos Visionário
-        37: 'Análise preditiva aponta 80% de chance de atraso na próxima semana. Ações preventivas salvam a meta.',
-        38: 'O modelo 5D prevê estouro de 5% no custo do mês. Decisão de realocação de recursos.',
-        39: 'Painel de BI online unifica dados de campo, custos e planejamento em um só lugar.',
-        40: 'Simulação de Monte Carlo revela 95% de chance de terminar na data B, mas 50% na data A.',
-      ][modId] || 'Teste seus conhecimentos sobre este módulo!';
-      
-      UI.quizStory.textContent = story;
-      
-      showQuizQuestion();
-      switchView('quiz');
+    function isLocked(mod){
+      if(mod.level === 'Tecnico') return false; 
+      if(mod.level === 'Analista') return !TEC_IDS.every(id => S.completed.includes(id));
+      if(mod.level === 'Especialista') {
+        const anaIds = [13,14,15,16,17,18,19,20];
+        return !anaIds.every(id => S.completed.includes(id));
+      }
+      return true; 
     }
 
-    function showQuizQuestion() {
-      const q = currentQuiz.questions[currentQuiz.qIndex];
-      
-      UI.quizQIndex.textContent = currentQuiz.qIndex + 1;
-      UI.quizQuestion.textContent = q.q;
-      UI.quizOptions.innerHTML = '';
-      UI.quizFeedback.classList.add('hidden');
-      UI.btnQuizNext.disabled = true;
-      UI.btnQuizNext.classList.remove('hidden');
-      UI.btnQuizFinish.classList.add('hidden');
-
-      q.opts.forEach((opt, index) => {
-        const btn = document.createElement('button');
-        btn.textContent = opt;
-        btn.setAttribute('data-index', index);
-        btn.onclick = () => selectOption(btn, index, q.ok);
-        UI.quizOptions.appendChild(btn);
-      });
-    }
-
-    function selectOption(selectedBtn, selectedIndex, correctIndex) {
-      if (!UI.btnQuizNext.disabled) return; // Se já respondeu, não faz nada
-      
-      const allButtons = UI.quizOptions.querySelectorAll('button');
-      allButtons.forEach(btn => {
-        btn.classList.add('disabled');
-        btn.disabled = true;
-        btn.classList.remove('selected');
-        if (parseInt(btn.getAttribute('data-index')) === correctIndex) {
-          btn.classList.add('correct');
-        } else {
-          btn.classList.add('incorrect');
-        }
-      });
-
-      selectedBtn.classList.remove('incorrect'); // Remove incorrect do botão clicado para re-classificar
-      selectedBtn.classList.add(selectedIndex === correctIndex ? 'correct' : 'incorrect');
-
-      const isCorrect = selectedIndex === correctIndex;
-      if (isCorrect) {
-        currentQuiz.correctCount++;
-        UI.quizFeedback.classList.remove('fail');
-        UI.quizFeedback.classList.add('success');
-        UI.quizFeedbackTitle.textContent = 'Correto! 🎉';
-      } else {
-        UI.quizFeedback.classList.remove('success');
-        UI.quizFeedback.classList.add('fail');
-        UI.quizFeedbackTitle.textContent = 'Incorreto. 😔';
-      }
-      
-      UI.quizFeedbackExp.textContent = currentQuiz.questions[currentQuiz.qIndex].exp;
-      UI.quizFeedback.classList.remove('hidden');
-      
-      UI.btnQuizNext.disabled = false;
-      if (currentQuiz.qIndex === currentQuiz.questions.length - 1) {
-        UI.btnQuizNext.classList.add('hidden');
-        UI.btnQuizFinish.classList.remove('hidden');
-      }
-    }
-
-    UI.btnQuizNext.onclick = () => {
-      currentQuiz.qIndex++;
-      if (currentQuiz.qIndex < currentQuiz.questions.length) {
-        showQuizQuestion();
-      }
-    };
-
-    UI.btnQuizFinish.onclick = finishQuiz;
-
-    function finishQuiz() {
-      const totalQuestions = currentQuiz.questions.length;
-      const requiredCorrect = Math.ceil(totalQuestions * 0.7); // 70% de acerto
-      const isApproved = currentQuiz.correctCount >= requiredCorrect;
-      const modId = currentQuiz.modId;
-      
-      let feedbackMessage = '';
-      let xpGained = 0;
-      
-      if (isApproved) {
-        xpGained = XP_PER_MODULE;
-        feedbackMessage = `Parabéns! Você acertou ${currentQuiz.correctCount} de ${totalQuestions} perguntas (requisito: ${requiredCorrect}). Você ganhou ${xpGained} XP!`;
-        
-        if (!S.completed.includes(modId)) {
-          S.completed.push(modId);
-          S.xp += xpGained;
-        } else {
-          feedbackMessage += " (Módulo já estava concluído, sem ganho extra de XP)";
-        }
-      } else {
-        feedbackMessage = `Ops! Você acertou apenas ${currentQuiz.correctCount} de ${totalQuestions} perguntas. Para concluir o módulo, você precisa de ${requiredCorrect} acertos. Tente novamente!`;
-      }
-      
-      alert(feedbackMessage);
-      saveState();
-      switchView('dashboard');
-      UI.navQuiz.classList.add('hidden'); // Esconde o botão de Quiz se não tiver ativo
-    }
-    
-    // =========================================================================
-    // LÓGICA DE VIEW / NAVEGAÇÃO
-    // =========================================================================
-    
-    function switchView(targetView) {
-      const views = [UI.viewDash, UI.viewQuiz, UI.viewConfig, UI.viewRanking];
-      views.forEach(v => v.classList.add('hidden'));
-      
-      if (targetView === 'dashboard') UI.viewDash.classList.remove('hidden');
-      if (targetView === 'quiz') UI.viewQuiz.classList.remove('hidden');
-      if (targetView === 'config') UI.viewConfig.classList.remove('hidden');
-      if (targetView === 'ranking') { 
-        UI.viewRanking.classList.remove('hidden');
-        loadRanking();
-      }
-
-      document.querySelectorAll('.footer-nav .nav-item').forEach(item => {
-        item.classList.remove('active');
-        if (item.getAttribute('data-view') === targetView) {
-          item.classList.add('active');
-        }
-      });
-      
-      // Oculta o botão de Quiz na nav se não houver um quiz ativo
-      if (targetView !== 'quiz') {
-        UI.navQuiz.classList.add('hidden');
-      }
-    }
-    
-    document.querySelectorAll('.footer-nav .nav-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const targetView = item.getAttribute('data-view');
-        switchView(targetView);
-      });
-    });
-    
-    UI.rankBtn.onclick = () => switchView('ranking');
-    UI.btnBackFromRanking.onclick = () => switchView('dashboard');
-
-    // =========================================================================
-    // LÓGICA DE UNLOCK / DESBLOQUEIO
-    // =========================================================================
-    
-    function promptUnlock(modId, modLevel) {
-      if (S.tempPass === '2025*') {
-        alert(`Módulo ${modId} - ${modLevel} já está desbloqueado pela senha temporária. Clique em outro módulo ou complete os pré-requisitos!`);
+    // Renderização Principal
+    function render(){
+      if(!S.name){
+        UI.viewLogin.classList.remove('hidden');
+        UI.viewDash.classList.add('hidden');
+        UI.topBar.classList.add('hidden');
         return;
       }
+      UI.viewLogin.classList.add('hidden');
+      UI.viewDash.classList.remove('hidden');
+      UI.topBar.classList.remove('hidden');
       
-      const pass = prompt(`Módulo ${modLevel} Bloqueado. \nDigite a senha de desbloqueio para este nível:`);
-      if (pass === S.tempPass) {
-        alert(`Nível ${modLevel} desbloqueado!`);
-        S.tempPass = pass; // Mantém a senha para os próximos módulos
-        saveState();
-        renderModules();
-      } else if (pass !== null && pass !== '') {
-        alert('Senha incorreta.');
+      UI.hello.textContent = `Olá, ${S.name.split(' ')[0]}!`;
+      UI.userBadge.textContent = auth.currentUser ? '☁️ Nuvem' : '🏠 Local';
+      
+      // XP
+      const nextXP = 1000; 
+      UI.xpText.textContent = `${S.xp} XP`;
+      UI.xpFill.style.width = Math.min(100, (S.xp/nextXP)*100) + '%';
+      
+      let currentLvl = 'Técnico';
+      if(S.xp > 360) currentLvl = 'Analista';
+      if(S.xp > 800) currentLvl = 'Especialista';
+      el('userLvlDisplay').textContent = currentLvl;
+      el('userLvlDisplay').className = `chip lv-${currentLvl.toLowerCase().substring(0,3)}`;
+
+      // Renderizar Legenda
+      UI.legend.innerHTML = LEVELS.map(l=> 
+        `<span class="chip" style="color:${l.color};border-color:${l.color}33">${l.icon} ${l.label}</span>`
+      ).join('');
+
+      // Renderizar Módulos (O Ponto Crítico)
+      UI.mods.innerHTML = MODULES.map(m => {
+        const info = getLevelInfo(m);
+        const done = S.completed.includes(m.id);
+        const locked = isLocked(m);
+        const statusHtml = done ? '<span class="status done">✅ Concluído</span>' : locked ? '<span class="status lock">🔒 Bloqueado</span>' : '<span class="status">▶️ Disponível</span>';
+        
+        let btnHtml = '';
+        if(locked) {
+          btnHtml = `<button class="ghost" disabled style="font-size:12px">Bloqueado</button>`;
+        } else {
+          btnHtml = `<button class="primary" onclick="window.startMod(${m.id})" style="background:${info.color}; font-size:13px">Jogar</button>`;
+        }
+        
+        return `
+          <div class="card lv lv-${info.id.toLowerCase().substring(0,3)} ${locked?'locked':''}">
+            <span class="ribbon"></span>
+            ${locked ? '<div class="lock-overlay"><div class="lock-icon">🔒</div></div>' : ''}
+            <div class="icon">${m.icon}</div>
+            <h4>${m.title}</h4>
+            <div class="mod-footer">
+              ${statusHtml}
+              ${!locked ? btnHtml : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      checkWeekly();
+    }
+
+    // ===========================================
+    // 3. QUIZ ENGINE
+    // ===========================================
+    let activeQuiz = null;
+    let qIdx = 0;
+    let score = 0;
+    let isDaily = false;
+    let currentModId = 0;
+
+    window.startMod = (id) => {
+      const mod = MODULES.find(m=>m.id===id);
+      const questions = DB_QUIZ[id];
+      
+      if(!questions){
+        toast("🛠️ Módulo em desenvolvimento (Aguardando Bloco 2!)");
+        return;
+      }
+
+      activeQuiz = sample(questions, 8); 
+      qIdx = 0;
+      score = 0;
+      isDaily = false;
+      currentModId = id;
+      
+      setupQuizUI(mod.title, mod.level);
+    };
+
+    UI.btnDaily.onclick = () => {
+      const allQ = [];
+      Object.values(DB_QUIZ).forEach(arr => allQ.push(...arr));
+      if(allQ.length === 0) return;
+      
+      activeQuiz = sample(allQ, 3);
+      qIdx = 0;
+      score = 0;
+      isDaily = true;
+      setupQuizUI("Missão Diária", "Tecnico");
+    };
+
+    function setupQuizUI(title, levelId){
+      const lvl = LEVELS.find(l=>l.id===levelId) || LEVELS[0];
+      UI.quizTitle.textContent = title;
+      UI.quiz.style.display = 'flex';
+      UI.btnNext.style.background = lvl.color;
+      renderQuestion();
+    }
+
+    function renderQuestion(){
+      if(qIdx >= activeQuiz.length) return finishQuiz();
+      
+      const Q = activeQuiz[qIdx];
+      UI.qText.textContent = Q.q;
+      UI.qProg.textContent = `${qIdx+1} / ${activeQuiz.length}`;
+      UI.opts.innerHTML = '';
+      UI.exp.classList.add('hidden');
+      UI.btnNext.classList.add('hidden');
+
+      const idxs = Q.opts.map((_, i) => i);
+      shuffle(idxs);
+      
+      idxs.forEach(i => {
+        const btn = document.createElement('div');
+        btn.className = 'opt';
+        btn.textContent = Q.opts[i];
+        btn.onclick = () => checkAnswer(i, Q, btn);
+        UI.opts.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(chosenI, Q, btnElement){
+      if(!UI.btnNext.classList.contains('hidden')) return;
+
+      const isCorrect = (chosenI === Q.ok);
+      if(isCorrect) {
+        score++;
+        btnElement.classList.add('correct');
+        if(S.confetti) confettiMini();
+      } else {
+        btnElement.classList.add('wrong');
+        const allOpts = UI.opts.children;
+        for(let b of allOpts){
+          if(b.textContent === Q.opts[Q.ok]) b.classList.add('correct');
+        }
+      }
+      
+      UI.exp.textContent = (isCorrect ? "✅ Correto! " : "❌ Ops! ") + Q.exp;
+      UI.exp.classList.remove('hidden');
+      UI.btnNext.classList.remove('hidden');
+    }
+
+    UI.btnNext.onclick = () => {
+      qIdx++;
+      renderQuestion();
+    };
+
+    function finishQuiz(){
+      const total = activeQuiz.length;
+      const pct = (score/total)*100;
+      const req = S.require70 ? 70 : 0;
+      const passed = isDaily ? (score===total) : (pct >= req);
+      
+      UI.qText.textContent = passed ? "🎉 Parabéns!" : "Tente novamente...";
+      UI.opts.innerHTML = `
+        <div style="text-align:center; font-size:40px; margin:20px">${passed?'🏆':'📚'}</div>
+        <div style="text-align:center; margin-bottom:10px">Você acertou ${score} de ${total} (${Math.round(pct)}%)</div>
+        ${!passed && S.require70 ? '<div style="text-align:center;font-size:12px;color:var(--danger)">Necessário 70% para aprovar.</div>' : ''}
+      `;
+      UI.exp.classList.add('hidden');
+      UI.btnNext.textContent = "Fechar";
+      UI.btnNext.classList.remove('hidden');
+      UI.btnNext.onclick = () => {
+        UI.quiz.style.display='none';
+        UI.btnNext.textContent = "Confirmar"; 
+        if(passed) processWin();
+      };
+
+      if(passed && S.sound) playSound();
+      if(passed && S.confetti) confettiBurst();
+    }
+
+    function processWin(){
+      if(isDaily){
+        S.xp += 20;
+        toast("+20 XP (Diária)");
+      } else {
+        if(!S.completed.includes(currentModId)){
+          S.completed.push(currentModId);
+          const mod = MODULES.find(m=>m.id===currentModId);
+          const lvl = getLevelInfo(mod);
+          S.xp += lvl.xp;
+          S.completedLog.push({id:currentModId, ts:Date.now()});
+          toast(`+${lvl.xp} XP - Módulo Concluído!`);
+        } else {
+          toast("Módulo já concluído (sem XP extra).");
+        }
+      }
+      saveState();
+      render();
+    }
+
+    // Utilitários
+    function toast(msg){
+      UI.toast.textContent = msg;
+      UI.toast.style.display='block';
+      UI.toast.style.animation='slideUp 0.3s forwards';
+      setTimeout(()=>UI.toast.style.display='none', 2500);
+    }
+    function sample(arr, n){
+      if(!arr) return [];
+      const s = [...arr];
+      shuffle(s);
+      return s.slice(0, n);
+    }
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
       }
     }
-    
-    // =========================================================================
-    // INICIALIZAÇÃO E EVENTOS DE LOGIN
-    // =========================================================================
-    
-    UI.btnReset.onclick = () => { 
-      if(confirm("Zerar todo progresso? Isso não pode ser desfeito!")){ 
-        S.xp=0; S.completed=[]; S.uid=null; S.name='Usuário Local'; S.updatedAt=0; S.tempPass='2025*';
-        localStorage.removeItem('duoplanningState');
-        signOut(auth).catch(() => {}); // Tenta deslogar do Google
-        location.reload(); 
-      }
-    };
-    
-    UI.btnSignOut.onclick = () => {
-      if (S.uid) {
-        signOut(auth).then(() => {
-          S.uid = null;
-          S.name = 'Usuário Local';
+
+    function checkWeekly(){
+      const oneWeek = 604800000;
+      const now = Date.now();
+      const recent = S.completedLog.filter(x => (now - x.ts) < oneWeek).length;
+      
+      if(recent >= 3 && (now - S.weeklyClaimAt > oneWeek)){
+        UI.wkStatus.textContent = "✅ Concluída! Resgate agora.";
+        UI.btnWeekly.disabled = false;
+        UI.btnWeekly.onclick = () => {
+          S.xp += 100;
+          S.weeklyClaimAt = now;
           saveState();
-          location.reload();
-        }).catch(console.error);
+          render();
+          toast("+100 XP Semanal!");
+          confettiBurst();
+        }
       } else {
-        // Apenas recarrega a página para voltar para a tela de login
-        location.reload();
+        UI.wkStatus.textContent = `Progresso: ${recent}/3 módulos esta semana`;
+        UI.btnWeekly.disabled = true;
       }
+    }
+
+    // Efeitos
+    function confettiMini() { 
+      const colors = ['#58cc02','#3aa0ff','#f2b01c'];
+      for(let i=0; i<15; i++){
+        const el = document.createElement('div');
+        el.style.cssText = `position:fixed;left:50%;top:50%;width:6px;height:6px;background:${colors[i%3]};pointer-events:none;z-index:999`;
+        document.body.append(el);
+        const angle = Math.random()*Math.PI*2;
+        const anim = el.animate([
+          {transform:'translate(0,0)'},
+          {transform:`translate(${Math.cos(angle)*100}px, ${Math.sin(angle)*100}px)`, opacity:0}
+        ], {duration: 600, easing:'ease-out'});
+        anim.onfinish = ()=>el.remove();
+      }
+    }
+    function confettiBurst() {
+      for(let k=0; k<30; k++) setTimeout(confettiMini, k*20);
+    }
+    function playSound(){
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.connect(g); g.connect(ctx.destination);
+        osc.type='sine'; osc.frequency.value=500;
+        osc.start(); 
+        osc.frequency.exponentialRampToValueAtTime(1000, ctx.currentTime+0.1);
+        g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime+0.3);
+        osc.stop(ctx.currentTime+0.3);
+      } catch(e){}
+    }
+
+    // Inicialização
+    UI.btnLocal.onclick = () => { 
+      if(UI.inpName.value.trim()) { S.name=UI.inpName.value; saveState(); render(); } 
     };
+    UI.btnGoogle.onclick = async () => {
+      try { 
+        const res = await signInWithPopup(auth, provider);
+        if(!S.name) S.name = res.user.displayName;
+      } catch(e){ console.error(e); toast("Erro no login"); }
+    };
+    UI.btnLogout.onclick = async () => {
+      await signOut(auth);
+      localStorage.removeItem(STATE_KEY);
+      location.reload();
+    };
+    
+    UI.btnConfig.onclick = () => UI.config.style.display = 'flex';
+    UI.btnCloseConfig.onclick = () => UI.config.style.display = 'none';
+    UI.btnRank.onclick = () => { UI.ranking.style.display = 'flex'; loadRanking(); };
+    UI.btnCloseRank.onclick = () => UI.ranking.style.display = 'none';
+    UI.btnCloseQuiz.onclick = () => UI.quiz.style.display = 'none';
+
+    UI.cfgConfetti.onchange = (e) => { S.confetti=e.target.checked; saveState(); };
+    UI.cfgSound.onchange = (e) => { S.sound=e.target.checked; saveState(); };
+    UI.cfgRequire70.onchange = (e) => { S.require70=e.target.checked; saveState(); };
+    UI.btnReset.onclick = () => { if(confirm("Zerar todo progresso?")){ S.xp=0; S.completed=[]; saveState(); location.reload(); }};
 
     async function loadRanking(){
       UI.rankBody.innerHTML = 'Carregando...';
@@ -1214,85 +794,39 @@
         const snap = await getDocs(q);
         UI.rankBody.innerHTML = snap.docs.map((d,i) => {
           const u = d.data();
-          // Ignora usuários locais que foram para o ranking sem querer
-          if (!u.uid || u.uid.startsWith('local_')) return ''; 
           return `<div class="row" style="justify-content:space-between; border-bottom:1px solid #333; padding:8px 0">
             <span>${i+1}. ${u.name.substring(0,15)}</span>
             <span style="color:var(--accent)">${u.xp} XP</span>
           </div>`;
         }).join('');
-      } catch(e) { UI.rankBody.textContent = "Erro ao carregar ranking. (Verifique as chaves Firebase)"; }
-    }
-    
-    UI.btnGoogle.onclick = () => {
-      signInWithPopup(auth, provider).then((result) => {
-        const user = result.user;
-        S.uid = user.uid;
-        S.name = user.displayName;
-        saveState();
-        // O onAuthStateChanged cuidará do resto
-      }).catch(console.error);
-    };
-
-    // FUNÇÃO QUE PROVAVELMENTE ESTAVA FALHANDO DEVIDO AO ERRO DE SINTAXE!
-    UI.btnLocal.onclick = () => {
-      S.name = UI.inpName.value || 'Usuário Local';
-      // UID local temporário para ranking, se for o caso
-      S.uid = 'local_' + Date.now(); 
-      saveState();
-      finalizeLogin();
-    };
-
-    function finalizeLogin() {
-      UI.loadingOverlay.classList.add('hidden');
-      UI.viewLogin.classList.add('hidden');
-      switchView('dashboard');
-      updateUI();
+      } catch(e) { UI.rankBody.textContent = "Erro ao carregar ranking."; }
     }
 
     onAuthStateChanged(auth, async (user) => {
       if(user){
         const docRef = doc(db, "users", user.uid);
         const snap = await getDoc(docRef);
-        
-        let cloudState = snap.exists() ? snap.data() : null;
-        
-        if (cloudState) {
-          // Sincroniza: usa o estado mais recente (local ou nuvem)
-          if(cloudState.updatedAt > S.updatedAt) S = {...S, ...cloudState};
-        } else {
-          // Novo usuário no Firebase: salva o estado local atual na nuvem
-          cloudState = { ...S, uid: user.uid, name: user.displayName, updatedAt: serverTimestamp() };
-          await setDoc(docRef, cloudState);
-          S = { ...S, ...cloudState };
+        if(snap.exists()){
+          const cloud = snap.data();
+          if(cloud.updatedAt > S.updatedAt) S = {...S, ...cloud};
         }
-        
-        S.uid = user.uid; // Garante o UID correto
-        S.name = user.displayName; // Garante o nome correto
-        saveState();
-        
-        // Listener em tempo real (opcional, mas bom)
         onSnapshot(docRef, (s) => {
            if(s.exists() && s.data().updatedAt > S.updatedAt) { 
-             S = {...S, ...s.data()};
-             saveState();
+             S = {...S, ...s.data()}; 
+             render(); 
            }
         });
-        finalizeLogin();
-        
-      } else if (S.name) {
-         // Se não está logado no Google, mas tem dados locais, vai para o dashboard
-         finalizeLogin();
-      } else {
-        // Sem dados locais e sem login: mostra tela de login
-        UI.loadingOverlay.classList.add('hidden');
-        UI.viewLogin.classList.remove('hidden');
-        UI.inpName.value = 'Mestre do Planejamento';
       }
+      render();
     });
 
-    // Inicia a aplicação
-    // O onAuthStateChanged cuida de mostrar a tela de login ou o dashboard
+    loadState();
+    render();
+
+    UI.cfgConfetti.checked = S.confetti;
+    UI.cfgSound.checked = S.sound;
+    UI.cfgRequire70.checked = S.require70;
+
   </script>
 </body>
 </html>
