@@ -241,8 +241,12 @@
       {id:'Visionario',label:'Visionário',icon:'🔮',color:'var(--lv-vis)',xp:80}
     ];
 
-    // IDs que compõem o nível técnico para lógica de bloqueio
-    const TEC_IDS = [1,2,3,4,5,6,7,8,9,10,11,12];
+    // IDs que compõem os módulos por nível para lógica de bloqueio
+    const TEC_IDS = [1,2,3,4,5,6,7,8,9,10,11,12]; // 12 módulos
+    const ANA_IDS = [13,14,15,16,17,18,19,20];     // 8 módulos
+    const ESP_IDS = [21,22,23,24,25,26,27,28,29,30]; // 10 módulos
+    const GER_IDS = [31,32,33,34,35,36];           // 6 módulos
+    // Visionario (37-40) é o nível final
 
     const MODULES = [
       // TÉCNICO
@@ -478,10 +482,18 @@
       if(mod.level === 'Tecnico') return false; 
       if(mod.level === 'Analista') return !TEC_IDS.every(id => S.completed.includes(id));
       if(mod.level === 'Especialista') {
-        const anaIds = [13,14,15,16,17,18,19,20];
-        return !anaIds.every(id => S.completed.includes(id));
+        // Desbloqueado se todos os módulos Analista (ANA_IDS) estiverem completos
+        return !ANA_IDS.every(id => S.completed.includes(id));
       }
-      return true; 
+      if(mod.level === 'Gerente') {
+        // Desbloqueado se todos os módulos Especialista (ESP_IDS) estiverem completos
+        return !ESP_IDS.every(id => S.completed.includes(id));
+      }
+      if(mod.level === 'Visionario') {
+        // Desbloqueado se todos os módulos Gerente (GER_IDS) estiverem completos
+        return !GER_IDS.every(id => S.completed.includes(id));
+      }
+      return true; // Módulos não definidos ou níveis futuros
     }
 
     // Renderização Principal
